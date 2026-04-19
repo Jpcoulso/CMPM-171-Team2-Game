@@ -13,6 +13,10 @@ public class UnitController : MonoBehaviour
         destination = new Vector3(inputVector.x, inputVector.y, 0);
         hasDestination = true;
     }
+    public void Stop()
+    {
+        hasDestination = false;
+    }
     void Update()
     {
         if (!hasDestination)

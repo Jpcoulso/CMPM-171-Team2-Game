@@ -2,29 +2,51 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using Unity.VisualScripting;
+using NUnit.Framework.Internal;
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] private InputActionAsset actions;
     private InputAction RightClick;
     private InputAction LeftClick;
+    private InputAction Stop;
 
+    void Awake()
+    {
+        var map = actions.FindActionMap("Player");
+        LeftClick = map.FindAction("LeftClick");
+        RightClick = map.FindAction("RightClick");
+        Stop = map.FindAction("Stop");
+
+    }
     void OnEnable()
     {
-        RightClick = new InputAction(type: InputActionType.Button, binding: "<Mouse>/rightButton");
-        LeftClick = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
-        RightClick.performed += OnRightClick;
-        LeftClick.performed += OnLeftClick;
         RightClick.Enable();
         LeftClick.Enable();
+        Stop.Enable();
     }
     void OnDisable()
     {
-        RightClick.performed -= OnRightClick;
-        LeftClick.performed -= OnLeftClick;
         LeftClick.Disable();
         RightClick.Disable();
+        Stop.Disable();
     }
-    void OnRightClick(InputAction.CallbackContext context)
+    void Update()
+    {
+        if (LeftClick.WasPressedThisFrame())
+        {
+            OnLeftClick();
+        }
+        if (RightClick.WasPressedThisFrame())
+        {
+            OnRightClick();
+        }
+        if (Stop.WasPressedThisFrame())
+        {
+            OnStop();
+        }
+    }
+    void OnRightClick()
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -40,10 +62,18 @@ public class InputManager : MonoBehaviour
             unitController.Move(worldPosition);
         }
     }
-    void OnLeftClick(InputAction.CallbackContext context)
+    void OnLeftClick()
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         Debug.Log("Left Click at: " + mousePosition);
         // Implement left-click logic here
+    }
+    void OnStop()
+    {
+        UnitController unitController = UnityEngine.Object.FindFirstObjectByType<UnitController>();
+        if (unitController != null)
+        {
+            unitController.Stop();
+        }
     }
 }
