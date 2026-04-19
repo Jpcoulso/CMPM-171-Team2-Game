@@ -1,40 +1,49 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using Unity.VisualScripting;
 
 public class InputManager : MonoBehaviour
 {
-    private PlayerInput playerInput;
     private InputAction RightClick;
     private InputAction LeftClick;
-    public UnitController unit;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    void OnEnable()
     {
-        
+        RightClick = new InputAction(type: InputActionType.Button, binding: "<Mouse>/rightButton");
+        LeftClick = new InputAction(type: InputActionType.Button, binding: "<Mouse>/leftButton");
+        RightClick.performed += OnRightClick;
+        LeftClick.performed += OnLeftClick;
+        RightClick.Enable();
+        LeftClick.Enable();
     }
-    
-    void HandleAction(InputAction.CallbackContext context)
+    void OnDisable()
     {
-        if (context.action.name == "Move")
+        RightClick.performed -= OnRightClick;
+        LeftClick.performed -= OnLeftClick;
+        LeftClick.Disable();
+        RightClick.Disable();
+    }
+    void OnRightClick(InputAction.CallbackContext context)
+    {
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        worldPosition.z = 0; // Set z to 0 for 2D
+
+        Debug.Log("Right Click at: " + mousePosition);
+        Debug.Log("World Position: " + worldPosition);
+
+        // Implement right-click logic here
+        UnitController unitController = UnityEngine.Object.FindFirstObjectByType<UnitController>();
+        if (unitController != null)
         {
-            Vector2 inputVector = context.ReadValue<Vector2>();
-            unit.Move(inputVector);
+            unitController.Move(worldPosition);
         }
     }
-    private void inputRight()
+    void OnLeftClick(InputAction.CallbackContext context)
     {
-        if (RightClick.triggered)
-        {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
-            unit.Move(mousePos);
-            Debug.Log("Right Clicked");
-        }
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Debug.Log("Left Click at: " + mousePosition);
+        // Implement left-click logic here
     }
 }
