@@ -10,7 +10,7 @@ public class SelectionManager : MonoBehaviour
         private set;
     }
     
-    private CharacterSelector _currentlySelected; // holds a reference to the currently selected character
+    public CharacterSelector currentlySelected; // holds a reference to the currently selected character
 
     private void Awake() // ensures there is only ever one instance of SelectionManager
         {
@@ -27,6 +27,10 @@ public class SelectionManager : MonoBehaviour
         {
             CheckForCharacterClick();
         }
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            OnRightClick();
+        }
     }
     private void CheckForCharacterClick()
     {
@@ -42,14 +46,30 @@ public class SelectionManager : MonoBehaviour
             SelectCharacter(clickedCharacter);
         }
     }
-    public void SelectCharacter(CharacterSelector newSelection) // used to assign a character to _currentlySelected
+    private void OnRightClick()
     {
-        if (newSelection == _currentlySelected)
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        worldPosition.z = 0; // Set z to 0 for 2D
+
+        Debug.Log("Right Click at: " + mousePosition);
+        Debug.Log("World Position: " + worldPosition);
+
+        // Implement right-click logic here
+        UnitController unitController = currentlySelected.GetComponent<UnitController>();
+        if (unitController != null)
+        {
+            unitController.Move(worldPosition);
+        }
+    }
+    public void SelectCharacter(CharacterSelector newSelection) // used to assign a character to currentlySelected
+    {
+        if (newSelection == currentlySelected)
         {
             return;
         }
-        _currentlySelected?.Deselect();
-        _currentlySelected = newSelection;
-        _currentlySelected.Select();
+        currentlySelected?.Deselect();
+        currentlySelected = newSelection;
+        currentlySelected.Select();
     }
 }

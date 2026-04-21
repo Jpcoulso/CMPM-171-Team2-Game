@@ -11,8 +11,20 @@ public class InputManager : MonoBehaviour
     private InputAction LeftClick;
     private InputAction Stop;
 
+    public static InputManager Instance
+    {
+        get;
+        private set;
+    }
+
     void Awake()
     {
+        if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        Instance = this;
         var map = actions.FindActionMap("Player");
         LeftClick = map.FindAction("LeftClick");
         RightClick = map.FindAction("RightClick");
@@ -56,7 +68,7 @@ public class InputManager : MonoBehaviour
         Debug.Log("World Position: " + worldPosition);
 
         // Implement right-click logic here
-        UnitController unitController = UnityEngine.Object.FindFirstObjectByType<UnitController>();
+        UnitController unitController = SelectionManager.Instance.currentlySelected.GetComponent<UnitController>();
         if (unitController != null)
         {
             unitController.Move(worldPosition);
