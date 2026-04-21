@@ -21,6 +21,7 @@ public class CharacterSelector : MonoBehaviour
     {
         _spriteRenderer.color = _selectedColor;
         Debug.Log(gameObject.name + " selected.");
+        // I think this is where we add code to display UI abilites
     }
     public void Deselect()
     {

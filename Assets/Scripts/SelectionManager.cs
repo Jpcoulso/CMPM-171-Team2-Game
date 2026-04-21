@@ -30,23 +30,13 @@ public class SelectionManager : MonoBehaviour
     }
     private void CheckForCharacterClick()
     {
-        // OLD: Camera.main.ScreenToWorldPoint(Input.mousePosition)
-        // NEW: Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue())
-        //
-        // 'Mouse.current.position' is the mouse position on screen in pixels.
-        // You must call '.ReadValue()' to actually get the Vector2 value out of it.
-        // The rest (ScreenToWorldPoint, Physics2D.Raycast) is identical to before.
-        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-
-        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()); // stores location of mouse when it was clicked
+        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero); // creates a raycast at mouse location (vector2.zero as the direction means it has no direction)
         if (hit.collider == null)
         {
             return;
         }
-
         CharacterSelector clickedCharacter = hit.collider.GetComponent<CharacterSelector>();
-
         if (clickedCharacter != null)
         {
             SelectCharacter(clickedCharacter);
