@@ -45,7 +45,17 @@ public class InputManager : MonoBehaviour
         {
             OnStop();
         }
+
+        // --- Ability key inputs ---
+        var kb = Keyboard.current;
+        if (kb == null) return;
+
+        if (kb.qKey.wasPressedThisFrame) UseAbilityOnActiveUnit(0);
+        if (kb.wKey.wasPressedThisFrame) UseAbilityOnActiveUnit(1);
+        if (kb.eKey.wasPressedThisFrame) UseAbilityOnActiveUnit(2);
+        if (kb.rKey.wasPressedThisFrame) UseAbilityOnActiveUnit(3);
     }
+
     void OnRightClick()
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -74,6 +84,24 @@ public class InputManager : MonoBehaviour
         if (unitController != null)
         {
             unitController.Stop();
+        }
+    }
+
+    /// <summary>
+    /// Finds the active unit and fires the ability at the given slot.
+    /// Slot: 0=Q, 1=W, 2=E, 3=R
+    /// </summary>
+    private void UseAbilityOnActiveUnit(int slot)
+    {
+        // Find the current active unit's AbilityHolder
+        AbilityHolder holder = UnityEngine.Object.FindFirstObjectByType<AbilityHolder>();
+        if (holder != null)
+        {
+            holder.UseAbility(slot);
+        }
+        else
+        {
+            Debug.LogWarning("No AbilityHolder found on any unit!");
         }
     }
 }
