@@ -1,16 +1,14 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// Represents a single ability with a cooldown.
-/// Designed to be subclassed or configured for specific ability behaviors.
-/// </summary>
+// Represents a single ability with a cooldown.
+// Designed to be subclassed or configured for specific ability behaviors.
 [Serializable]
 public class Ability
 {
     public string abilityName;
     public float cooldownDuration; // seconds
-    public string keyBind;        // for display purposes (e.g. "Q", "W", "E", "R")
+    public string keyBind; // for display purposes (e.g. "Q", "W", "E", "R")
 
     private float cooldownTimer = 0f;
 
@@ -25,9 +23,7 @@ public class Ability
         cooldownTimer = 0f;
     }
 
-    /// <summary>
-    /// Attempts to use the ability. Returns true if it fired, false if on cooldown.
-    /// </summary>
+    // Attempts to use the ability. Returns true if it fired, false if on cooldown.
     public bool TryUse()
     {
         if (!IsReady)
@@ -43,10 +39,8 @@ public class Ability
         return true;
     }
 
-    /// <summary>
-    /// Called each frame to tick down the cooldown timer.
-    /// Logs once when the ability comes off cooldown.
-    /// </summary>
+    // Called each frame to tick down the cooldown timer.
+    // Logs once when the ability comes off cooldown.
     public void UpdateCooldown(float deltaTime)
     {
         if (cooldownTimer > 0f)
@@ -60,10 +54,8 @@ public class Ability
         }
     }
 
-    /// <summary>
-    /// Override this in subclasses to implement actual ability behavior.
-    /// For now, just logs to console.
-    /// </summary>
+    // Override this in subclasses to implement actual ability behavior.
+    // For now, just logs to console.
     protected virtual void Execute()
     {
         // Base implementation — placeholder for testing.
@@ -71,9 +63,7 @@ public class Ability
         // (spawn projectiles, apply buffs, deal damage, etc.)
     }
 
-    /// <summary>
-    /// Force-reset the cooldown (e.g. for cooldown reduction effects).
-    /// </summary>
+    // Force-reset the cooldown (e.g. for cooldown reduction effects).
     public void ResetCooldown()
     {
         cooldownTimer = 0f;

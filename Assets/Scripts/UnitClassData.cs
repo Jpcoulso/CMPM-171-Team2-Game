@@ -1,10 +1,8 @@
 using UnityEngine;
 
-/// <summary>
-/// ScriptableObject that defines a unit class and its 4 abilities.
-/// Create new classes via Assets > Create > Unit Class Data in the Unity editor.
-/// To add a new class: just create another SO asset and fill in the fields.
-/// </summary>
+// ScriptableObject that defines a unit class and its 4 abilities.
+// Create new classes via Assets > Create > Unit Class Data in the Unity editor.
+// To add a new class: just create another SO asset and fill in the fields.
 [CreateAssetMenu(fileName = "NewUnitClass", menuName = "Unit Class Data")]
 public class UnitClassData : ScriptableObject
 {

@@ -2,7 +2,6 @@ using UnityEngine;
 
 // Static helper that creates default UnitClassData instances at runtime
 // for testing purposes. No need to create ScriptableObject assets manually.
-//
 // When you're ready to move past the skeleton, create actual SO assets
 // in the editor instead (Assets > Create > Unit Class Data).
 public static class UnitClassDefaults

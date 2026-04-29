@@ -1,14 +1,12 @@
 using UnityEngine;
 
-/// <summary>
-/// Basic melee enemy: chases the closest player unit and auto-attacks
-/// when in range. Uses DirectPursuitPath for movement (straight line
-/// toward target).
-///
-/// To create a new melee variant, either:
-///   1. Create a new EnemyStats SO with different values, or
-///   2. Subclass this and override PerformAttack for unique melee behavior.
-/// </summary>
+// Basic melee enemy: chases the closest player unit and auto-attacks
+// when in range. Uses DirectPursuitPath for movement (straight line
+// toward target).
+//
+// To create a new melee variant, either:
+//   1. Create a new EnemyStats SO with different values, or
+//   2. Subclass this and override PerformAttack for unique melee behavior.
 public class MeleeEnemy : EnemyBase
 {
     protected override IPathProvider CreatePathProvider()

@@ -1,9 +1,7 @@
 using UnityEngine;
 
-/// <summary>
-/// Attach this to a unit to give it Q/W/E/R abilities.
-/// Handles cooldown ticking and ability activation.
-/// </summary>
+// Attach this to a unit to give it Q/W/E/R abilities.
+// Handles cooldown ticking and ability activation.
 public class AbilityHolder : MonoBehaviour
 {
     public Ability abilityQ;
@@ -11,9 +9,7 @@ public class AbilityHolder : MonoBehaviour
     public Ability abilityE;
     public Ability abilityR;
 
-    /// <summary>
-    /// Initialize this holder with a set of 4 abilities from a UnitClassData.
-    /// </summary>
+    // Initialize this holder with a set of 4 abilities from a UnitClassData.
     public void Initialize(UnitClassData unitClass)
     {
         abilityQ = new Ability(unitClass.qName, unitClass.qCooldown, "Q");
@@ -38,9 +34,7 @@ public class AbilityHolder : MonoBehaviour
         abilityR?.UpdateCooldown(dt);
     }
 
-    /// <summary>
-    /// Called by InputManager when the player presses an ability key.
-    /// </summary>
+    // Called by InputManager when the player presses an ability key.
     public void UseAbility(int slot)
     {
         switch (slot)
@@ -55,10 +49,8 @@ public class AbilityHolder : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Get ability by slot index (0=Q, 1=W, 2=E, 3=R).
-    /// Useful for UI or status checks.
-    /// </summary>
+    // Get ability by slot index (0=Q, 1=W, 2=E, 3=R).
+    // Useful for UI or status checks.
     public Ability GetAbility(int slot)
     {
         return slot switch
