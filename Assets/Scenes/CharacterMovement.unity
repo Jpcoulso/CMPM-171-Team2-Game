@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1054774329}
   - component: {fileID: 1054774330}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: SelectionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -486,6 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitController
   moveSpeed: 5
+  unitClassData: {fileID: 0}
 --- !u!95 &1253131348
 Animator:
   serializedVersion: 7
