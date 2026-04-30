@@ -35,15 +35,22 @@ public class SelectionManager : MonoBehaviour
     private void CheckForCharacterClick()
     {
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()); // stores location of mouse when it was clicked
+        Debug.Log("CheckForCharacterClick at world point: " + worldPoint);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero); // creates a raycast at mouse location (vector2.zero as the direction means it has no direction)
         if (hit.collider == null)
         {
+            Debug.Log("Raycast hit nothing — no collider found at click position.");
             return;
         }
+        Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
         CharacterSelector clickedCharacter = hit.collider.GetComponent<CharacterSelector>();
         if (clickedCharacter != null)
         {
             SelectCharacter(clickedCharacter);
+        }
+        else
+        {
+            Debug.Log("Hit object has no CharacterSelector component.");
         }
     }
     private void OnRightClick()
@@ -56,6 +63,11 @@ public class SelectionManager : MonoBehaviour
         Debug.Log("World Position: " + worldPosition);
 
         // Implement right-click logic here
+        if (currentlySelected == null)
+        {
+            Debug.Log("No unit selected — left-click a unit first.");
+            return;
+        }
         UnitController unitController = currentlySelected.GetComponent<UnitController>();
         if (unitController != null)
         {

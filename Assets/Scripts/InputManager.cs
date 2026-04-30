@@ -78,6 +78,11 @@ public class InputManager : MonoBehaviour
         Debug.Log("World Position: " + worldPosition);
 
         // Implement right-click logic here
+        if (SelectionManager.Instance == null || SelectionManager.Instance.currentlySelected == null)
+        {
+            Debug.Log("No unit selected — left-click a unit first.");
+            return;
+        }
         UnitController unitController = SelectionManager.Instance.currentlySelected.GetComponent<UnitController>();
         if (unitController != null)
         {
@@ -99,10 +104,8 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Finds the active unit and fires the ability at the given slot.
-    /// Slot: 0=Q, 1=W, 2=E, 3=R
-    /// </summary>
+    // Finds the active unit and fires the ability at the given slot.
+    // Slot: 0=Q, 1=W, 2=E, 3=R
     private void UseAbilityOnActiveUnit(int slot)
     {
         // Find the current active unit's AbilityHolder
