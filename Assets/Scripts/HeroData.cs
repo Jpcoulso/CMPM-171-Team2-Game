@@ -18,6 +18,6 @@ public class HeroData : ScriptableObject
     public float moveSpeed;
     public float armor;
 
-    [Header("Abilites")]
-    public List<AbilityData> abilites;
+    [Header("Abilities")]
+    public List<AbilityData> abilities;
 }

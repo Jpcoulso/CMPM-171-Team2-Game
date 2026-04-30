@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f248e9001840eeb40b4a5b5be105edb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 1944ec638610ef643b9bf50010470574, type: 3}
   m_Name: HolyStrike
-  m_EditorClassIdentifier: Assembly-CSharp::AbilityData
-  abilityName: Holy Strike
+  m_EditorClassIdentifier: Assembly-CSharp::HolyStrikeData
+  abilityName: 
   icon: {fileID: 0}
   isPassive: 0
-  cooldownDuration: 6
+  cooldownDuration: 0
+  description: 
   damageMultiplier: 2.5
-  healAmount: 0
-  description: A powerful strike of holy energy

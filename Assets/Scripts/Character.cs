@@ -4,6 +4,7 @@ public abstract class Character : MonoBehaviour
 {
     protected float currentHealth; // protected means only this class and subclasses can read/change these values
     protected bool isDead;
+    public bool IsDead => isDead;
 
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in

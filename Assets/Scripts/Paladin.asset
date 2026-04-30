@@ -18,5 +18,5 @@ MonoBehaviour:
   attackDamage: 25
   moveSpeed: 3
   armor: 10
-  abilites:
+  abilities:
   - {fileID: 11400000, guid: 3113f12bba27e7247928496a7a476a0f, type: 2}

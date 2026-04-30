@@ -1,7 +1,6 @@
 using UnityEngine;
 // template for special ability scriptable objects
-[CreateAssetMenu(fileName = "NewAbility", menuName = "Scriptable Objects/AbilityData")]
-public class AbilityData : ScriptableObject
+public abstract class AbilityData : ScriptableObject
 {
     [Header("Identity")]
     public string abilityName;
@@ -9,12 +8,11 @@ public class AbilityData : ScriptableObject
 
     [Header("Behaviour")]
     public bool isPassive;
-
-    [Header("Active Only")]
     public float cooldownDuration;
-    public float damageMultiplier;
-    public float healAmount;
 
     [TextArea]
     public string description;
+
+    public abstract void Execute(Character owner);
+    public abstract void ApplyPassive(Character owner);
 }
