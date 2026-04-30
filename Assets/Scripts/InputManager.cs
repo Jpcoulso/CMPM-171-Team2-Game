@@ -32,31 +32,39 @@ public class InputManager : MonoBehaviour
         Stop = map.FindAction("Stop");
 
     }
-    void OnEnable()
-    {
-        RightClick.Enable();
-        LeftClick.Enable();
-        Stop.Enable();
-    }
-    void OnDisable()
-    {
-        LeftClick.Disable();
-        RightClick.Disable();
-        Stop.Disable();
-    }
+    // void OnEnable()
+    // {
+    //     RightClick.Enable();
+    //     LeftClick.Enable();
+    //     Stop.Enable();
+    // }
+    // void OnDisable()
+    // {
+    //     LeftClick.Disable();
+    //     RightClick.Disable();
+    //     Stop.Disable();
+    // }
     void Update()
     {
-        if (LeftClick.WasPressedThisFrame())
+        // if (LeftClick.WasPressedThisFrame())
+        // {
+        //     OnLeftClick();
+        // }
+        // if (RightClick.WasPressedThisFrame())
+        // {
+        //     OnRightClick();
+        // }
+        // if (Stop.WasPressedThisFrame())
+        // {
+        //     OnStop();
+        // }
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             OnLeftClick();
         }
-        if (RightClick.WasPressedThisFrame())
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             OnRightClick();
-        }
-        if (Stop.WasPressedThisFrame())
-        {
-            OnStop();
         }
 
         // --- Ability key inputs ---
@@ -81,7 +89,8 @@ public class InputManager : MonoBehaviour
         worldPosition.z = 0; // Set z to 0 for 2D
         RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
 
-        if (hit.collider != null && hit.collider.CompareTag("Enemy"))
+        // Check if we right-clicked on an enemy
+        if (hit.collider != null && hit.collider.gameObject.GetComponent<Enemy>() != null)
         {
             Debug.Log("Right-clicked on an enemy.");
             float range = 2f; // TEMP attack range
@@ -94,11 +103,11 @@ public class InputManager : MonoBehaviour
             SpawnIndicator(worldPosition, true); // Spawn a red indicator for enemies
             // Move the selected unit into attack range
             if (SelectionManager.Instance == null || SelectionManager.Instance.currentlySelected == null)
-        {
-            Debug.Log("No unit selected — left-click a unit first.");
-            return;
-        }
-        UnitController unitController = SelectionManager.Instance.currentlySelected.GetComponent<UnitController>();
+            {
+                Debug.Log("No unit selected — left-click a unit first.");
+                return;
+            }
+            UnitController unitController = SelectionManager.Instance.currentlySelected.GetComponent<UnitController>();
             if (unitController != null)
             {
                 unitController.Move(destination);
@@ -117,9 +126,27 @@ public class InputManager : MonoBehaviour
     }
     void OnLeftClick()
     {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Debug.Log("Left Click at: " + mousePosition);
-        // Implement left-click logic here
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+        // Check if we hit anything
+        if (hit.collider == null)
+        {
+            Debug.Log("Left Click hit nothing.");
+            SelectionManager.Instance.SelectCharacter(); // Deselect if we click on empty space
+            return;
+        }
+        Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
+        CharacterSelector clickedCharacter = hit.collider.GetComponent<CharacterSelector>();
+        if (clickedCharacter != null)
+        {
+            SelectionManager.Instance.SelectCharacter(clickedCharacter);
+        }
+        else
+        {
+            Debug.Log("Hit object has no CharacterSelector component.");
+        }
     }
     void OnStop()
     {
