@@ -3,6 +3,8 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     protected float currentHealth; // protected means only this class and subclasses can read/change these values
+    protected Character target;
+    public Character Target => target;
     protected bool isDead;
     public bool IsDead => isDead;
 
@@ -11,9 +13,15 @@ public abstract class Character : MonoBehaviour
     public abstract float MaxHealth {get;}
     public abstract float AttackDamage {get;}
     public abstract float MoveSpeed {get;}
+    public abstract bool IsRanged {get;}
 
 
     //shared properties, everything that inherits from Character.cs will use these properties
+    public void SetTarget(Character newTarget)
+    {
+        target = newTarget;
+        Debug.Log("Target set!!!");
+    }
     public virtual void TakeDamage(float rawAmount)
     {
         if (isDead) return;
@@ -42,9 +50,9 @@ public abstract class Character : MonoBehaviour
     }
 
     
-
-    protected virtual void OnDamageTaken(float amount) { }
-    protected virtual void OnDeath()                   { }
+    protected virtual void OnDamageTaken(float amount)          { }
+    protected virtual void OnDeath()                            { }
+    protected virtual void AggroEnemy(Character targetEnemy)    { }
 
     // Subclasses can override these to return
     // their own armor value or name

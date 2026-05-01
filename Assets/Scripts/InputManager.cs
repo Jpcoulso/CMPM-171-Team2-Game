@@ -96,6 +96,11 @@ public class InputManager : MonoBehaviour
             float range = 2f; // TEMP attack range
             Vector3 enemyPosition = hit.collider.transform.position;
             Vector3 unitPosition = SelectionManager.Instance.currentlySelected.transform.position;
+            
+            // Identify the currently selected Hero and the clicked enemy, set the enemy as the hero's target so that hero will aggro enemy
+            Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
+            Enemy clickedEnemy = hit.collider.gameObject.GetComponent<Enemy>();
+            selectedHero.SetTarget(clickedEnemy);
 
             Vector3 directionToEnemy = (enemyPosition - unitPosition).normalized;
             Vector3 destination = enemyPosition - directionToEnemy * range;

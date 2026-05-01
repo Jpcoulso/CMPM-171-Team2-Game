@@ -5,12 +5,13 @@ using UnityEngine;
 // Use: right click in Assets folder -> Create -> Scriptable Objects -> HeroData
 // name it something like Paladin.asset
 //  open file and fill in specifc values for the Paladin character in the inspector
-[CreateAssetMenu(fileName = "NewHero", menuName = "Scriptable Objects/HeroData")]
+[CreateAssetMenu(fileName = "NewHero", menuName = "RPG/HeroData")]
 public class HeroData : ScriptableObject
 {
     [Header("Identity")]
     public string heroName;
     public Sprite portrait;
+    public bool isRanged;
 
     [Header("Base Stats")]
     public float maxHealth;

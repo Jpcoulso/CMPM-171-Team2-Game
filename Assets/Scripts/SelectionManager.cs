@@ -70,7 +70,7 @@ public class SelectionManager : MonoBehaviour
         currentlySelected = newSelection;
         currentlySelected.Select();
     }
-    public void SelectCharacter() // used to assign a character to currentlySelected
+    public void SelectCharacter() // used to deselect currently selected character
     {
         Debug.Log("Deselecting character.");
         currentlySelected?.Deselect();

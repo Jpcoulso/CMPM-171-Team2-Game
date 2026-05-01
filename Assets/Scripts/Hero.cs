@@ -26,6 +26,7 @@ public class Hero : Character
     public override float AttackDamage => heroData.attackDamage;
     public override float MoveSpeed    => heroData.moveSpeed;
     public override float GetArmor()   => heroData.armor;
+    public override bool IsRanged      => heroData.isRanged;
 
     public override string GetCharacterName() => heroData.heroName;
 
@@ -81,6 +82,11 @@ public class Hero : Character
         // Later: notify SquadManager, play death animation,
         // disable movement, etc.
         Debug.Log($"{GetCharacterName()} has fallen in battle!");
+    }
+
+    protected override void AggroEnemy(Character targetEnemy)
+    {
+        
     }
 
     // ─────────────────────────────────────────
