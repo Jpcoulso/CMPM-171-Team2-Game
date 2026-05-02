@@ -2,11 +2,27 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
+    public enum CharacterState
+    {
+        Idle,
+        Moving,
+        Chasing,
+        Attacking
+    }
+
+    public CharacterState CurrentState { get; private set; } = CharacterState.Idle;
+
+
     protected float currentHealth; // protected means only this class and subclasses can read/change these values
-    protected Character target;
-    public Character Target => target;
+    protected Character currentTarget;
     protected bool isDead;
+
+
+    private float attackCooldown;
+    
+
     public bool IsDead => isDead;
+    public Character Target => currentTarget;
 
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in
@@ -14,14 +30,39 @@ public abstract class Character : MonoBehaviour
     public abstract float AttackDamage {get;}
     public abstract float MoveSpeed {get;}
     public abstract bool IsRanged {get;}
+    
+
+    public virtual void Update()
+    {
+        UpdateState();
+        ExcecuteState();
+        
+    }
+
+    private void UpdateState(){}
+    private void ExcecuteState(){}
+    private void TransitionToState(CharacterState newState)
+    {
+        CurrentState = newState;
+    }
+
+    protected abstract void MoveTowards(Vector3 position);
+    protected abstract void MoveToDestination();
+    protected abstract void FaceTarget(Vector3 position);
+    protected abstract void HasReachedDestination();
+
+
 
 
     //shared properties, everything that inherits from Character.cs will use these properties
-    public void SetTarget(Character newTarget)
+    public void SetTarget(Character target)
     {
-        target = newTarget;
+        currentTarget = target;
+        //,hasDestination = false;
         Debug.Log("Target set!!!");
     }
+
+
     public virtual void TakeDamage(float rawAmount)
     {
         if (isDead) return;
@@ -40,6 +81,9 @@ public abstract class Character : MonoBehaviour
         if (currentHealth <= 0)
             Die();
     }
+
+
+
     protected void Die()
     {
         if (isDead) return;

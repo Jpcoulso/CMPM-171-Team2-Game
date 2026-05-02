@@ -68,6 +68,19 @@ public class Hero : Character
         }
     }
 
+
+    // ─────────────────────────────────────────
+    // MOVEMENT
+    // ─────────────────────────────────────────
+    protected override void MoveTowards(Vector3 position)
+    {
+        
+    }
+    protected override void MoveToDestination(){}
+    protected override void FaceTarget(Vector3 position){}
+    protected override void HasReachedDestination(){}
+
+
     // ─────────────────────────────────────────
     // HERO-SPECIFIC OVERRIDES
     // ─────────────────────────────────────────
@@ -86,7 +99,10 @@ public class Hero : Character
 
     protected override void AggroEnemy(Character targetEnemy)
     {
-        
+        if (IsRanged)
+        {
+            Debug.Log($"{GetCharacterName()} shoots at {Target}");
+        }
     }
 
     // ─────────────────────────────────────────
@@ -105,4 +121,5 @@ public class Hero : Character
 
         abilityHandlers[slotIndex].TryActivate();
     }
+
 }

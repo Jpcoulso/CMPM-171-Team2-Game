@@ -101,6 +101,9 @@ public class InputManager : MonoBehaviour
             Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
             Enemy clickedEnemy = hit.collider.gameObject.GetComponent<Enemy>();
             selectedHero.SetTarget(clickedEnemy);
+            // once we have a target for selected hero we must call aggroTarget(target) on that hero
+            // if hero is close quarters they should move to the target and then attack
+            // if hero is ranged they should simply attack the target
 
             Vector3 directionToEnemy = (enemyPosition - unitPosition).normalized;
             Vector3 destination = enemyPosition - directionToEnemy * range;
