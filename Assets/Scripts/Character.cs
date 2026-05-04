@@ -155,7 +155,10 @@ public abstract class Character : MonoBehaviour
             Die();
     }
 
-
+    protected void TryAttack()
+    {
+        
+    }
 
     protected void Die()
     {
