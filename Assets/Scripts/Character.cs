@@ -30,6 +30,8 @@ public abstract class Character : MonoBehaviour
     public abstract float AttackDamage {get;}
     public abstract float MoveSpeed {get;}
     public abstract bool IsRanged {get;}
+
+    public abstract float AttackRange {get;}
     
 
     public virtual void Update()

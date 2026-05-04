@@ -27,6 +27,7 @@ public class Hero : Character
     public override float MoveSpeed    => heroData.moveSpeed;
     public override float GetArmor()   => heroData.armor;
     public override bool IsRanged      => heroData.isRanged;
+    public override float AttackRange => heroData.attackRange;
 
     public override string GetCharacterName() => heroData.heroName;
 

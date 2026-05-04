@@ -10,7 +10,9 @@ public class Enemy : Character
     public override float MaxHealth    => enemyData.maxHealth;
     public override float AttackDamage => enemyData.attackDamage;
     public override float MoveSpeed    => enemyData.moveSpeed;
-    public override bool IsRanged      => enemyData.isRanged; 
+    public override bool IsRanged      => enemyData.isRanged; // might be obselete
+
+    public override float AttackRange => enemyData.attackRange;
 
     public override string GetCharacterName() => enemyData.enemyName;
 

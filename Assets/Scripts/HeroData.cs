@@ -16,6 +16,7 @@ public class HeroData : ScriptableObject
     [Header("Base Stats")]
     public float maxHealth;
     public float attackDamage;
+    public float attackRange;
     public float moveSpeed;
     public float armor;
 

@@ -10,6 +10,7 @@ public class EnemyData : ScriptableObject
     [Header("Base Stats")]
     public float maxHealth;
     public float attackDamage;
+    public float attackRange;
     public float moveSpeed;
     public int experienceReward;
 }
