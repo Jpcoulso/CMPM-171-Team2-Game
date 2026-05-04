@@ -13,6 +13,7 @@ public class Enemy : Character
     public override bool IsRanged      => enemyData.isRanged; // might be obselete
 
     public override float AttackRange => enemyData.attackRange;
+    public override float AttackRate => enemyData.attackRate;
 
     public override string GetCharacterName() => enemyData.enemyName;
 

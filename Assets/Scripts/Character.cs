@@ -32,7 +32,7 @@ public abstract class Character : MonoBehaviour
     public abstract bool IsRanged {get;}
 
     public abstract float AttackRange {get;}
-    
+    public abstract float AttackRate {get;}
     protected Vector3 moveDestination;
     protected bool hasDestination;
 
@@ -111,7 +111,6 @@ public abstract class Character : MonoBehaviour
 
 
 
-
     //shared properties, everything that inherits from Character.cs will use these properties
     public void SetTarget(Character target)
     {
@@ -134,6 +133,19 @@ public abstract class Character : MonoBehaviour
         float distance = Vector2.Distance(transform.position,
                                           currentTarget.transform.position);
         return distance <= AttackRange;
+    }
+    public void TryAttack()
+    {
+        if (attackCooldown <= 0 && currentTarget != null && IsWithinAttackRange())
+        {
+            PerformAttack();
+            attackCooldown = AttackRate; // Reset cooldown
+        }
+    }
+    private void PerformAttack()
+    {
+        Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
+        Target.TakeDamage(AttackDamage);
     }
 
     public virtual void TakeDamage(float rawAmount)
