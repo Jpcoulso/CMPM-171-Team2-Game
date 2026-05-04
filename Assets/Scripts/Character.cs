@@ -57,12 +57,24 @@ public abstract class Character : MonoBehaviour
                 }
                 break;
             case CharacterState.Chasing:
-                if(currentTarget != null && IsWithinAttackRange())
+                if(currentTarget == null)
                 {
-                    
+                    TransitionToState(CharacterState.Idle);
+                }
+                else if(IsWithinAttackRange())
+                {
+                    TransitionToState(CharacterState.Attacking);
                 }
                 break;
             case CharacterState.Attacking:
+                if(currentTarget == null)
+                {
+                    TransitionToState(CharacterState.Idle);
+                }
+                else if (!IsWithinAttackRange())
+                {
+                    TransitionToState(CharacterState.Chasing);
+                }
             break;
         }
     }
