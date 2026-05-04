@@ -32,7 +32,7 @@ public abstract class Character : MonoBehaviour
     public abstract bool IsRanged {get;}
 
     public abstract float AttackRange {get;}
-    
+    public abstract float AttackRate {get;}
     protected Vector3 moveDestination;
     protected bool hasDestination;
 
@@ -106,14 +106,13 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void MoveTowards(Vector3 position);
     protected abstract void MoveToDestination();
-    protected abstract void FaceTarget(Vector3 position);
     protected abstract bool HasReachedDestination();
-
 
 
 
     //------------shared properties, everything that inherits from Character.cs will use these properties---------------
 
+    
     public void SetTarget(Character target) // Sets target, sets characterState to chasing
     {
         currentTarget = target;
@@ -143,6 +142,27 @@ public abstract class Character : MonoBehaviour
                                           currentTarget.transform.position);
         return distance <= AttackRange;
     }
+    public void TryAttack()
+    {
+        if (attackCooldown <= 0 && currentTarget != null && IsWithinAttackRange())
+        {
+            PerformAttack();
+            attackCooldown = AttackRate; // Reset cooldown
+        }
+    }
+    public void FaceTarget(Vector3 position)
+    {
+        if (position.x < transform.position.x)
+        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
+    else
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
+
+    }
+    private void PerformAttack()
+    {
+        Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
+        Target.TakeDamage(AttackDamage);
+    }
 
     public virtual void TakeDamage(float rawAmount)
     {
@@ -161,11 +181,6 @@ public abstract class Character : MonoBehaviour
 
         if (currentHealth <= 0)
             Die();
-    }
-
-    protected void TryAttack()
-    {
-        
     }
 
     protected void Die()

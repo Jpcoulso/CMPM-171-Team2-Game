@@ -29,6 +29,7 @@ public class Hero : Character
     public override float GetArmor()   => heroData.armor;
     public override bool IsRanged      => heroData.isRanged;
     public override float AttackRange => heroData.attackRange;
+    public override float AttackRate => heroData.attackRate;
 
     public override string GetCharacterName() => heroData.heroName;
 
@@ -85,7 +86,6 @@ public class Hero : Character
                 unitController.Move(position);
     }
     protected override void MoveToDestination(){}
-    protected override void FaceTarget(Vector3 position){}
     protected override bool HasReachedDestination(){ return false;}
 
 
