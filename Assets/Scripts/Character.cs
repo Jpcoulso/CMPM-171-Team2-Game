@@ -88,7 +88,7 @@ public abstract class Character : MonoBehaviour
                 // Do nothing for now
                 break;
             case CharacterState.Moving:
-                MoveToDestination();
+                MoveTowards(moveDestination);
                 break;
             case CharacterState.Chasing:
                 MoveTowards(currentTarget.transform.position);
@@ -112,20 +112,28 @@ public abstract class Character : MonoBehaviour
 
 
 
-    //shared properties, everything that inherits from Character.cs will use these properties
-    public void SetTarget(Character target)
+    //------------shared properties, everything that inherits from Character.cs will use these properties---------------
+
+    public void SetTarget(Character target) // Sets target, sets characterState to chasing
     {
         currentTarget = target;
-        //,hasDestination = false;
+        CurrentState = CharacterState.Chasing;
+        //hasDestination = false;
         Debug.Log("Target set!!!");
+    }
+
+    public void ClearTarget()
+    {
+        currentTarget = null;
+        CurrentState = CharacterState.Idle;
+        Debug.Log("ClearTarget() called: target = null, state = idle");
     }
 
     public void SetDestination(Vector3 destination)
     {
         moveDestination = destination;
         hasDestination = true;
-        currentTarget = null; // Clear target when manually setting a destination
-        Debug.Log("Destination set, target cleared");
+        Debug.Log("Destination set");
     }
 
     private bool IsWithinAttackRange()

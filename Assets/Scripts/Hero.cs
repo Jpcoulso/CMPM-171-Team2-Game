@@ -5,6 +5,7 @@ using System.Collections.Generic;
 // In the Inspector, you drag in the Paladin.asset
 // into the heroData field.
 
+[RequireComponent(typeof(UnitController))]
 public class Hero : Character
 {
     // ─────────────────────────────────────────
@@ -43,11 +44,17 @@ public class Hero : Character
     // LIFECYCLE
     // ─────────────────────────────────────────
 
+    private UnitController unitController;
+
+    private void Awake()
+    {
+        unitController = GetComponent<UnitController>();
+    }
+
     private void Start()
     {
         // Set starting health from the data asset
         currentHealth = MaxHealth;
-
         // Create one AbilityHandler component per ability
         InitializeAbilities();
 
@@ -75,7 +82,7 @@ public class Hero : Character
     // ─────────────────────────────────────────
     protected override void MoveTowards(Vector3 position)
     {
-        
+                unitController.Move(position);
     }
     protected override void MoveToDestination(){}
     protected override void FaceTarget(Vector3 position){}
@@ -98,13 +105,6 @@ public class Hero : Character
         Debug.Log($"{GetCharacterName()} has fallen in battle!");
     }
 
-    protected override void AggroEnemy(Character targetEnemy)
-    {
-        if (IsRanged)
-        {
-            Debug.Log($"{GetCharacterName()} shoots at {Target}");
-        }
-    }
 
     // ─────────────────────────────────────────
     // PUBLIC INTERFACE

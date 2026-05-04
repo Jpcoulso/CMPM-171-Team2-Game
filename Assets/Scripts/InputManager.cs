@@ -101,13 +101,11 @@ public class InputManager : MonoBehaviour
             Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
             Enemy clickedEnemy = hit.collider.gameObject.GetComponent<Enemy>();
             selectedHero.SetTarget(clickedEnemy);
-            // once we have a target for selected hero we must call aggroTarget(target) on that hero
-            // if hero is close quarters they should move to the target and then attack
-            // if hero is ranged they should simply attack the target
+            // once we have a target for selected hero the state machine should take over and initiate movement and combat
 
             Vector3 directionToEnemy = (enemyPosition - unitPosition).normalized;
             Vector3 destination = enemyPosition - directionToEnemy * range;
-            SelectionManager.Instance.currentlySelected.SetDestination(destination); // feed distination to character.cs so that character can use it for movement and range calculations 
+            selectedHero.SetDestination(destination); // feed distination to character.cs so that character can use it for movement and range calculations 
 
             SpawnIndicator(worldPosition, true); // Spawn a red indicator for enemies
             // Move the selected unit into attack range
@@ -116,11 +114,16 @@ public class InputManager : MonoBehaviour
                 Debug.Log("No unit selected — left-click a unit first.");
                 return;
             }
+            //************************************************************************************************************************  
+            // moved into hero/enemy classes, hero still uses unitController, enemy uses its own move function
+            /*
             UnitController unitController = SelectionManager.Instance.currentlySelected.GetComponent<UnitController>();
             if (unitController != null)
             {
                 unitController.Move(destination);
-            }   
+            }
+            */
+            //************************************************************************************************************************
         }
         // If not clicking on an enemy, move to the location as normal
         else
