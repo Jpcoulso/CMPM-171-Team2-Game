@@ -35,11 +35,32 @@ public abstract class Character : MonoBehaviour
     public virtual void Update()
     {
         UpdateState();
-        ExcecuteState();
-        
+        ExcecuteState(); 
     }
 
-    private void UpdateState(){}
+    private void UpdateState()
+    {
+        switch (CurrentState)
+        {
+            case CharacterState.Idle:
+                if(currentTarget != null)
+                {
+                    TransitionToState(CharacterState.Chasing);
+                }
+                break;
+            case CharacterState.Moving:
+                if (HasReachedDestination())
+                {
+                    TransitionToState(CharacterState.Idle);
+                }
+                break;
+            case CharacterState.Chasing:
+                if()
+                break;
+            case CharacterState.Attacking:
+            break;
+        }
+    }
     private void ExcecuteState(){}
     private void TransitionToState(CharacterState newState)
     {
@@ -49,7 +70,7 @@ public abstract class Character : MonoBehaviour
     protected abstract void MoveTowards(Vector3 position);
     protected abstract void MoveToDestination();
     protected abstract void FaceTarget(Vector3 position);
-    protected abstract void HasReachedDestination();
+    protected abstract bool HasReachedDestination();
 
 
 

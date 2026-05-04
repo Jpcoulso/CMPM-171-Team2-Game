@@ -14,6 +14,22 @@ public class Enemy : Character
 
     public override string GetCharacterName() => enemyData.enemyName;
 
+
+    // ─────────────────────────────────────────
+    // MOVEMENT
+    // ─────────────────────────────────────────
+    protected override void MoveTowards(Vector3 position)
+    {
+        
+    }
+    protected override void MoveToDestination(){}
+    protected override void FaceTarget(Vector3 position){}
+    protected override void HasReachedDestination(){}
+
+
+
+
+
     private void Start()
     {
         currentHealth = MaxHealth;
