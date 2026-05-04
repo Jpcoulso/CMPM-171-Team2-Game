@@ -107,6 +107,7 @@ public class InputManager : MonoBehaviour
 
             Vector3 directionToEnemy = (enemyPosition - unitPosition).normalized;
             Vector3 destination = enemyPosition - directionToEnemy * range;
+            SelectionManager.Instance.currentlySelected.SetDestination(destination); // feed distination to character.cs so that character can use it for movement and range calculations 
 
             SpawnIndicator(worldPosition, true); // Spawn a red indicator for enemies
             // Move the selected unit into attack range

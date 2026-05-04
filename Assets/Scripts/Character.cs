@@ -33,6 +33,8 @@ public abstract class Character : MonoBehaviour
 
     public abstract float AttackRange {get;}
     
+    protected Vector3 moveDestination;
+    protected bool hasDestination;
 
     public virtual void Update()
     {
@@ -78,7 +80,25 @@ public abstract class Character : MonoBehaviour
             break;
         }
     }
-    private void ExcecuteState(){}
+    private void ExcecuteState()
+    {
+        switch (CurrentState)
+        {
+            case CharacterState.Idle:
+                // Do nothing for now
+                break;
+            case CharacterState.Moving:
+                MoveToDestination();
+                break;
+            case CharacterState.Chasing:
+                MoveTowards(currentTarget.transform.position);
+                break;
+            case CharacterState.Attacking:
+                FaceTarget(currentTarget.transform.position);
+                TryAttack();
+                break;
+        }
+    }
     private void TransitionToState(CharacterState newState)
     {
         CurrentState = newState;
@@ -98,6 +118,14 @@ public abstract class Character : MonoBehaviour
         currentTarget = target;
         //,hasDestination = false;
         Debug.Log("Target set!!!");
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        moveDestination = destination;
+        hasDestination = true;
+        currentTarget = null; // Clear target when manually setting a destination
+        Debug.Log("Destination set, target cleared");
     }
 
     private bool IsWithinAttackRange()
