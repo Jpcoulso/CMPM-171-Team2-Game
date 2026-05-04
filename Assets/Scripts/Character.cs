@@ -106,7 +106,6 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void MoveTowards(Vector3 position);
     protected abstract void MoveToDestination();
-    protected abstract void FaceTarget(Vector3 position);
     protected abstract bool HasReachedDestination();
 
 
@@ -141,6 +140,14 @@ public abstract class Character : MonoBehaviour
             PerformAttack();
             attackCooldown = AttackRate; // Reset cooldown
         }
+    }
+    public void FaceTarget(Vector3 position)
+    {
+        if (position.x < transform.position.x)
+        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
+    else
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
+
     }
     private void PerformAttack()
     {

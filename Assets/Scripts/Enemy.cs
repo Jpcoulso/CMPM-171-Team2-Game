@@ -26,7 +26,6 @@ public class Enemy : Character
         
     }
     protected override void MoveToDestination(){}
-    protected override void FaceTarget(Vector3 position){}
     protected override bool HasReachedDestination(){return false;}
 
 
