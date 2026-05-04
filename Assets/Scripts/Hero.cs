@@ -78,7 +78,7 @@ public class Hero : Character
     }
     protected override void MoveToDestination(){}
     protected override void FaceTarget(Vector3 position){}
-    protected override void HasReachedDestination(){}
+    protected override bool HasReachedDestination(){ return false;}
 
 
     // ─────────────────────────────────────────

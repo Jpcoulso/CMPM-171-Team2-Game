@@ -55,7 +55,10 @@ public abstract class Character : MonoBehaviour
                 }
                 break;
             case CharacterState.Chasing:
-                if()
+                if(currentTarget != null && IsWithinAttackRange())
+                {
+                    
+                }
                 break;
             case CharacterState.Attacking:
             break;
@@ -83,6 +86,13 @@ public abstract class Character : MonoBehaviour
         Debug.Log("Target set!!!");
     }
 
+    private bool IsWithinAttackRange()
+    {
+        if (currentTarget == null) return false;
+        float distance = Vector2.Distance(transform.position,
+                                          currentTarget.transform.position);
+        return distance <= AttackRange;
+    }
 
     public virtual void TakeDamage(float rawAmount)
     {
