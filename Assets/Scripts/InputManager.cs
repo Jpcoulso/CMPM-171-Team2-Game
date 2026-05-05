@@ -41,15 +41,40 @@ public class InputManager : MonoBehaviour
         {
             OnStop();
         }
+        // Tick unit refresh timer
+        unitRefreshTimer -= Time.deltaTime;
+
 
         // --- Ability key inputs ---
         var kb = Keyboard.current;
         if (kb == null) return;
+        bool shift = kb.shiftKey.isPressed;
+        bool ctrl = kb.ctrlKey.isPressed;
 
-        if (kb.qKey.wasPressedThisFrame) UseAbilityOnActiveUnit(0);
-        if (kb.wKey.wasPressedThisFrame) UseAbilityOnActiveUnit(1);
-        if (kb.eKey.wasPressedThisFrame) UseAbilityOnActiveUnit(2);
-        if (kb.rKey.wasPressedThisFrame) UseAbilityOnActiveUnit(3);
+        if (kb.qKey.wasPressedThisFrame)
+        {
+            if (ctrl)       UseAbilityOnUnit(2, 0);
+            else if (shift) UseAbilityOnUnit(1, 0);
+            else            UseAbilityOnUnit(0, 0);
+        }
+        if (kb.wKey.wasPressedThisFrame)
+        {
+            if (ctrl)       UseAbilityOnUnit(2, 1);
+            else if (shift) UseAbilityOnUnit(1, 1);
+            else            UseAbilityOnUnit(0, 1);
+        }
+        if (kb.eKey.wasPressedThisFrame)
+        {
+            if (ctrl)       UseAbilityOnUnit(2, 2);
+            else if (shift) UseAbilityOnUnit(1, 2);
+            else            UseAbilityOnUnit(0, 2);
+        }
+        if (kb.rKey.wasPressedThisFrame)
+        {
+            if (ctrl)       UseAbilityOnUnit(2, 3);
+            else if (shift) UseAbilityOnUnit(1, 3);
+            else            UseAbilityOnUnit(0, 3);
+        }
     }
 
     void OnRightClick()
@@ -156,19 +181,44 @@ public class InputManager : MonoBehaviour
         indicator.SetColor(isEnemy); // Set color based on whether it's an enemy or not
     }
 
-    // Finds the active unit and fires the ability at the given slot.
+    // Cached unit list (same order as TeamHUD)
+    private UnitController[] trackedUnits = new UnitController[3];
+    private float unitRefreshTimer = 0f;
+
+    // Fires an ability on a specific unit by index (0, 1, 2).
+    // Unit 0 = no modifier, Unit 1 = Shift, Unit 2 = Ctrl.
     // Slot: 0=Q, 1=W, 2=E, 3=R
-    private void UseAbilityOnActiveUnit(int slot)
+    private void UseAbilityOnUnit(int unitIndex, int slot)
     {
-        // Find the current active unit's AbilityHolder
-        AbilityHolder holder = UnityEngine.Object.FindFirstObjectByType<AbilityHolder>();
+        // Refresh unit list periodically so we stay in sync
+        if (unitRefreshTimer <= 0f)
+        {
+            RefreshTrackedUnits();
+            unitRefreshTimer = 1f;
+        }
+        if (unitIndex < 0 || unitIndex >= trackedUnits.Length || trackedUnits[unitIndex] == null)
+        {
+            Debug.LogWarning($"No unit at index {unitIndex}!");
+            return;
+        }
+
+        AbilityHolder holder = trackedUnits[unitIndex].GetComponent<AbilityHolder>();
         if (holder != null)
         {
             holder.UseAbility(slot);
         }
         else
         {
-            Debug.LogWarning("No AbilityHolder found on any unit!");
+            Debug.LogWarning($"Unit {unitIndex} ({trackedUnits[unitIndex].name}) has no AbilityHolder!");
+        }
+    }
+
+    private void RefreshTrackedUnits()
+    {
+        CharacterSelector[] all = UnityEngine.Object.FindObjectsByType<CharacterSelector>(FindObjectsSortMode.None);
+        for (int i = 0; i < 3; i++)
+        {
+            trackedUnits[i] = i < all.Length ? all[i].GetComponent<UnitController>() : null;
         }
     }
 }
