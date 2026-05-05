@@ -6,7 +6,7 @@ using NUnit.Framework.Internal;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private InputActionAsset actions;
+    //[SerializeField] private InputActionAsset actions;
     [SerializeField] private ClickIndicator clickIndicatorPrefab; // Prefab for the click indicator
     private InputAction RightClick;
     private InputAction LeftClick;
@@ -26,38 +26,9 @@ public class InputManager : MonoBehaviour
                 return;
             }
         Instance = this;
-        var map = actions.FindActionMap("Player");
-        LeftClick = map.FindAction("LeftClick");
-        RightClick = map.FindAction("RightClick");
-        Stop = map.FindAction("Stop");
-
     }
-    // void OnEnable()
-    // {
-    //     RightClick.Enable();
-    //     LeftClick.Enable();
-    //     Stop.Enable();
-    // }
-    // void OnDisable()
-    // {
-    //     LeftClick.Disable();
-    //     RightClick.Disable();
-    //     Stop.Disable();
-    // }
     void Update()
     {
-        // if (LeftClick.WasPressedThisFrame())
-        // {
-        //     OnLeftClick();
-        // }
-        // if (RightClick.WasPressedThisFrame())
-        // {
-        //     OnRightClick();
-        // }
-        // if (Stop.WasPressedThisFrame())
-        // {
-        //     OnStop();
-        // }
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             OnLeftClick();
@@ -65,6 +36,10 @@ public class InputManager : MonoBehaviour
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             OnRightClick();
+        }
+        if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            OnStop();
         }
 
         // --- Ability key inputs ---

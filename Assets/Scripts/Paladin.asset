@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Paladin
   portrait: {fileID: 0}
+  isRanged: 0
   maxHealth: 150
   attackDamage: 25
   attackRange: 2
-  attackRate: 4
+  attackRate: 2
   moveSpeed: 3
   armor: 10
   abilities:

@@ -121,6 +121,7 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void MoveTowards(Vector3 position)
     {
+        FaceTarget(position);
         Vector2 direction = ((Vector2)position - rb.position).normalized;
         rb.MovePosition(rb.position + direction * MoveSpeed * Time.fixedDeltaTime);
     }
@@ -166,6 +167,7 @@ public abstract class Character : MonoBehaviour
     }
     public void TryAttack()
     {
+        attackCooldown -= Time.deltaTime;
         if (attackCooldown <= 0 && currentTarget != null && IsWithinAttackRange())
         {
             PerformAttack();
