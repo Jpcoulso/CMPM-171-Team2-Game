@@ -5,7 +5,6 @@ public class EnemyData : ScriptableObject
 {
     [Header("Identity")]
     public string enemyName;
-    public bool isRanged;
 
     [Header("Base Stats")]
     public float maxHealth;
@@ -13,5 +12,7 @@ public class EnemyData : ScriptableObject
     public float attackRange;
     public float attackRate;
     public float moveSpeed;
+    public float detectionRange;
     public int experienceReward;
+
 }
