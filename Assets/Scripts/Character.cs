@@ -31,8 +31,6 @@ public abstract class Character : MonoBehaviour
     public abstract float MaxHealth {get;}
     public abstract float AttackDamage {get;}
     public abstract float MoveSpeed {get;}
-    public abstract bool IsRanged {get;}
-
     public abstract float AttackRange {get;}
     public abstract float AttackRate {get;}
     protected Vector3 moveDestination;
@@ -42,13 +40,9 @@ public abstract class Character : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    public virtual void Update()
+    protected virtual void FixedUpdate()
     {
         UpdateState();
-    }
-    public virtual void FixedUpdate()
-    {
         ExcecuteState();
     }
 

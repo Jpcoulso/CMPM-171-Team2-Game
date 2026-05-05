@@ -26,7 +26,6 @@ public class Hero : Character
     public override float AttackDamage => heroData.attackDamage;
     public override float MoveSpeed    => heroData.moveSpeed;
     public override float GetArmor()   => heroData.armor;
-    public override bool IsRanged      => heroData.isRanged;
     public override float AttackRange => heroData.attackRange;
     public override float AttackRate => heroData.attackRate;
 
@@ -54,6 +53,9 @@ public class Hero : Character
 
         Debug.Log($"{GetCharacterName()} is ready! " +
                   $"HP: {currentHealth} | ATK: {AttackDamage} | Armor: {GetArmor()}");
+        
+        // Hero registers itself with the SquadManager on scene load
+        SquadManager.Instance.AddHero(this);
     }
 
     private void InitializeAbilities()

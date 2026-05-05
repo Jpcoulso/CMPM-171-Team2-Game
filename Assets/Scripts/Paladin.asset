@@ -16,6 +16,8 @@ MonoBehaviour:
   portrait: {fileID: 0}
   maxHealth: 150
   attackDamage: 25
+  attackRange: 2
+  attackRate: 4
   moveSpeed: 3
   armor: 10
   abilities:

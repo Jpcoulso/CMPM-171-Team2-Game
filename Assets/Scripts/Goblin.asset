@@ -15,5 +15,8 @@ MonoBehaviour:
   enemyName: Goblin
   maxHealth: 50
   attackDamage: 10
+  attackRange: 2
+  attackRate: 0
   moveSpeed: 5
+  detectionRange: 10
   experienceReward: 10

@@ -11,7 +11,6 @@ public class HeroData : ScriptableObject
     [Header("Identity")]
     public string heroName;
     public Sprite portrait;
-    public bool isRanged;
 
     [Header("Base Stats")]
     public float maxHealth;
