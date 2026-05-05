@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
   actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  clickIndicatorPrefab: {fileID: 0}
+  clickIndicatorPrefab: {fileID: -3563819683746247958, guid: 0622286c8ae2259449a9f03622dcd39d, type: 3}
 --- !u!4 &85728769
 Transform:
   m_ObjectHideFlags: 0
@@ -234,6 +234,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 251740318}
     m_Modifications:
+    - target: {fileID: 2324572875069589953, guid: d5703229545bc0044a46b3b510ace51b, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2483014041013537172, guid: d5703229545bc0044a46b3b510ace51b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.44

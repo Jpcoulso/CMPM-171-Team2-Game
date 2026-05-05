@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: heroData
       value: 
       objectReference: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
+    - target: {fileID: 5574667540051522970, guid: da3e83c8301d795498a417496528248c, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5722606438267270607, guid: da3e83c8301d795498a417496528248c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
