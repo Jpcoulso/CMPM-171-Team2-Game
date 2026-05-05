@@ -7,7 +7,7 @@ using NUnit.Framework.Internal;
 public class InputManager : MonoBehaviour
 {
     //[SerializeField] private InputActionAsset actions;
-    //[SerializeField] private ClickIndicator clickIndicatorPrefab; // Prefab for the click indicator
+    [SerializeField] private ClickIndicator clickIndicatorPrefab; // Prefab for the click indicator
     private InputAction RightClick;
     private InputAction LeftClick;
     private InputAction Stop;
