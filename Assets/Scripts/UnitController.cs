@@ -13,6 +13,12 @@ public class UnitController : MonoBehaviour
 
     private AbilityHolder abilityHolder;
 
+    // <summary>Returns the class name from the assigned UnitClassData (e.g. "Warrior").</summary>
+    public string ClassName => unitClassData != null ? unitClassData.className : "Unknown";
+
+    // <summary>Returns the assigned UnitClassData so the HUD can read icons.</summary>
+    public UnitClassData ClassData => unitClassData;
+
     void Awake()
     {
         // Ensure this unit has an AbilityHolder component
