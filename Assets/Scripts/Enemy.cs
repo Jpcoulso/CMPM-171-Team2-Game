@@ -39,10 +39,11 @@ public class Enemy : Character
 
     protected override void OnDeath()
     {
+        
         Debug.Log($"{GetCharacterName()} defeated! " +
                   $"Rewarding {enemyData.experienceReward} XP.");
-
-        //WaveManager.Instance.OnEnemyDied(this); --- uncomment when wavemanager is implemented
+        Destroy(gameObject);
+        WaveManager.Instance.OnEnemyDied(this);
         //gameObject.SetActive(false);
     }
 }
