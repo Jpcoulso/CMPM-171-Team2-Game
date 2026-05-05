@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class Character : MonoBehaviour
 {
     public enum CharacterState
@@ -19,6 +20,7 @@ public abstract class Character : MonoBehaviour
 
 
     private float attackCooldown;
+    private Rigidbody2D rb;
     
 
     public bool IsDead => isDead;
@@ -36,10 +38,18 @@ public abstract class Character : MonoBehaviour
     protected Vector3 moveDestination;
     protected bool hasDestination;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     public virtual void Update()
     {
         UpdateState();
-        ExcecuteState(); 
+    }
+    public virtual void FixedUpdate()
+    {
+        ExcecuteState();
     }
 
     private void UpdateState()
@@ -51,10 +61,15 @@ public abstract class Character : MonoBehaviour
                 {
                     TransitionToState(CharacterState.Chasing);
                 }
+                else if(hasDestination == true)
+                {
+                    TransitionToState(CharacterState.Moving);
+                }
                 break;
             case CharacterState.Moving:
                 if (HasReachedDestination())
                 {
+                    hasDestination = false;
                     TransitionToState(CharacterState.Idle);
                 }
                 break;
@@ -66,6 +81,12 @@ public abstract class Character : MonoBehaviour
                 else if(IsWithinAttackRange())
                 {
                     TransitionToState(CharacterState.Attacking);
+                    Debug.Log("transitioned to attacking!!");
+                }
+                else if(hasDestination == true)
+                {
+                    TransitionToState(CharacterState.Moving);
+                    currentTarget = null;
                 }
                 break;
             case CharacterState.Attacking:
@@ -104,9 +125,15 @@ public abstract class Character : MonoBehaviour
         CurrentState = newState;
     }
 
-    protected abstract void MoveTowards(Vector3 position);
-    protected abstract void MoveToDestination();
-    protected abstract bool HasReachedDestination();
+    protected virtual void MoveTowards(Vector3 position)
+    {
+        Vector2 direction = ((Vector2)position - rb.position).normalized;
+        rb.MovePosition(rb.position + direction * MoveSpeed * Time.fixedDeltaTime);
+    }
+    protected virtual bool HasReachedDestination()
+    {
+        return Vector2.Distance(transform.position, moveDestination) < 0.1f;
+    }
 
 
 
@@ -115,9 +142,9 @@ public abstract class Character : MonoBehaviour
     
     public void SetTarget(Character target) // Sets target, sets characterState to chasing
     {
+        hasDestination = false;
         currentTarget = target;
         CurrentState = CharacterState.Chasing;
-        //hasDestination = false;
         Debug.Log("Target set!!!");
     }
 
@@ -130,6 +157,7 @@ public abstract class Character : MonoBehaviour
 
     public void SetDestination(Vector3 destination)
     {
+        currentTarget = null;
         moveDestination = destination;
         hasDestination = true;
         Debug.Log("Destination set");

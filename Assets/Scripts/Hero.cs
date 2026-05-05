@@ -5,7 +5,6 @@ using System.Collections.Generic;
 // In the Inspector, you drag in the Paladin.asset
 // into the heroData field.
 
-[RequireComponent(typeof(UnitController))]
 public class Hero : Character
 {
     // ─────────────────────────────────────────
@@ -45,12 +44,6 @@ public class Hero : Character
     // LIFECYCLE
     // ─────────────────────────────────────────
 
-    private UnitController unitController;
-
-    private void Awake()
-    {
-        unitController = GetComponent<UnitController>();
-    }
 
     private void Start()
     {
@@ -76,17 +69,6 @@ public class Hero : Character
             Debug.Log("ability handler succesfully initialized!");
         }
     }
-
-
-    // ─────────────────────────────────────────
-    // MOVEMENT
-    // ─────────────────────────────────────────
-    protected override void MoveTowards(Vector3 position)
-    {
-                unitController.Move(position);
-    }
-    protected override void MoveToDestination(){}
-    protected override bool HasReachedDestination(){ return false;}
 
 
     // ─────────────────────────────────────────

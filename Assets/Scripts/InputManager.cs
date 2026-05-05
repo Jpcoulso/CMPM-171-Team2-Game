@@ -93,7 +93,7 @@ public class InputManager : MonoBehaviour
         if (hit.collider != null && hit.collider.gameObject.GetComponent<Enemy>() != null)
         {
             Debug.Log("Right-clicked on an enemy.");
-            float range = 2f; // TEMP attack range
+            //float range = 2f; // TEMP attack range ****************************COMMENTED OUT TO TEST STATE TRANSITION FROM CHASING TO ATTACKING
             Vector3 enemyPosition = hit.collider.transform.position;
             Vector3 unitPosition = SelectionManager.Instance.currentlySelected.transform.position;
             
@@ -103,9 +103,11 @@ public class InputManager : MonoBehaviour
             selectedHero.SetTarget(clickedEnemy);
             // once we have a target for selected hero the state machine should take over and initiate movement and combat
 
+            /*
             Vector3 directionToEnemy = (enemyPosition - unitPosition).normalized;
-            Vector3 destination = enemyPosition - directionToEnemy * range;
+            Vector3 destination = enemyPosition - directionToEnemy; //* range;****************************COMMENTED OUT TO TEST STATE TRANSITION FROM CHASING TO ATTACKING
             selectedHero.SetDestination(destination); // feed distination to character.cs so that character can use it for movement and range calculations 
+            */
 
             SpawnIndicator(worldPosition, true); // Spawn a red indicator for enemies
             // Move the selected unit into attack range
@@ -128,12 +130,17 @@ public class InputManager : MonoBehaviour
         // If not clicking on an enemy, move to the location as normal
         else
         {
+            Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
+            selectedHero.SetDestination(worldPosition);
+            SpawnIndicator(worldPosition, false); // Spawn a green indicator for allies
+            /*
             UnitController unitController = SelectionManager.Instance.currentlySelected.GetComponent<UnitController>();
             if (unitController != null)
             {
                 SpawnIndicator(worldPosition, false); // Spawn a green indicator for allies
                 unitController.Move(worldPosition);
             }
+            */
         }
     }
     void OnLeftClick()

@@ -25,7 +25,6 @@ public class Enemy : Character
     {
         
     }
-    protected override void MoveToDestination(){}
     protected override bool HasReachedDestination(){return false;}
 
 
