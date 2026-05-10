@@ -1,7 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))] // required for the color to be changed when selected
 [RequireComponent(typeof(Collider2D))] //required for OnMouseDown to work
 
 public class CharacterSelector : MonoBehaviour
@@ -13,7 +12,7 @@ public class CharacterSelector : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _spriteRenderer.color = _normalColor;
         
     }

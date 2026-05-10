@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+//[RequireComponent(typeof(Animator))]
 public abstract class Character : MonoBehaviour
 {
     public enum CharacterState
@@ -21,6 +22,7 @@ public abstract class Character : MonoBehaviour
 
     private float attackCooldown;
     private Rigidbody2D rb;
+    private Animator animator;
     
 
     public bool IsDead => isDead;
@@ -39,6 +41,7 @@ public abstract class Character : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
     }
     protected virtual void FixedUpdate()
     {
@@ -100,15 +103,21 @@ public abstract class Character : MonoBehaviour
         switch (CurrentState)
         {
             case CharacterState.Idle:
+                animator.SetBool("isWalking", false);
+                animator.SetBool("isAttacking", false);
                 // Do nothing for now
                 break;
             case CharacterState.Moving:
+                animator.SetBool("isWalking", true);
                 MoveTowards(moveDestination);
                 break;
             case CharacterState.Chasing:
+                animator.SetBool("isWalking", true);
                 MoveTowards(currentTarget.transform.position);
                 break;
             case CharacterState.Attacking:
+                animator.SetBool("isWalking", false);
+                animator.SetBool("isAttacking", true);
                 FaceTarget(currentTarget.transform.position);
                 TryAttack();
                 break;
