@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a37657d6f8a4af2b065943dd387b98, type: 3}
+  m_Name: ShieldBash
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldBashData
+  abilityName: Shield Bash
+  icon: {fileID: 5099454198838525273, guid: 089c0d0195f3b4921b7e906aaafce1d3, type: 3}
+  isPassive: 0
+  cooldownDuration: 3
+  description: Shield Bash
+  damage: 25
+  hitboxSize: 1.2
+  range: 1.5
+  vfxDuration: 0.3

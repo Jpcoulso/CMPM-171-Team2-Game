@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5209627c3e84d97b14961be22ef8c9, type: 3}
+  m_Name: BerserkerRage
+  m_EditorClassIdentifier: Assembly-CSharp::BerserkerRageData
+  abilityName: Berserker Rage
+  icon: {fileID: 6983218054552988432, guid: 77738d537a41b4091a76acbc08704781, type: 3}
+  isPassive: 1
+  cooldownDuration: 3
+  description: Berserker Rage
+  damage: 60
+  hitboxRadius: 3
+  vfxDuration: 0.6
