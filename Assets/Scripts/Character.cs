@@ -20,7 +20,7 @@ public abstract class Character : MonoBehaviour
     protected bool isDead;
 
 
-    private float attackCooldown;
+    private float attackCooldown = 0;
     private Rigidbody2D rb;
     private Animator animator;
     
@@ -104,7 +104,7 @@ public abstract class Character : MonoBehaviour
         {
             case CharacterState.Idle:
                 animator.SetBool("isWalking", false);
-                animator.SetBool("isAttacking", false);
+                //animator.SetBool("isAttacking", false);
                 // Do nothing for now
                 break;
             case CharacterState.Moving:
@@ -117,7 +117,7 @@ public abstract class Character : MonoBehaviour
                 break;
             case CharacterState.Attacking:
                 animator.SetBool("isWalking", false);
-                animator.SetBool("isAttacking", true);
+                //animator.SetBool("isAttacking", true);
                 FaceTarget(currentTarget.transform.position);
                 TryAttack();
                 break;
@@ -194,7 +194,7 @@ public abstract class Character : MonoBehaviour
     private void PerformAttack()
     {
         Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
-        Target.TakeDamage(AttackDamage);
+        animator.SetTrigger("Attack"); // Target.TakeDamage(AttackDamage) gets called from Attack animation event
     }
 
     public virtual void TakeDamage(float rawAmount)
@@ -222,6 +222,7 @@ public abstract class Character : MonoBehaviour
         isDead = true;
 
         Debug.Log($"{GetCharacterName()} has died.");
+        animator.SetTrigger("Died");
         OnDeath();
     }
 

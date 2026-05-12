@@ -81,7 +81,7 @@ public class Enemy : Character
         
         Debug.Log($"{GetCharacterName()} defeated! " +
                   $"Rewarding {enemyData.experienceReward} XP.");
-        Destroy(gameObject);
+        //Destroy(gameObject) called via animation event
         WaveManager.Instance.OnEnemyDied(this);
         //gameObject.SetActive(false);
     }
