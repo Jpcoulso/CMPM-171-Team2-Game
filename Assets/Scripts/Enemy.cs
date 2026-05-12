@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class Enemy : Character
 {
     [SerializeField] private EnemyData enemyData;
+    [SerializeField] private GameObject goldPrefab;
 
     public override float MaxHealth    => enemyData.maxHealth;
     public override float AttackDamage => enemyData.attackDamage;
@@ -78,7 +79,9 @@ public class Enemy : Character
 
     protected override void OnDeath()
     {
-        
+        var gold = Instantiate(goldPrefab, transform.position, Quaternion.identity);
+        var pickup = gold.GetComponent<Pickup>();
+        pickup.goldAmount = enemyData.goldReward;
         Debug.Log($"{GetCharacterName()} defeated! " +
                   $"Rewarding {enemyData.experienceReward} XP.");
         Destroy(gameObject); //called via animation event

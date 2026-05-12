@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1312858285
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 5003319396765349490, guid: 94c9e48da613b7b4a99564979f24a344, type: 3}
@@ -195,6 +195,10 @@ PrefabInstance:
       propertyPath: enemyData
       value: 
       objectReference: {fileID: 11400000, guid: 9d88e29e334c8a946923281da9c38e8b, type: 2}
+    - target: {fileID: 5115135388619578378, guid: 50c755051804aab45a84025481d72570, type: 3}
+      propertyPath: goldPrefab
+      value: 
+      objectReference: {fileID: 7136927680635826898, guid: 0cc86bab66f36b344881e55855a2dcd7, type: 3}
     - target: {fileID: 8329750103081366160, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_Sprite
       value: 
