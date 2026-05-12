@@ -14,5 +14,6 @@ public class EnemyData : ScriptableObject
     public float moveSpeed;
     public float detectionRange;
     public int experienceReward;
+    public int goldReward;
 
 }
