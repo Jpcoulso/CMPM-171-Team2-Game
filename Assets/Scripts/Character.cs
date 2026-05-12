@@ -24,8 +24,16 @@ public abstract class Character : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     
+    // --- Buff state ---
+    private float shieldAmount;
+    private float shieldTimer;
+    private float damageMultiplier = 1f;
+    private float damageMultiplierTimer;
+    private GameObject shieldBorderObj;
+    private GameObject rageBorderObj;
 
     public float CurrentHealth => currentHealth;
+    public float ShieldAmount => shieldAmount;
     public bool IsDead => isDead;
     public Character Target => currentTarget;
 
@@ -39,6 +47,19 @@ public abstract class Character : MonoBehaviour
     protected Vector3 moveDestination;
     protected bool hasDestination;
 
+    // Subclasses can override these to return
+    public virtual float  GetArmor()         => 0f;
+    public virtual string GetCharacterName() => "Unknown";
+
+    // --- Optional hooks for subclasses ---
+    protected virtual void OnDamageTaken(float amount) { }
+    protected virtual void OnDeath() { }
+    protected virtual void AggroEnemy(Character targetEnemy)    { }
+
+    // =============================================
+    //  LIFECYCLE
+    // =============================================
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -48,6 +69,7 @@ public abstract class Character : MonoBehaviour
     {
         UpdateState();
         ExcecuteState();
+        TickBuffs();
     }
 
     private void UpdateState()
@@ -150,7 +172,6 @@ public abstract class Character : MonoBehaviour
         hasDestination = false;
         currentTarget = target;
         CurrentState = CharacterState.Chasing;
-        Debug.Log("Target set!!!");
     }
 
     public void ClearTarget()
@@ -196,6 +217,8 @@ public abstract class Character : MonoBehaviour
     {
         Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
         animator.SetTrigger("Attack"); // Target.TakeDamage(AttackDamage) gets called from Attack animation event
+        float finalDamage = AttackDamage * damageMultiplier;
+        Target.TakeDamage(finalDamage);
     }
 
     public virtual void TakeDamage(float rawAmount)
@@ -203,15 +226,29 @@ public abstract class Character : MonoBehaviour
         if (isDead) return;
 
         // Armor reduces incoming damage, minimum of 1
-        float reducedDamage = Mathf.Max(1, rawAmount - GetArmor());
+        float damage = Mathf.Max(1, rawAmount - GetArmor());
 
-        currentHealth -= reducedDamage;
+    // Shield absorbs damage before health
+        if (shieldAmount > 0f)
+        {
+            if (damage <= shieldAmount)
+            {
+                shieldAmount -= damage;
+                return; // fully absorbed
+            }
+            else
+            {
+                damage -= shieldAmount;
+                shieldAmount = 0f;
+                RemoveBorder(ref shieldBorderObj);
+            }
+        }
 
         // Log for now — later this updates your UI health bar
-        Debug.Log($"{GetCharacterName()} took {reducedDamage} damage. " +
+        Debug.Log($"{GetCharacterName()} took {damage} damage. " +
                   $"HP: {currentHealth}/{MaxHealth}");
 
-        OnDamageTaken(reducedDamage);
+        OnDamageTaken(damage);
 
         if (currentHealth <= 0)
             Die();
@@ -227,13 +264,100 @@ public abstract class Character : MonoBehaviour
         OnDeath();
     }
 
-    
-    protected virtual void OnDamageTaken(float amount)          { }
-    protected virtual void OnDeath()                            { }
-    protected virtual void AggroEnemy(Character targetEnemy)    { }
+    // =============================================
+    //  BUFF SYSTEM
+    // =============================================
+    // Grants a temporary shield that absorbs damage. Shows a white border.
+    public void ApplyShield(float amount, float duration)
+    {
+        shieldAmount = amount;
+        shieldTimer = duration;
+        RemoveBorder(ref shieldBorderObj);
+        shieldBorderObj = CreateBorder(new Color(1f, 1f, 1f, 0.7f), 1);
+    }
+    // Grants a temporary damage multiplier on auto-attacks. Shows a red border.
+    public void ApplyDamageMultiplier(float multiplier, float duration)
+    {
+        damageMultiplier = multiplier;
+        damageMultiplierTimer = duration;
+        RemoveBorder(ref rageBorderObj);
+        rageBorderObj = CreateBorder(new Color(1f, 0.15f, 0.1f, 0.7f), 2);
+    }
 
-    // Subclasses can override these to return
-    // their own armor value or name
-    public virtual float  GetArmor()         => 0f;
-    public virtual string GetCharacterName() => "Unknown";
+    private void TickBuffs()
+    {
+        if (shieldTimer > 0f)
+        {
+            shieldTimer -= Time.fixedDeltaTime;
+            if (shieldTimer <= 0f)
+            {
+                shieldAmount = 0f;
+                shieldTimer = 0f;
+                RemoveBorder(ref shieldBorderObj);
+            }
+        }
+
+        if (damageMultiplierTimer > 0f)
+        {
+            damageMultiplierTimer -= Time.fixedDeltaTime;
+            if (damageMultiplierTimer <= 0f)
+            {
+                damageMultiplier = 1f;
+                damageMultiplierTimer = 0f;
+                RemoveBorder(ref rageBorderObj);
+            }
+        }
+    }
+
+    // =============================================
+    //  BORDER VISUALS (for buffs)
+    // =============================================
+
+    // Creates a colored square behind the character sprite to indicate a buff
+    private GameObject CreateBorder(Color color, int sortOffset)
+    {
+        var border = new GameObject("BuffBorder");
+        border.transform.SetParent(transform, false);
+        border.transform.localPosition = Vector3.zero;
+
+        SpriteRenderer charSR = GetComponent<SpriteRenderer>();
+        float scaleX = charSR != null ? charSR.bounds.size.x + 0.3f : 1.3f;
+        float scaleY = charSR != null ? charSR.bounds.size.y + 0.3f : 1.3f;
+        border.transform.localScale = new Vector3(
+            scaleX / Mathf.Abs(transform.localScale.x),
+            scaleY / Mathf.Abs(transform.localScale.y),
+            1f
+        );
+
+        var sr = border.AddComponent<SpriteRenderer>();
+        sr.sprite = CreateSquareSprite();
+        sr.color = color;
+        sr.sortingOrder = (charSR != null ? charSR.sortingOrder : 0) - sortOffset;
+
+        return border;
+    }
+
+    private void RemoveBorder(ref GameObject borderObj)
+    {
+        if (borderObj != null)
+        {
+            Destroy(borderObj);
+            borderObj = null;
+        }
+    }
+
+    // Generates a simple white 4x4 square sprite at runtime (cached)
+    private static Sprite cachedSquare;
+    private static Sprite CreateSquareSprite()
+    {
+        if (cachedSquare != null) return cachedSquare;
+        var tex = new Texture2D(4, 4);
+        var px = new Color[16];
+        for (int i = 0; i < 16; i++) px[i] = Color.white;
+        tex.SetPixels(px);
+        tex.Apply();
+        tex.filterMode = FilterMode.Point;
+        cachedSquare = Sprite.Create(tex, new Rect(0, 0, 4, 4), new Vector2(0.5f, 0.5f), 4f);
+        return cachedSquare;
+    }
 }
