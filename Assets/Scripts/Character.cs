@@ -25,6 +25,7 @@ public abstract class Character : MonoBehaviour
     private Animator animator;
     
 
+    public float CurrentHealth => currentHealth;
     public bool IsDead => isDead;
     public Character Target => currentTarget;
 
