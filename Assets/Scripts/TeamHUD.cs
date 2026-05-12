@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Displays 3 unit frames at the top-center of the screen.
-// Each frame: icon (left) | name + health bar + 4 ability slots (right).
+// Each frame: icon (left) | name + 4 ability slots (right).
 // Uses Unity layout groups so everything spaces correctly.
 //
 // Drop on any GameObject. Builds its own Canvas at runtime.
 public class TeamHUD : MonoBehaviour
 {
     private UnitFrameUI[] unitFrames = new UnitFrameUI[3];
-    private UnitController[] trackedUnits = new UnitController[3];
+    private Character[] trackedUnits = new Character[3];
 
     // Sizing — scaled up ~1.5x from original
     private const float FrameWidth = 510f;
@@ -17,7 +17,6 @@ public class TeamHUD : MonoBehaviour
     private const float Pad = 10f;
     private const float IconSize = 84f;
     private const float AbilitySize = 64f;
-    private const float HealthBarHeight = 18f;
     private const float NameHeight = 24f;
 
     // Colors
@@ -26,11 +25,7 @@ public class TeamHUD : MonoBehaviour
     private static readonly Color NormalBorder = new Color(0.22f, 0.22f, 0.28f, 0.8f);
     private static readonly Color IconBG = new Color(0.16f, 0.16f, 0.2f, 1f);
     private static readonly Color IconSymCol = new Color(0.65f, 0.7f, 0.8f, 1f);
-    private static readonly Color HealthBGCol = new Color(0.1f, 0.1f, 0.1f, 1f);
-    private static readonly Color HealthGreen = new Color(0.2f, 0.78f, 0.35f, 1f);
-    private static readonly Color HealthRed = new Color(0.88f, 0.2f, 0.2f, 1f);
     private static readonly Color NameCol = new Color(0.92f, 0.92f, 0.92f, 1f);
-    private static readonly Color HealthTxtCol = new Color(1f, 1f, 1f, 0.85f);
     private static readonly Color AbReadyBG = new Color(0.18f, 0.22f, 0.3f, 1f);
     private static readonly Color AbCoolBG = new Color(0.06f, 0.06f, 0.06f, 0.92f);
     private static readonly Color AbBorderCol = new Color(0.3f, 0.3f, 0.35f, 0.5f);
@@ -58,14 +53,8 @@ public class TeamHUD : MonoBehaviour
         {
             if (trackedUnits[i] == null) { unitFrames[i].SetEmpty(); continue; }
 
-            UnitController unit = trackedUnits[i];
+            Character unit = trackedUnits[i];
             AbilityHolder holder = unit.GetComponent<AbilityHolder>();
-            UnitHealth health = unit.GetComponent<UnitHealth>();
-
-            if (health != null)
-                unitFrames[i].UpdateHealth(health.CurrentHealth, health.MaxHealth);
-            else
-                unitFrames[i].UpdateHealth(1f, 1f);
 
             for (int s = 0; s < 4; s++)
                 unitFrames[i].UpdateAbilitySlot(s, holder?.GetAbility(s));
@@ -82,12 +71,13 @@ public class TeamHUD : MonoBehaviour
         CharacterSelector[] all = FindObjectsByType<CharacterSelector>(FindObjectsSortMode.None);
         for (int i = 0; i < 3; i++)
         {
-            trackedUnits[i] = i < all.Length ? all[i].GetComponent<UnitController>() : null;
+            trackedUnits[i] = i < all.Length ? all[i].GetComponent<Character>() : null;
             if (trackedUnits[i] != null)
             {
-                unitFrames[i].SetUnitName(trackedUnits[i].ClassName);
-                unitFrames[i].SetIcons(trackedUnits[i].ClassData);
-                unitFrames[i].Show(true);
+                var hero = trackedUnits[i] as Hero;
+            unitFrames[i].SetUnitName(trackedUnits[i].GetCharacterName());
+            if (hero != null) unitFrames[i].SetIcons(hero.HeroData);
+            unitFrames[i].Show(true);
             }
             else
             {
@@ -192,28 +182,6 @@ public class TeamHUD : MonoBehaviour
         nrt.offsetMax = new Vector2(-Pad, -Pad);
         nameGO.GetComponent<Text>().fontStyle = FontStyle.Bold;
         f.nameText = nameGO.GetComponent<Text>();
-
-        // Health bar (below name)
-        float hpTop = Pad + NameHeight + 3f;
-        var hpBG = MakePanel(frameGO.transform, "HPBG", 0f, 0f, HealthBGCol);
-        var hrt = hpBG.GetComponent<RectTransform>();
-        hrt.anchorMin = new Vector2(0f, 1f);
-        hrt.anchorMax = new Vector2(1f, 1f);
-        hrt.offsetMin = new Vector2(contentLeft, -hpTop - HealthBarHeight);
-        hrt.offsetMax = new Vector2(-Pad, -hpTop);
-
-        var hpFill = MakePanel(hpBG.transform, "HPFill", 0f, 0f, HealthGreen);
-        Stretch(hpFill);
-        var hpImg = hpFill.GetComponent<Image>();
-        hpImg.type = Image.Type.Filled;
-        hpImg.fillMethod = Image.FillMethod.Horizontal;
-        hpImg.fillAmount = 1f;
-        f.healthFill = hpImg;
-
-        var hpTxt = MakeText(hpBG.transform, "HPText", "100/100", 14, TextAnchor.MiddleCenter, HealthTxtCol);
-        Stretch(hpTxt);
-        hpTxt.GetComponent<Text>().fontStyle = FontStyle.Bold;
-        f.healthText = hpTxt.GetComponent<Text>();
 
         // Ability row (bottom of content area, anchored to bottom)
         float abSlotFull = AbilitySize + 2f; // slot + border
@@ -430,26 +398,24 @@ public class TeamHUD : MonoBehaviour
         public Image iconImage;
         public Text iconSymbolText;
         public Text nameText;
-        public Image healthFill;
-        public Text healthText;
         public AbilitySlotData[] abilitySlots = new AbilitySlotData[4];
 
         public void SetUnitName(string n) { nameText.text = n; }
 
-        public void SetIcons(UnitClassData data)
+        public void SetIcons(HeroData data)
         {
             if (data == null) return;
 
             // Unit portrait
-            if (data.classIcon != null)
+            if (data.portrait != null)
             {
-                iconImage.sprite = data.classIcon;
+                iconImage.sprite = data.portrait;
                 iconImage.color = Color.white;
                 iconSymbolText.text = ""; // hide placeholder symbol
             }
 
             // Ability icons
-            Sprite[] abIcons = { data.qIcon, data.wIcon, data.eIcon, data.rIcon };
+            Sprite[] abIcons = { data.qIcon };
             for (int i = 0; i < 4; i++)
             {
                 if (abIcons[i] != null)
@@ -468,18 +434,7 @@ public class TeamHUD : MonoBehaviour
         public void SetEmpty()
         {
             nameText.text = "—";
-            healthFill.fillAmount = 0f;
-            if (healthText != null) healthText.text = "";
             for (int i = 0; i < 4; i++) abilitySlots[i]?.UpdateState(null);
-        }
-
-        public void UpdateHealth(float cur, float max)
-        {
-            float p = max > 0 ? cur / max : 0f;
-            healthFill.fillAmount = p;
-            healthFill.color = p > 0.3f ? HealthGreen : HealthRed;
-            if (healthText != null)
-                healthText.text = $"{Mathf.CeilToInt(cur)}/{Mathf.CeilToInt(max)}";
         }
 
         public void UpdateAbilitySlot(int i, Ability a) { abilitySlots[i]?.UpdateState(a); }

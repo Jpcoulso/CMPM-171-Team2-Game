@@ -22,4 +22,9 @@ public class HeroData : ScriptableObject
 
     [Header("Abilities")]
     public List<AbilityData> abilities;
+    [Header("Q Ability")]
+    public string qName = "Ability Q";
+    [Range(1f, 10f)] public float qCooldown = 3f;
+    public Sprite qIcon; // drag ability icon here
+
 }

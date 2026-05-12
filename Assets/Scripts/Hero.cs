@@ -7,11 +7,13 @@ using System.Collections.Generic;
 
 public class Hero : Character
 {
+    public HeroData HeroData => heroData;
     // ─────────────────────────────────────────
     // THE DATA CONNECTION
     // This is the link between the ScriptableObject
     // asset and the behaviour in this script.
     // ─────────────────────────────────────────
+
 
     [SerializeField] private HeroData heroData;
 
