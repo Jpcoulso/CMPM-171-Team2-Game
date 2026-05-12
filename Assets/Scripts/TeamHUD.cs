@@ -54,6 +54,7 @@ public class TeamHUD : MonoBehaviour
             if (trackedUnits[i] == null) { unitFrames[i].SetEmpty(); continue; }
 
             Character unit = trackedUnits[i];
+            Debug.Log("Units: " + unit);
             AbilityHolder holder = unit.GetComponent<AbilityHolder>();
 
             for (int s = 0; s < 4; s++)
@@ -75,9 +76,9 @@ public class TeamHUD : MonoBehaviour
             if (trackedUnits[i] != null)
             {
                 var hero = trackedUnits[i] as Hero;
-            unitFrames[i].SetUnitName(trackedUnits[i].GetCharacterName());
-            if (hero != null) unitFrames[i].SetIcons(hero.HeroData);
-            unitFrames[i].Show(true);
+                unitFrames[i].SetUnitName(trackedUnits[i].GetCharacterName());
+                if (hero != null) unitFrames[i].SetIcons(hero.HeroData);
+                unitFrames[i].Show(true);
             }
             else
             {
@@ -124,7 +125,7 @@ public class TeamHUD : MonoBehaviour
         rowFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         rowFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
             unitFrames[i] = CreateUnitFrame(row.transform, i);
     }
 
