@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 // Displays 3 unit frames at the top-center of the screen.
 // Each frame: icon (left) | name + 4 ability slots (right).
@@ -51,6 +52,8 @@ public class TeamHUD : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
+            if (unitFrames[i] == null) continue;
+
             if (trackedUnits[i] == null)
             { 
                 unitFrames[i].SetEmpty();
@@ -58,11 +61,13 @@ public class TeamHUD : MonoBehaviour
             }
 
             Character unit = trackedUnits[i];
-            Debug.Log("Units: " + unit);
-            AbilityHolder holder = unit.GetComponent<AbilityHolder>();
+            AbilityHandler[] handlers = unit.GetComponents<AbilityHandler>();
 
             for (int s = 0; s < 4; s++)
-                unitFrames[i].UpdateAbilitySlot(s, holder?.GetAbility(s));
+            {
+                AbilityHandler handler = (s < handlers.Length) ? handlers[s] : null;
+                unitFrames[i].UpdateAbilitySlot(s, handler);
+            }
 
             bool sel = SelectionManager.Instance != null
                 && SelectionManager.Instance.currentlySelected != null
@@ -76,11 +81,13 @@ public class TeamHUD : MonoBehaviour
         CharacterSelector[] all = FindObjectsByType<CharacterSelector>(FindObjectsSortMode.None);
         for (int i = 0; i < 3; i++)
         {
+            if (unitFrames[i] == null) continue;
+
             trackedUnits[i] = i < all.Length ? all[i].GetComponent<Character>() : null;
             if (trackedUnits[i] != null)
             {
-                var hero = trackedUnits[i] as Hero;
                 unitFrames[i].SetUnitName(trackedUnits[i].GetCharacterName());
+                var hero = trackedUnits[i] as Hero;
                 if (hero != null) unitFrames[i].SetIcons(hero.HeroData);
                 unitFrames[i].Show(true);
             }
@@ -129,7 +136,7 @@ public class TeamHUD : MonoBehaviour
         rowFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         rowFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
             unitFrames[i] = CreateUnitFrame(row.transform, i);
     }
 
@@ -177,12 +184,6 @@ public class TeamHUD : MonoBehaviour
         nrt.anchorMin = new Vector2(0f, 1f);
         nrt.anchorMax = new Vector2(1f, 1f);
         nrt.pivot = new Vector2(0f, 1f);
-        nrt.offsetMin = new Vector2(contentLeft, 0f);  // left
-        nrt.offsetMax = new Vector2(-Pad, -Pad);       // right, top
-        nrt.sizeDelta = new Vector2(nrt.sizeDelta.x, NameHeight);
-        // Fix: set anchored height properly
-        nrt.anchorMin = new Vector2(0f, 1f);
-        nrt.anchorMax = new Vector2(1f, 1f);
         nrt.offsetMin = new Vector2(contentLeft, -Pad - NameHeight);
         nrt.offsetMax = new Vector2(-Pad, -Pad);
         nameGO.GetComponent<Text>().fontStyle = FontStyle.Bold;
@@ -192,7 +193,6 @@ public class TeamHUD : MonoBehaviour
         float abSlotFull = AbilitySize + 2f; // slot + border
         float abRowWidth = (abSlotFull * 4) + (4f * 3); // 4 slots + 3 gaps
         float abBottom = Pad;
-        float abTop = abBottom + abSlotFull;
 
         // Modifier label width — shift ability row right on units 2 & 3
         float modLabelWidth = (idx == 1 || idx == 2) ? 52f : 0f;
@@ -367,18 +367,25 @@ public class TeamHUD : MonoBehaviour
             }
         }
 
-        public void UpdateState(Ability ability)
+        public void UpdateState(AbilityHandler handler)
         {
-            if (ability == null)
+            if (handler == null)
             {
                 background.color = EmptySlot;
                 cooldownOverlay.fillAmount = 0f;
                 cooldownText.text = "";
                 symbolText.color = new Color(0.25f, 0.25f, 0.25f, 0.3f);
+                if (iconImage != null) iconImage.enabled = false;
                 return;
             }
 
-            if (ability.IsReady)
+            // Sync icon if available
+            if (handler.Data != null && handler.Data.icon != null)
+            {
+                SetIcon(handler.Data.icon);
+            }
+
+            if (!handler.IsOnCooldown)
             {
                 background.color = AbReadyBG;
                 cooldownOverlay.fillAmount = 0f;
@@ -388,8 +395,9 @@ public class TeamHUD : MonoBehaviour
             else
             {
                 background.color = AbCoolBG;
-                cooldownOverlay.fillAmount = ability.CooldownRemaining / ability.cooldownDuration;
-                float r = ability.CooldownRemaining;
+                float duration = handler.Data != null ? handler.Data.cooldownDuration : 1f;
+                cooldownOverlay.fillAmount = handler.CooldownTimer / Mathf.Max(0.1f, duration);
+                float r = handler.CooldownTimer;
                 cooldownText.text = r >= 10f ? Mathf.CeilToInt(r).ToString() : r.ToString("F1");
                 symbolText.color = SymCool;
             }
@@ -420,12 +428,14 @@ public class TeamHUD : MonoBehaviour
             }
 
             // Ability icons
-            Sprite[] abIcons = { data.qIcon };
-            for (int i = 0; i < 4; i++)
+            if (data.abilities != null)
             {
-                if (abIcons[i] != null)
+                for (int i = 0; i < 4; i++)
                 {
-                    abilitySlots[i].SetIcon(abIcons[i]);
+                    if (i < data.abilities.Count && data.abilities[i] != null && data.abilities[i].icon != null)
+                    {
+                        abilitySlots[i].SetIcon(data.abilities[i].icon);
+                    }
                 }
             }
         }
@@ -433,20 +443,20 @@ public class TeamHUD : MonoBehaviour
         // Show or hide the entire frame (border is the top-level GO)
         public void Show(bool visible)
         {
-            border.gameObject.SetActive(visible);
+            if (border != null) border.gameObject.SetActive(visible);
         }
 
         public void SetEmpty()
         {
-            nameText.text = "—";
+            if (nameText != null) nameText.text = "—";
             for (int i = 0; i < 4; i++) abilitySlots[i]?.UpdateState(null);
         }
 
-        public void UpdateAbilitySlot(int i, Ability a) { abilitySlots[i]?.UpdateState(a); }
+        public void UpdateAbilitySlot(int i, AbilityHandler handler) { abilitySlots[i]?.UpdateState(handler); }
 
         public void SetSelected(bool s)
         {
-            border.color = s ? SelectedBorder : NormalBorder;
+            if (border != null) border.color = s ? SelectedBorder : NormalBorder;
         }
     }
 }
