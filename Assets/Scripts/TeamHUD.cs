@@ -51,7 +51,11 @@ public class TeamHUD : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            if (trackedUnits[i] == null) { unitFrames[i].SetEmpty(); continue; }
+            if (trackedUnits[i] == null)
+            { 
+                unitFrames[i].SetEmpty();
+                continue;
+            }
 
             Character unit = trackedUnits[i];
             Debug.Log("Units: " + unit);

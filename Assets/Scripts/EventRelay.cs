@@ -5,7 +5,6 @@ using UnityEngine;
 public class AnimationEventRelay : MonoBehaviour
 {
     private Character parent;
-    private GameObject parentObject;
 
     void Start()
     {
@@ -19,7 +18,7 @@ public class AnimationEventRelay : MonoBehaviour
         parent.Target.TakeDamage(parent.AttackDamage);
     }
 
-    async Task OnDeath()
+    void OnDeath()
     {
         //await Task.Delay(2000);
         Destroy(transform.parent.gameObject);
