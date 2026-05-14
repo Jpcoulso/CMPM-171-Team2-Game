@@ -17,7 +17,7 @@ MonoBehaviour:
   attackDamage: 10
   attackRange: 2
   attackRate: 1
-  moveSpeed: 5
+  moveSpeed: 2
   detectionRange: 10
   experienceReward: 10
   goldReward: 2
