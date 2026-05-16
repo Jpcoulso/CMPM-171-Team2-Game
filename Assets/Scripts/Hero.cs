@@ -40,6 +40,13 @@ public class Hero : Character
     // ─────────────────────────────────────────
 
     private List<AbilityHandler> abilityHandlers = new List<AbilityHandler>();
+    private bool initialized = false;
+    public void Init(HeroData data, float savedHealth = 0f)
+    {
+        heroData = data;
+        currentHealth = (savedHealth > 0f) ? savedHealth : MaxHealth;
+        initialized = true;
+    }
 
     // ─────────────────────────────────────────
     // LIFECYCLE
@@ -49,7 +56,10 @@ public class Hero : Character
     private void Start()
     {
         // Set starting health from the data asset
-        currentHealth = MaxHealth;
+        if (!initialized)
+        {
+            currentHealth = MaxHealth;
+        }
         // Create one AbilityHandler component per ability
         InitializeAbilities();
 

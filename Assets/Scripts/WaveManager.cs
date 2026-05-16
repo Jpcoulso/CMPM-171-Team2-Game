@@ -16,10 +16,6 @@ public class WaveManager : MonoBehaviour
     {
         Instance = this;
     }
-    private void Start()
-    {
-        StartNextWave();
-    }
     public void StartNextWave()
     {
         if (currentWave >= waves.Length)
