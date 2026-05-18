@@ -13,6 +13,7 @@ public class Pickup : MonoBehaviour
         switch (type)
         {
             case PickupType.Gold:
+                GameManager.Instance.AddGold(goldAmount);
                 Debug.Log($"Picked up {goldAmount} gold!");
                 break;
         }

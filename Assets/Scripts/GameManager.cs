@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject heroPrefab;
     [SerializeField] private Transform[] heroSpawns;
 
+    [Header("Dev Tools")]
+    [SerializeField] public int currentGold = 0;
+
     // Stores health of heroes
     private float[] savedHealth;
     
@@ -108,6 +111,21 @@ public class GameManager : MonoBehaviour
         {
             savedHealth[slot] = 0f; // clear their saved HP too
         }
+    }
+
+    // Resource handling
+    public void AddGold(int amount)
+    {
+        currentGold += amount;
+    }
+    public bool SpendGold(int amount)
+    {
+        if (currentGold >= amount)
+        {
+            currentGold -= amount;
+            return true;
+        }
+        return false; // not enough gold
     }
 }
 
