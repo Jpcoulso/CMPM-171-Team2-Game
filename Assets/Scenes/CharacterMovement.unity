@@ -202,6 +202,7 @@ MonoBehaviour:
   heroPrefab: {fileID: 1968756145}
   heroSpawns:
   - {fileID: 848480158}
+  currentGold: 0
 --- !u!4 &122738909
 Transform:
   m_ObjectHideFlags: 0
@@ -4133,10 +4134,6 @@ MonoBehaviour:
   - {fileID: 860020063}
   - {fileID: 1656209680}
   waves:
-  - enemies:
-    - {fileID: 1764757225262580570, guid: fa72175caf794e84fabc12bae5d4e6b4, type: 3}
-  - enemies:
-    - {fileID: 1764757225262580570, guid: fa72175caf794e84fabc12bae5d4e6b4, type: 3}
   - enemies:
     - {fileID: 1764757225262580570, guid: fa72175caf794e84fabc12bae5d4e6b4, type: 3}
   - enemies:

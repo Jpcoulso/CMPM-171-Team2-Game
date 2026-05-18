@@ -19,6 +19,8 @@ public class SquadManager : MonoBehaviour
             return;
         }
         Instance = this;
+        // Squad details persist
+        DontDestroyOnLoad(gameObject);
     }
 
     public void AddHero(Hero newHero)

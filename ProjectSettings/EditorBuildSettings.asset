@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CharacterMovement.unity
     guid: a51d0a29952d09743a443cd2236a055f
+  - enabled: 1
+    path: Assets/Scenes/Armory.unity
+    guid: 1710f16bfbc807a449ec7acd46b4f4f0
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

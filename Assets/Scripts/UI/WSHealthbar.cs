@@ -16,12 +16,10 @@ public class WSHealthBar : MonoBehaviour
 
     void LateUpdate()
     {
-        Debug.Log($"Updating health bar for {character.GetCharacterName()}: {character.CurrentHealth}/{character.MaxHealth}");
         float parentScaleX = character.transform.localScale.x;
         transform.localScale = new Vector3(
         Mathf.Sign(parentScaleX) / Mathf.Abs(parentScaleX), 1f, 1f);
         float pct = character.CurrentHealth / character.MaxHealth;
         fill.rectTransform.sizeDelta = new Vector2(pct * fullWidth, fill.rectTransform.sizeDelta.y);
-        Debug.Log($"Health bar fill amount: {fill.fillAmount}");
     }
 }

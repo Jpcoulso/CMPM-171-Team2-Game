@@ -46,6 +46,26 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(InitializeCombat());
     }
+    // Used for buttons to access
+    public void LoadScene(string sceneName)
+    {
+        LoadScene(sceneName, false);
+    }
+    // Overload for when we want to carry over health values
+    public void LoadScene(string sceneName, bool carryOverHealth = false)
+    {
+        if (carryOverHealth)
+        {
+            var squad = SquadManager.Instance.GetSquad();
+            savedHealth = new float[squad.Count];
+            for (int i = 0; i < squad.Count; i++)
+            {
+                savedHealth[i] = squad[i].CurrentHealth;
+            }
+        }
+        else { savedHealth = null; }
+        SceneManager.LoadScene(sceneName);
+    }
     private IEnumerator InitializeCombat()
     {
         // Wait a frame to ensure everything is initialized
