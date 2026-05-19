@@ -29,6 +29,9 @@ public abstract class Character : MonoBehaviour
     public bool IsDead => isDead;
     public Character Target => currentTarget;
 
+    // When true, the state machine is paused (used during knockback, stuns, etc.)
+    [HideInInspector] public bool isKnockedBack = false;
+
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in
     public abstract float MaxHealth {get;}
@@ -46,6 +49,7 @@ public abstract class Character : MonoBehaviour
     }
     protected virtual void FixedUpdate()
     {
+        if (isKnockedBack) return; // pause state machine during knockback
         UpdateState();
         ExcecuteState();
     }
