@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Mage
   portrait: {fileID: 6553531705054865064, guid: 5a1758ccaf7c647adbb97faf3c90fcd9, type: 3}
+  spriteTint: {r: 0.3962264, g: 0.3943574, b: 0.3946689, a: 1}
   maxHealth: 100
   attackDamage: 30
   attackRange: 7
   attackRate: 4
   moveSpeed: 4
   armor: 7
-  abilities: []
+  abilities:
+  - {fileID: 11400000, guid: cfda93a043a00441898d764e18ef95a9, type: 2}
+  - {fileID: 11400000, guid: 4575ae3d3822d4e639de399b56a017f6, type: 2}
   qName: Ability Q
   qCooldown: 3
   qIcon: {fileID: 0}

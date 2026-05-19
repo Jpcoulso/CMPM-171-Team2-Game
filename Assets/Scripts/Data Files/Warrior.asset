@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20dc9315b1a133c4ebd7bd2ffc52b938, type: 3}
-  m_Name: Paladin
+  m_Name: Warrior
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
-  heroName: Paladin
-  portrait: {fileID: 0}
-  maxHealth: 150
-  attackDamage: 25
-  attackRange: 2
-  attackRate: 2
-  moveSpeed: 3
-  armor: 10
+  heroName: 
+  portrait: {fileID: 6553531705054865064, guid: 5a1758ccaf7c647adbb97faf3c90fcd9, type: 3}
+  maxHealth: 0
+  attackDamage: 0
+  attackRange: 0
+  attackRate: 0
+  moveSpeed: 0
+  armor: 0
   abilities:
-  - {fileID: 11400000, guid: 78d60edb7fe41414bb4cf04fd5565c21, type: 2}
-  - {fileID: 11400000, guid: b65d223a093b84f3db5ef212d57df8bc, type: 2}
+  - {fileID: 11400000, guid: f16ac2472404d4c35af15e278a7b7d38, type: 2}
+  - {fileID: 11400000, guid: 327d24ef98a924badbc1826d7644ec3f, type: 2}
   qName: Ability Q
   qCooldown: 3
   qIcon: {fileID: 0}

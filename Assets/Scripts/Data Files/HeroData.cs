@@ -11,6 +11,7 @@ public class HeroData : ScriptableObject
     [Header("Identity")]
     public string heroName;
     public Sprite portrait;
+    public Color spriteTint = Color.white; // tint the sprite to differentiate classes
 
     [Header("Base Stats")]
     public float maxHealth;

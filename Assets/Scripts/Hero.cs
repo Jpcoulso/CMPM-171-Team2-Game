@@ -46,6 +46,11 @@ public class Hero : Character
         heroData = data;
         currentHealth = (savedHealth > 0f) ? savedHealth : MaxHealth;
         initialized = true;
+
+        // Apply sprite tint early so CharacterSelector.Start() picks it up
+        SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+            sr.color = heroData.spriteTint;
     }
 
     // ─────────────────────────────────────────
