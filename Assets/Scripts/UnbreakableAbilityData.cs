@@ -1,0 +1,35 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+// Every ally becomes immune to all damage for 1 second. 20 second cooldown.
+
+[CreateAssetMenu(fileName = "Unbreakable", menuName = "RPG/Abilities/Unbreakable")]
+public class UnbreakableAbilityData : AbilityData
+{
+    [Header("Unbreakable Settings")]
+    public float immunityDuration = 1f;
+
+    public override void Execute(Character owner)
+    {
+        IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
+
+        int count = 0;
+        foreach (Hero hero in squad)
+        {
+            if (hero == null || hero.IsDead) continue;
+
+            if (hero.isInvulnerable) continue;
+
+            UnbreakableEffect effect = hero.gameObject.AddComponent<UnbreakableEffect>();
+            effect.Initialize(hero, immunityDuration);
+            count++;
+        }
+
+        Debug.Log(owner.GetCharacterName() + " casts Unbreakable! " + count + " allies immune for " + immunityDuration + "s.");
+    }
+
+    public override void ApplyPassive(Character owner)
+    {
+        // Not passive
+    }
+}

@@ -46,6 +46,11 @@ public class Hero : Character
         heroData = data;
         currentHealth = (savedHealth > 0f) ? savedHealth : MaxHealth;
         initialized = true;
+
+        // Apply sprite tint early so CharacterSelector.Start() picks it up
+        SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+            sr.color = heroData.spriteTint;
     }
 
     // ─────────────────────────────────────────
@@ -118,6 +123,13 @@ public class Hero : Character
         }
 
         abilityHandlers[slotIndex].TryActivate();
+    }
+
+    public void ReleaseAbility(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= abilityHandlers.Count) return;
+
+        abilityHandlers[slotIndex].ReleaseCharge();
     }
 
 }

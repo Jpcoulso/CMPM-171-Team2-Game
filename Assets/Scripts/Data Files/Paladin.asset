@@ -23,6 +23,8 @@ MonoBehaviour:
   armor: 10
   abilities:
   - {fileID: 11400000, guid: 3113f12bba27e7247928496a7a476a0f, type: 2}
+  - {fileID: 11400000, guid: 78d60edb7fe41414bb4cf04fd5565c21, type: 2}
+  - {fileID: 11400000, guid: b65d223a093b84f3db5ef212d57df8bc, type: 2}
   qName: Ability Q
   qCooldown: 3
   qIcon: {fileID: 0}

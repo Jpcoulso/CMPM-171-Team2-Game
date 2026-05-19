@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using Unity.VisualScripting;
-using NUnit.Framework.Internal;
 
 public class InputManager : MonoBehaviour
 {
@@ -39,6 +37,56 @@ public class InputManager : MonoBehaviour
         {
             OnRightClick();
         }
+
+        // Ability hotkeys — press to activate (or start charging)
+        if (Keyboard.current.qKey.wasPressedThisFrame)
+        {
+            Debug.Log("Q ability activated");
+            TryUseAbility(0);
+        }
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            Debug.Log("W ability activated");
+            TryUseAbility(1);
+        }
+
+        // Ability hotkeys — release to fire charge abilities
+        if (Keyboard.current.qKey.wasReleasedThisFrame)
+        {
+            TryReleaseAbility(0);
+        }
+        if (Keyboard.current.wKey.wasReleasedThisFrame)
+        {
+            TryReleaseAbility(1);
+        }
+    }
+
+    void TryUseAbility(int slotIndex)
+    {
+        if (SelectionManager.Instance.currentlySelected == null)
+        {
+            Debug.Log("Ability " + slotIndex + " pressed but no unit selected.");
+            return;
+        }
+
+        Hero selectedHero = SelectionManager.Instance.currentlySelected.GetComponent<Hero>();
+        if (selectedHero == null)
+        {
+            Debug.Log("Selected unit is not a Hero.");
+            return;
+        }
+
+        selectedHero.UseAbility(slotIndex);
+    }
+
+    void TryReleaseAbility(int slotIndex)
+    {
+        if (SelectionManager.Instance.currentlySelected == null) return;
+
+        Hero selectedHero = SelectionManager.Instance.currentlySelected.GetComponent<Hero>();
+        if (selectedHero == null) return;
+
+        selectedHero.ReleaseAbility(slotIndex);
     }
 
     void OnRightClick()

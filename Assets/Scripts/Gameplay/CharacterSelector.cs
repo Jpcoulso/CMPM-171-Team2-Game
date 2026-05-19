@@ -6,25 +6,24 @@ using UnityEngine;
 public class CharacterSelector : MonoBehaviour
 {
     [Header("Selection Colors")]
-    [SerializeField] private Color _normalColor = Color.white;
     [SerializeField] private Color _selectedColor = Color.yellow;
     private SpriteRenderer _spriteRenderer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Color _baseTint; // stores the hero's tint so we can restore it on deselect
+
     void Start()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _spriteRenderer.color = _normalColor;
-        
+        // Remember whatever tint the hero already has (set by Hero.Start from HeroData)
+        _baseTint = _spriteRenderer.color;
     }
     public void Select()
     {
         _spriteRenderer.color = _selectedColor;
         Debug.Log(gameObject.name + " selected.");
-        // I think this is where we add code to display UI abilites
     }
     public void Deselect()
     {
-         _spriteRenderer.color = _normalColor;
+        _spriteRenderer.color = _baseTint;
         Debug.Log(gameObject.name + " deselected.");
     }
 }
