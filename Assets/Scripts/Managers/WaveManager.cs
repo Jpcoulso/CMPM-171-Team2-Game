@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
@@ -54,8 +54,12 @@ public class WaveManager : MonoBehaviour
             Debug.Log("All waves completed!");
             // Later: trigger end-of-level rewards, transition to next scene, etc.
             // Add time padding to allow players to collect resources
+            IEnumerator LoadArmoryAfterDelay()
+            {
+                yield return new WaitForSeconds(2f); // 2 seconds delay
+            }
+            LoadArmoryAfterDelay();
             GameManager.Instance.LoadScene("Armory");
-            return;
         }
         StartNextWave();
     }
