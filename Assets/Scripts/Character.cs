@@ -40,6 +40,9 @@ public abstract class Character : MonoBehaviour
     [HideInInspector] public Vector2 shieldDirection;
     [HideInInspector] public float shieldHalfAngle;
 
+    // Invulnerability — set by UnbreakableEffect, blocks ALL damage
+    [HideInInspector] public bool isInvulnerable = false;
+
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in
     public abstract float MaxHealth {get;}
@@ -238,6 +241,7 @@ public abstract class Character : MonoBehaviour
     private void ApplyDamage(float rawAmount)
     {
         if (isDead) return;
+        if (isInvulnerable) return;
 
         // Apply any incoming damage multipliers (e.g. Magic Circle empowerment)
         float amplifiedAmount = rawAmount * incomingDamageMultiplier;
