@@ -246,8 +246,8 @@ public abstract class Character : MonoBehaviour
         // Apply any incoming damage multipliers (e.g. Magic Circle empowerment)
         float amplifiedAmount = rawAmount * incomingDamageMultiplier;
 
-        // Armor reduces incoming damage, minimum of 1
-        float reducedDamage = Mathf.Max(1, amplifiedAmount - GetArmor());
+        // Armor reduces incoming damage, minimum of 5
+        float reducedDamage = Mathf.Max(5, amplifiedAmount - GetArmor());
 
         currentHealth -= reducedDamage;
 
@@ -258,6 +258,12 @@ public abstract class Character : MonoBehaviour
 
         if (currentHealth <= 0)
             Die();
+    }
+
+    public void Heal(float amount)
+    {
+        if (isDead) return;
+        currentHealth = Mathf.Min(currentHealth + amount, MaxHealth);
     }
 
     protected void Die()
