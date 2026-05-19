@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa909fd49f9a6478f9164a3889f91725, type: 3}
   m_Name: Holy
   m_EditorClassIdentifier: Assembly-CSharp::HolyAbilityData
-  abilityName: 
+  abilityName: Holy
   icon: {fileID: 0}
   isPassive: 0
-  cooldownDuration: 0
+  cooldownDuration: 5
   description: 
   healAmount: 5
   healRadius: 2

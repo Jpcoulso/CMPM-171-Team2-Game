@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2c426a347edb46c185638da5f2b7480, type: 3}
-  m_Name: Unbreakable
-  m_EditorClassIdentifier: Assembly-CSharp::UnbreakableAbilityData
-  abilityName: Unbreakable
+  m_Script: {fileID: 11500000, guid: 1e1ac39c2430d4fc2b9d20355fb8857e, type: 3}
+  m_Name: GuardianAngel
+  m_EditorClassIdentifier: Assembly-CSharp::GuardianAngelAbilityData
+  abilityName: Guardian Angel
   icon: {fileID: 0}
   isPassive: 0
   cooldownDuration: 10
   description: 
-  immunityDuration: 1
+  healAmount: 15
+  targetRadius: 3
+  visualDuration: 0.4

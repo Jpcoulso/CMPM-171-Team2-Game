@@ -21,8 +21,8 @@ MonoBehaviour:
   moveSpeed: 3
   armor: 10
   abilities:
-  - {fileID: 11400000, guid: 327d24ef98a924badbc1826d7644ec3f, type: 2}
-  - {fileID: 11400000, guid: 4575ae3d3822d4e639de399b56a017f6, type: 2}
+  - {fileID: 11400000, guid: 78d60edb7fe41414bb4cf04fd5565c21, type: 2}
+  - {fileID: 11400000, guid: 16821ee4567cf4b988a57ddb387e54ac, type: 2}
   qName: Ability Q
   qCooldown: 3
   qIcon: {fileID: 0}
