@@ -35,6 +35,11 @@ public abstract class Character : MonoBehaviour
     // Damage multiplier applied when this character takes damage (used by Magic Circle, etc.)
     [HideInInspector] public float incomingDamageMultiplier = 1f;
 
+    // Shield state — set by ShieldEffect, checked by TakeDamage
+    [HideInInspector] public bool shieldActive = false;
+    [HideInInspector] public Vector2 shieldDirection;
+    [HideInInspector] public float shieldHalfAngle;
+
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in
     public abstract float MaxHealth {get;}
@@ -204,7 +209,33 @@ public abstract class Character : MonoBehaviour
         animator.SetTrigger("Attack"); // Target.TakeDamage(AttackDamage) gets called from Attack animation event
     }
 
+    // Non-directional damage (abilities, AOE, etc.) — bypasses shield
     public virtual void TakeDamage(float rawAmount)
+    {
+        ApplyDamage(rawAmount);
+    }
+
+    // Directional damage (melee attacks) — can be blocked by shield
+    public virtual void TakeDamage(float rawAmount, Vector3 sourcePosition)
+    {
+        if (isDead) return;
+
+        // Check if shield blocks this attack based on direction
+        if (shieldActive)
+        {
+            Vector2 toSource = ((Vector2)(sourcePosition - transform.position)).normalized;
+            float angle = Vector2.Angle(shieldDirection, toSource);
+            if (angle <= shieldHalfAngle)
+            {
+                Debug.Log(GetCharacterName() + " blocked damage with shield!");
+                return;
+            }
+        }
+
+        ApplyDamage(rawAmount);
+    }
+
+    private void ApplyDamage(float rawAmount)
     {
         if (isDead) return;
 
@@ -216,7 +247,6 @@ public abstract class Character : MonoBehaviour
 
         currentHealth -= reducedDamage;
 
-        // Log for now — later this updates your UI health bar
         Debug.Log($"{GetCharacterName()} took {reducedDamage} damage. " +
                   $"HP: {currentHealth}/{MaxHealth}");
 

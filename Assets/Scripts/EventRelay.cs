@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 // This script sits on the child (same object as the Animator)
 public class AnimationEventRelay : MonoBehaviour
@@ -12,10 +10,10 @@ public class AnimationEventRelay : MonoBehaviour
         parent = GetComponentInParent<Character>();
     }
 
-    // Animation Event calls this
+    // Animation Event calls this — passes attacker position so shields can block directionally
     void OnAttackLand()
     {
-        parent.Target.TakeDamage(parent.AttackDamage);
+        parent.Target.TakeDamage(parent.AttackDamage, parent.transform.position);
     }
 
     void OnDeath()

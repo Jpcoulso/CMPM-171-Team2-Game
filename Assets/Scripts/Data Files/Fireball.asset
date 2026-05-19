@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c549b94bb17344e689cfc5dc1b92f676, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: Assembly-CSharp::FireballAbilityData
-  abilityName: 
+  abilityName: Fireball
   icon: {fileID: 0}
   isPassive: 0
-  cooldownDuration: 0
-  description: 
+  cooldownDuration: 7
+  description: 'fireball
+
+'
   minDamage: 30
   maxDamage: 150
   minRadius: 0.5

@@ -9,14 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e094926b3798d42b58714d50c0ef312d, type: 3}
-  m_Name: MagicCircle
-  m_EditorClassIdentifier: Assembly-CSharp::MagicCircleAbilityData
-  abilityName: Magic Circle
+  m_Script: {fileID: 11500000, guid: 1fcd0b330d4c746ebbae5a0cb615d13e, type: 3}
+  m_Name: ShieldUp
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldAbilityData
+  abilityName: Shield Up
   icon: {fileID: 0}
   isPassive: 0
-  cooldownDuration: 20
+  cooldownDuration: 3
   description: 
-  circleRadius: 2.5
-  damageMultiplier: 2
-  circleDuration: 10
+  shieldDuration: 2
+  shieldWidth: 2
+  shieldThickness: 0.12
+  shieldArc: 120
+  shieldOffset: 0.8
