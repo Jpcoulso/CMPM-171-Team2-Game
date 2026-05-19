@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickup
   type: 0
-  goldAmount: 1
+  goldAmount: 0
 --- !u!1 &8743355511145413137
 GameObject:
   m_ObjectHideFlags: 0

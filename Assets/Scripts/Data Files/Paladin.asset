@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Paladin
   portrait: {fileID: 0}
+  heroPrefab: {fileID: 7319790041399186543, guid: d5703229545bc0044a46b3b510ace51b, type: 3}
   maxHealth: 150
   attackDamage: 25
   attackRange: 2
@@ -22,3 +23,6 @@ MonoBehaviour:
   armor: 10
   abilities:
   - {fileID: 11400000, guid: 3113f12bba27e7247928496a7a476a0f, type: 2}
+  qName: Ability Q
+  qCooldown: 3
+  qIcon: {fileID: 0}

@@ -7,7 +7,8 @@ using NUnit.Framework.Internal;
 public class InputManager : MonoBehaviour
 {
     //[SerializeField] private InputActionAsset actions;
-    [SerializeField] private ClickIndicator clickIndicatorPrefab; // Prefab for the click indicator
+    [SerializeField] private ClickIndicator clickIndicatorPrefab;
+    private ClickIndicator clickIndicator;
     private InputAction RightClick;
     private InputAction LeftClick;
     private InputAction Stop;
@@ -26,6 +27,7 @@ public class InputManager : MonoBehaviour
                 return;
             }
         Instance = this;
+        clickIndicator = Instantiate(clickIndicatorPrefab);
     }
     void Update()
     {
@@ -132,7 +134,6 @@ public class InputManager : MonoBehaviour
 
     private void SpawnIndicator(Vector3 position, bool isEnemy)
     {
-        ClickIndicator indicator = Instantiate(clickIndicatorPrefab, position, Quaternion.identity);
-        indicator.SetColor(isEnemy); // Set color based on whether it's an enemy or not
+        clickIndicator.Show(position, isEnemy);
     }
 }

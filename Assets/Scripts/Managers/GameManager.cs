@@ -12,8 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private HeroData startingHero;
 
     [Header("Spawning")]
-    [SerializeField] private GameObject heroPrefab;
-    [SerializeField] private Transform[] heroSpawns;
+    private Transform[] heroSpawns;
 
     [Header("Dev Tools")]
     [SerializeField] public int currentGold = 0;
@@ -44,7 +43,18 @@ public class GameManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(InitializeCombat());
+        HeroSpawnPoint[] spawns = FindObjectsByType<HeroSpawnPoint>(FindObjectsSortMode.None);
+        if (spawns == null || spawns.Length == 0)
+        {
+            Debug.LogWarning("No hero spawn points found in scene!");
+            return;
+        }
+        heroSpawns = new Transform[spawns.Length];
+        for (int i = 0; i < spawns.Length; i++)
+        {
+            heroSpawns[i] = spawns[i].transform;
+        }
+        if (heroSpawns.Length > 0) { StartCoroutine(InitializeCombat()); }
     }
     // Used for buttons to access
     public void LoadScene(string sceneName)
@@ -83,29 +93,28 @@ public class GameManager : MonoBehaviour
     }
     private void SpawnHeroes()
     {
-        if (heroPrefab == null || heroSpawns == null || heroSpawns.Length == 0)
+        if (heroSpawns == null || heroSpawns.Length == 0)
         {
-            Debug.LogError("Hero prefab or spawn points not set!");
+            Debug.LogError("No hero spawn points found!");
             return;
         }
         int spawnCount = Mathf.Min(partyData.Length, heroSpawns.Length);
         for (int i = 0; i < spawnCount; i++)
         {
-            if (partyData[i] != null)
+            if (partyData[i] == null) continue; // skip existing heroes in party
+            if (partyData[i].heroPrefab == null)
             {
-                if (partyData[i] == null) continue; // skip empty slots
-                Transform spawnPoint = heroSpawns[i];
-                GameObject heroGO = Instantiate(heroPrefab, spawnPoint.position, Quaternion.identity);
-                Hero hero = heroGO.GetComponent<Hero>();
-                if (hero != null)
-                {
-                        // If we have saved HP for this slot, pass it in; otherwise full health (0 = use max)
-                    float savedHP = (savedHealth != null && i < savedHealth.Length) ? savedHealth[i] : 0f;
-                    hero.Init(partyData[i], savedHP);
-                } else
-                {
-                    Debug.LogError("Hero prefab missing Hero component!");
-                }
+                Debug.LogError($"Hero {partyData[i].heroName} has no prefab assigned!");
+                continue;
+            }
+            GameObject heroGO = Instantiate(partyData[i].heroPrefab, heroSpawns[i].position, Quaternion.identity);
+            Hero hero = heroGO.GetComponent<Hero>();
+            if (hero != null)
+            {
+                float savedHP = (savedHealth != null && i < savedHealth.Length) ? savedHealth[i] : partyData[i].maxHealth;
+                hero.Init(partyData[i], savedHP);
+            }else {
+                Debug.LogError($"Hero prefab for {partyData[i].heroName} does not have a Hero component!");
             }
         }
     }
