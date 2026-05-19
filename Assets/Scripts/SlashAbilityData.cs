@@ -84,7 +84,7 @@ public class SlashAbilityData : AbilityData
         visual.transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
 
         SpriteRenderer sr = visual.AddComponent<SpriteRenderer>();
-        sr.sprite = CreateCrescentSprite(64);
+        sr.sprite = AbilitySpriteCache.GetCrescent(64, innerRadius / slashRadius, arcAngle * 0.5f);
         sr.color = new Color(1f, 0.25f, 0.2f, 0.65f); // semi-transparent red-orange
         sr.sortingLayerName = "Foreground";
         sr.sortingOrder = 999;
@@ -95,44 +95,4 @@ public class SlashAbilityData : AbilityData
         Object.Destroy(visual, visualDuration);
     }
 
-    private Sprite CreateCrescentSprite(int size)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        Color[] pixels = new Color[size * size];
-
-        float center = size * 0.5f;
-        float outerR = center;
-        float innerR = (innerRadius / slashRadius) * center;
-        float halfArcRad = arcAngle * 0.5f * Mathf.Deg2Rad;
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float dx = x - center + 0.5f;
-                float dy = y - center + 0.5f;
-                float dist = Mathf.Sqrt(dx * dx + dy * dy);
-
-                // Check if pixel is in the ring between inner and outer radius
-                bool inRing = dist >= innerR && dist <= outerR;
-
-                // Check if pixel is within the arc angle (centered on the right / 0 degrees)
-                float pixelAngle = Mathf.Abs(Mathf.Atan2(dy, dx));
-                bool inArc = pixelAngle <= halfArcRad;
-
-                pixels[y * size + x] = (inRing && inArc) ? Color.white : Color.clear;
-            }
-        }
-
-        tex.SetPixels(pixels);
-        tex.filterMode = FilterMode.Bilinear;
-        tex.Apply();
-
-        return Sprite.Create(
-            tex,
-            new Rect(0, 0, size, size),
-            new Vector2(0.5f, 0.5f),
-            size
-        );
-    }
 }

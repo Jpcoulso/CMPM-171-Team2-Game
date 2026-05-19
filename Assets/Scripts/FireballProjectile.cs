@@ -73,7 +73,7 @@ public class FireballProjectile : MonoBehaviour
         explosion.transform.position = transform.position;
 
         SpriteRenderer sr = explosion.AddComponent<SpriteRenderer>();
-        sr.sprite = CreateCircleSprite(64);
+        sr.sprite = AbilitySpriteCache.GetCircle(64);
         sr.color = new Color(1f, 0.4f, 0f, 0.55f); //orange
         sr.sortingLayerName = "Foreground";
         sr.sortingOrder = 999;
@@ -84,27 +84,4 @@ public class FireballProjectile : MonoBehaviour
         Destroy(explosion, 0.35f);
     }
 
-    private Sprite CreateCircleSprite(int size)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        Color[] pixels = new Color[size * size];
-        float center = size * 0.5f;
-        float radiusSq = center * center;
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float dx = x - center + 0.5f;
-                float dy = y - center + 0.5f;
-                pixels[y * size + x] = (dx * dx + dy * dy <= radiusSq) ? Color.white : Color.clear;
-            }
-        }
-
-        tex.SetPixels(pixels);
-        tex.filterMode = FilterMode.Bilinear;
-        tex.Apply();
-
-        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
-    }
 }

@@ -32,6 +32,9 @@ public abstract class Character : MonoBehaviour
     // When true, the state machine is paused (used during knockback, stuns, etc.)
     [HideInInspector] public bool isKnockedBack = false;
 
+    // Damage multiplier applied when this character takes damage (used by Magic Circle, etc.)
+    [HideInInspector] public float incomingDamageMultiplier = 1f;
+
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in
     public abstract float MaxHealth {get;}
@@ -83,7 +86,6 @@ public abstract class Character : MonoBehaviour
                 else if(IsWithinAttackRange())
                 {
                     TransitionToState(CharacterState.Attacking);
-                    Debug.Log("transitioned to attacking!!");
                 }
                 else if(hasDestination == true)
                 {
@@ -206,8 +208,11 @@ public abstract class Character : MonoBehaviour
     {
         if (isDead) return;
 
+        // Apply any incoming damage multipliers (e.g. Magic Circle empowerment)
+        float amplifiedAmount = rawAmount * incomingDamageMultiplier;
+
         // Armor reduces incoming damage, minimum of 1
-        float reducedDamage = Mathf.Max(1, rawAmount - GetArmor());
+        float reducedDamage = Mathf.Max(1, amplifiedAmount - GetArmor());
 
         currentHealth -= reducedDamage;
 

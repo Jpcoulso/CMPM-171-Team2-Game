@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using Unity.VisualScripting;
-using NUnit.Framework.Internal;
 
 public class InputManager : MonoBehaviour
 {

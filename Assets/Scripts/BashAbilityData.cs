@@ -78,7 +78,7 @@ public class BashAbilityData : AbilityData
         visual.transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
 
         SpriteRenderer sr = visual.AddComponent<SpriteRenderer>();
-        sr.sprite = CreateRectSprite(64, 32); // wider than tall, rotated to face cursor
+        sr.sprite = AbilitySpriteCache.GetRect(64, 32); // wider than tall, rotated to face cursor
         sr.color = new Color(1f, 0.6f, 0.15f, 0.65f); // semi-transparent orange
         sr.sortingLayerName = "Foreground";
         sr.sortingOrder = 999;
@@ -88,23 +88,4 @@ public class BashAbilityData : AbilityData
         Object.Destroy(visual, visualDuration);
     }
 
-    private Sprite CreateRectSprite(int width, int height)
-    {
-        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
-        Color[] pixels = new Color[width * height];
-        for (int i = 0; i < pixels.Length; i++)
-        {
-            pixels[i] = Color.white;
-        }
-        tex.SetPixels(pixels);
-        tex.filterMode = FilterMode.Point;
-        tex.Apply();
-
-        return Sprite.Create(
-            tex,
-            new Rect(0, 0, width, height),
-            new Vector2(0.5f, 0.5f),
-            width
-        );
-    }
 }

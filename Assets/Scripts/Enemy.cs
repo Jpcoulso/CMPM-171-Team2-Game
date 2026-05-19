@@ -72,7 +72,6 @@ public class Enemy : Character
         if (closest != null)
         {
             SetTarget(closest);
-            Debug.Log("Enemy found target");
         }
             
     }

@@ -66,7 +66,7 @@ public class FireballAbilityData : AbilityData
         fireball.transform.position = origin;
 
         SpriteRenderer sr = fireball.AddComponent<SpriteRenderer>();
-        sr.sprite = CreateCircleSprite(32);
+        sr.sprite = AbilitySpriteCache.GetCircle(32);
         sr.color = new Color(1f, 0.35f, 0f, 0.9f); // bright orange
         sr.sortingLayerName = "Foreground";
         sr.sortingOrder = 998;
@@ -78,27 +78,4 @@ public class FireballAbilityData : AbilityData
         proj.Initialize(target, projectileSpeed, damage, radius);
     }
 
-    private Sprite CreateCircleSprite(int size)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        Color[] pixels = new Color[size * size];
-        float center = size * 0.5f;
-        float radiusSq = center * center;
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float dx = x - center + 0.5f;
-                float dy = y - center + 0.5f;
-                pixels[y * size + x] = (dx * dx + dy * dy <= radiusSq) ? Color.white : Color.clear;
-            }
-        }
-
-        tex.SetPixels(pixels);
-        tex.filterMode = FilterMode.Bilinear;
-        tex.Apply();
-
-        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
-    }
 }

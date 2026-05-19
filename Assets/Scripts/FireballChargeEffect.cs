@@ -31,7 +31,7 @@ public class FireballChargeEffect : MonoBehaviour
         // Create the ring indicator at the locked position
         indicator = new GameObject("FireballChargeIndicator");
         indicatorSR = indicator.AddComponent<SpriteRenderer>();
-        indicatorSR.sprite = CreateRingSprite(64, 0.8f);
+        indicatorSR.sprite = AbilitySpriteCache.GetRing(64, 0.8f);
         indicatorSR.color = new Color(1f, 0.3f, 0f, 0.7f); // orange
         indicatorSR.sortingLayerName = "Foreground";
         indicatorSR.sortingOrder = 999;
@@ -80,36 +80,4 @@ public class FireballChargeEffect : MonoBehaviour
             Destroy(indicator);
     }
 
-    private Sprite CreateRingSprite(int size, float innerRatio)
-    {
-        Texture2D tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
-        Color[] pixels = new Color[size * size];
-
-        float center = size * 0.5f;
-        float outerR = center;
-        float innerR = center * innerRatio;
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                float dx = x - center + 0.5f;
-                float dy = y - center + 0.5f;
-                float dist = Mathf.Sqrt(dx * dx + dy * dy);
-                bool inRing = dist >= innerR && dist <= outerR;
-                pixels[y * size + x] = inRing ? Color.white : Color.clear;
-            }
-        }
-
-        tex.SetPixels(pixels);
-        tex.filterMode = FilterMode.Bilinear;
-        tex.Apply();
-
-        return Sprite.Create(
-            tex,
-            new Rect(0, 0, size, size),
-            new Vector2(0.5f, 0.5f),
-            size
-        );
-    }
 }
