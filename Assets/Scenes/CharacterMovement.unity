@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c1c4ebe68c7d7244876887a88526acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
-  clickIndicator: {fileID: 0}
+  clickIndicatorPrefab: {fileID: 3949971167267310515, guid: 0622286c8ae2259449a9f03622dcd39d, type: 3}
 --- !u!4 &85728769
 Transform:
   m_ObjectHideFlags: 0
@@ -3939,7 +3939,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4afb1d82574a7894abdce5048b5701c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  currentlySelected: {fileID: 0}
 --- !u!1 &1075014425
 GameObject:
   m_ObjectHideFlags: 0
