@@ -37,6 +37,36 @@ public class InputManager : MonoBehaviour
         {
             OnRightClick();
         }
+
+        // Ability hotkeys
+        if (Keyboard.current.qKey.wasPressedThisFrame)
+        {
+            Debug.Log("Q ability activated");
+            TryUseAbility(0);
+        }
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            Debug.Log("W ability activated");
+            TryUseAbility(1);
+        }
+    }
+
+    void TryUseAbility(int slotIndex)
+    {
+        if (SelectionManager.Instance.currentlySelected == null)
+        {
+            Debug.Log("Ability " + slotIndex + " pressed but no unit selected.");
+            return;
+        }
+
+        Hero selectedHero = SelectionManager.Instance.currentlySelected.GetComponent<Hero>();
+        if (selectedHero == null)
+        {
+            Debug.Log("Selected unit is not a Hero.");
+            return;
+        }
+
+        selectedHero.UseAbility(slotIndex);
     }
 
     void OnRightClick()
