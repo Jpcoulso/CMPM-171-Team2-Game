@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3550239854985519904}
   - component: {fileID: 5574667540051522970}
   m_Layer: 0
-  m_Name: PlayerUnit
+  m_Name: Archer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -196,7 +196,7 @@ MonoBehaviour:
   shieldDirection: {x: 0, y: 0}
   shieldHalfAngle: 0
   isInvulnerable: 0
-  heroData: {fileID: 0}
+  heroData: {fileID: 11400000, guid: 59dd753b5e9ed5240b2b85c5a6fb434f, type: 2}
 --- !u!50 &5574667540051522970
 Rigidbody2D:
   serializedVersion: 5
