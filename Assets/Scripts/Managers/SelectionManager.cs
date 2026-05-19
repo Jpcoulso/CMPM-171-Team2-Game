@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -10,7 +10,9 @@ public class SelectionManager : MonoBehaviour
         private set;
     }
     
-    public CharacterSelector currentlySelected; // holds a reference to the currently selected character
+    private List<CharacterSelector> selectedCharacters = new List<CharacterSelector>();
+    public IReadOnlyList<CharacterSelector> SelectedCharacters => selectedCharacters;
+    public CharacterSelector currentlySelected => selectedCharacters.Count > 0 ? selectedCharacters[0] : null; // returns the first character in the list or null if list is empty
 
     private void Awake() // ensures there is only ever one instance of SelectionManager
         {
@@ -62,19 +64,28 @@ public class SelectionManager : MonoBehaviour
     // }
     public void SelectCharacter(CharacterSelector newSelection) // used to assign a character to currentlySelected
     {
-        if (newSelection == currentlySelected)
+        foreach (var c in selectedCharacters)
         {
-            return;
+            c.Deselect();
         }
-        currentlySelected?.Deselect();
-        currentlySelected = newSelection;
-        currentlySelected.Select();
+        selectedCharacters.Clear();
+        selectedCharacters.Add(newSelection);
+        newSelection.Select();
+    }
+    public void AddToSelection(CharacterSelector newSelection)
+    {
+        if (!selectedCharacters.Contains(newSelection))
+        {
+            selectedCharacters.Add(newSelection);
+            newSelection.Select();
+        }
     }
     public void SelectCharacter() // used to deselect currently selected character
     {
-        Debug.Log("Deselecting character.");
-        currentlySelected?.Deselect();
-        // Force deselects character by setting currentlySelected to null
-        currentlySelected = null;
+        foreach (var c in selectedCharacters)
+        {
+            c.Deselect();
+        }
+        selectedCharacters.Clear();
     }
 }

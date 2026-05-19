@@ -49,6 +49,14 @@ public class WaveManager : MonoBehaviour
     public void WaveCleared()
     {
         Debug.Log("Wave cleared!");
+        if (currentWave >= waves.Length)
+        {
+            Debug.Log("All waves completed!");
+            // Later: trigger end-of-level rewards, transition to next scene, etc.
+            // Add time padding to allow players to collect resources
+            GameManager.Instance.LoadScene("Armory");
+            return;
+        }
         StartNextWave();
     }
 }

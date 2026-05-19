@@ -7,7 +7,8 @@ using NUnit.Framework.Internal;
 public class InputManager : MonoBehaviour
 {
     //[SerializeField] private InputActionAsset actions;
-    [SerializeField] private ClickIndicator clickIndicatorPrefab; // Prefab for the click indicator
+    [SerializeField] private ClickIndicator clickIndicatorPrefab;
+    private ClickIndicator clickIndicator;
     private InputAction RightClick;
     private InputAction LeftClick;
     private InputAction Stop;
@@ -26,6 +27,7 @@ public class InputManager : MonoBehaviour
                 return;
             }
         Instance = this;
+        clickIndicator = Instantiate(clickIndicatorPrefab);
     }
     void Update()
     {
@@ -108,13 +110,11 @@ public class InputManager : MonoBehaviour
     void OnLeftClick()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Debug.Log("Left Click at: " + mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
         // Check if we hit anything
         if (hit.collider == null)
         {
-            Debug.Log("Left Click hit nothing.");
             SelectionManager.Instance.SelectCharacter(); // Deselect if we click on empty space
             return;
         }
@@ -122,7 +122,16 @@ public class InputManager : MonoBehaviour
         CharacterSelector clickedCharacter = hit.collider.GetComponent<CharacterSelector>();
         if (clickedCharacter != null)
         {
-            SelectionManager.Instance.SelectCharacter(clickedCharacter);
+            if (Keyboard.current.leftShiftKey.isPressed || Keyboard.current.ctrlKey.isPressed)
+            {
+                Debug.Log("Pressing shift or control while clicking, adding to selection.");
+                SelectionManager.Instance.AddToSelection(clickedCharacter);
+            }
+            else
+            {
+                Debug.Log("Left-clicked on a character: " + clickedCharacter.gameObject.name);
+                SelectionManager.Instance.SelectCharacter(clickedCharacter);
+            }
         }
         else
         {
@@ -132,7 +141,6 @@ public class InputManager : MonoBehaviour
 
     private void SpawnIndicator(Vector3 position, bool isEnemy)
     {
-        ClickIndicator indicator = Instantiate(clickIndicatorPrefab, position, Quaternion.identity);
-        indicator.SetColor(isEnemy); // Set color based on whether it's an enemy or not
+        clickIndicator.Show(position, isEnemy);
     }
 }

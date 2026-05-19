@@ -27,9 +27,4 @@ public class CharacterSelector : MonoBehaviour
          _spriteRenderer.color = _normalColor;
         Debug.Log(gameObject.name + " deselected.");
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

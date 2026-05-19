@@ -20,4 +20,4 @@ MonoBehaviour:
   moveSpeed: 2
   detectionRange: 10
   experienceReward: 10
-  goldReward: 2
+  goldReward: 10
