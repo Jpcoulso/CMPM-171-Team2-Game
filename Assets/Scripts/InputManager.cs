@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour
             OnRightClick();
         }
 
-        // Ability hotkeys
+        // Ability hotkeys — press to activate (or start charging)
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             Debug.Log("Q ability activated");
@@ -48,6 +48,16 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("W ability activated");
             TryUseAbility(1);
+        }
+
+        // Ability hotkeys — release to fire charge abilities
+        if (Keyboard.current.qKey.wasReleasedThisFrame)
+        {
+            TryReleaseAbility(0);
+        }
+        if (Keyboard.current.wKey.wasReleasedThisFrame)
+        {
+            TryReleaseAbility(1);
         }
     }
 
@@ -67,6 +77,16 @@ public class InputManager : MonoBehaviour
         }
 
         selectedHero.UseAbility(slotIndex);
+    }
+
+    void TryReleaseAbility(int slotIndex)
+    {
+        if (SelectionManager.Instance.currentlySelected == null) return;
+
+        Hero selectedHero = SelectionManager.Instance.currentlySelected.GetComponent<Hero>();
+        if (selectedHero == null) return;
+
+        selectedHero.ReleaseAbility(slotIndex);
     }
 
     void OnRightClick()

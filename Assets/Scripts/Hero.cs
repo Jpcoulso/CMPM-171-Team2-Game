@@ -119,4 +119,11 @@ public class Hero : Character
         abilityHandlers[slotIndex].TryActivate();
     }
 
+    public void ReleaseAbility(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= abilityHandlers.Count) return;
+
+        abilityHandlers[slotIndex].ReleaseCharge();
+    }
+
 }
