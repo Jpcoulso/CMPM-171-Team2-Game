@@ -9,14 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
     guid: 72947c412a79fe64bae9b33a89f78509
   - enabled: 1
-    path: Assets/Scenes/CharacterMovement.unity
-    guid: a51d0a29952d09743a443cd2236a055f
+    path: Assets/Scenes/TutorialScene.unity
+    guid: 766686280eb70724c81074eac929d6ee
   - enabled: 1
     path: Assets/Scenes/Armory.unity
     guid: 1710f16bfbc807a449ec7acd46b4f4f0
   - enabled: 1
-    path: Assets/Scenes/TutorialStage.unity
-    guid: 766686280eb70724c81074eac929d6ee
+    path: Assets/Scenes/CharacterMovement.unity
+    guid: a51d0a29952d09743a443cd2236a055f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
