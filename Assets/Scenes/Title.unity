@@ -258,9 +258,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
-  heroPrefab: {fileID: 0}
-  heroSpawns:
-  - {fileID: 0}
   currentGold: 0
 --- !u!4 &1254758658
 Transform:

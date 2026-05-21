@@ -61,8 +61,14 @@ public class WaveManager : MonoBehaviour
         StartNextWave();
     }
     IEnumerator LoadArmoryAfterDelay()
-            {
-                yield return new WaitForSeconds(2f); // 2 seconds delay
-                GameManager.Instance.LoadScene("Armory");
-            }
+    {
+        yield return new WaitForSeconds(2f); // 2 seconds delay
+        GameManager.Instance.LoadScene("Armory");
+    }
+    IEnumerator LoadNextWaveAfterDelay()
+    {
+        // Could add some UI feedback here, e.g., "Next wave in 3...2...1..."
+        yield return new WaitForSeconds(2f); // 2 seconds delay
+        StartNextWave();
+    }
 }
