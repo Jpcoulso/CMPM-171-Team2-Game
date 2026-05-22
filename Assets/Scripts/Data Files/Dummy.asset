@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dummy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Goblin
-  maxHealth: 100
+  maxHealth: 1000
   attackDamage: 0
   attackRange: 0
   attackRate: 0
