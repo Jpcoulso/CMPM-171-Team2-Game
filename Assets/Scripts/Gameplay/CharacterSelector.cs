@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))] //required for OnMouseDown to work
@@ -19,6 +20,7 @@ public class CharacterSelector : MonoBehaviour
     public void Select()
     {
         _spriteRenderer.color = _selectedColor;
+        
         Debug.Log(gameObject.name + " selected.");
     }
     public void Deselect()
