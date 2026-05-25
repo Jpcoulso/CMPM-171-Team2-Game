@@ -105,10 +105,10 @@ public class Hero : Character
 
     protected override void OnDeath()
     {
-        // Later: ~~notify SquadManager~~, play death animation,
-        // disable movement, etc.
         Debug.Log($"{GetCharacterName()} has fallen in battle!");
         SquadManager.Instance.Removehero(this);
+        // Death animation before removing (?)
+        Destroy(gameObject);
     }
 
 
