@@ -11,6 +11,7 @@ public class WaveManager : MonoBehaviour
     }
     private int enemiesRemaining;
     private int currentWave = 0;
+    private int spawnIndex = 0;
 
     private void Awake()
     {
@@ -30,8 +31,10 @@ public class WaveManager : MonoBehaviour
         
         foreach (GameObject enemyPrefab in wave.enemies)
         {
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            // Spawns on spawnpoints in sequence, wrapping back on overflow
+            Transform spawnPoint = spawnPoints[spawnIndex % spawnPoints.Length];
             Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+            spawnIndex++;
         }
         
     }
@@ -58,7 +61,7 @@ public class WaveManager : MonoBehaviour
             return;
             
         }
-        StartNextWave();
+        ScreenText.Instance.ShowCountdown($"Wave {currentWave + 1} in", 3, StartNextWave);
     }
     IEnumerator LoadArmoryAfterDelay()
     {
