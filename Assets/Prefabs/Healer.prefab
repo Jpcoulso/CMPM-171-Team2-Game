@@ -137,7 +137,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 615487247393335348, guid: da3e83c8301d795498a417496528248c, type: 3}
       propertyPath: m_Name
-      value: Healer 1
+      value: Healer
       objectReference: {fileID: 0}
     - target: {fileID: 3550239854985519904, guid: da3e83c8301d795498a417496528248c, type: 3}
       propertyPath: heroData
@@ -181,6 +181,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5722606438267270607, guid: da3e83c8301d795498a417496528248c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539333026889894309, guid: da3e83c8301d795498a417496528248c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
