@@ -196,7 +196,7 @@ MonoBehaviour:
   partyData:
   - {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   - {fileID: 11400000, guid: 59dd753b5e9ed5240b2b85c5a6fb434f, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: e3a2eca594e8c487d98c04d9dbaaa5c3, type: 2}
   - {fileID: 0}
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   currentGold: 0

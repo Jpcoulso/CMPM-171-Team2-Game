@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Healer
   portrait: {fileID: 6553531705054865064, guid: 5a1758ccaf7c647adbb97faf3c90fcd9, type: 3}
-  spriteTint: {r: 1, g: 0, b: 0, a: 1}
+  heroPrefab: {fileID: 615487247393335348, guid: 2697bccf7bae7f3428497033ab978cc8, type: 3}
+  spriteTint: {r: 1, g: 1, b: 1, a: 1}
   maxHealth: 100
   attackDamage: 5
   attackRange: 5
-  attackRate: 3
+  attackRate: 1
   moveSpeed: 5
   armor: 60
   abilities:
