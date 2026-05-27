@@ -19,7 +19,7 @@ MonoBehaviour:
   maxHealth: 100
   attackDamage: 5
   attackRange: 5
-  attackRate: 1
+  attackRate: 2
   moveSpeed: 5
   armor: 60
   abilities:

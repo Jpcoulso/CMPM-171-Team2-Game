@@ -197,7 +197,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   - {fileID: 11400000, guid: 59dd753b5e9ed5240b2b85c5a6fb434f, type: 2}
   - {fileID: 11400000, guid: e3a2eca594e8c487d98c04d9dbaaa5c3, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 376c1f677d49846edadfb589e4719fc0, type: 2}
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   currentGold: 0
 --- !u!4 &122738909
@@ -768,7 +768,7 @@ GameObject:
   - component: {fileID: 895322043}
   - component: {fileID: 895322042}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: BloodDesertBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
