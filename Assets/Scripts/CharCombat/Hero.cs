@@ -72,7 +72,10 @@ public class Hero : Character
                   $"HP: {currentHealth} | ATK: {AttackDamage} | Armor: {GetArmor()}");
         
         // Hero registers itself with the SquadManager on scene load
-        SquadManager.Instance.AddHero(this);
+        if(SquadManager.Instance != null)
+        {
+            SquadManager.Instance.AddHero(this);
+        }
     }
 
     private void InitializeAbilities()
