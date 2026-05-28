@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -97,9 +98,11 @@ public class TutorialManager : MonoBehaviour
                 if (FetchInput()) { NextStep(); }
                 break;
             case 7:
-                // abiity checks
+                // replace with abiity checks
+                if (FetchInput()) { NextStep(); }
                 break;
             default:
+                if (FetchInput()) { NextStep(); }
                 break;
         }
     }
@@ -119,7 +122,8 @@ public class TutorialManager : MonoBehaviour
         if (currentStep >= tutorialSteps.Length)
         {
             Debug.Log("Tutorial complete!");
-            SceneManager.LoadScene("Armory");
+            setTutorialText("That's all!\nGood Luck!", 36);
+            StartCoroutine(LoadSceneAfterDelay("Map", 2f));
             return;
         }
         ProgressTutorial(currentStep);
@@ -138,5 +142,10 @@ public class TutorialManager : MonoBehaviour
     {
         if (destination == null || trainingHero == null) return false;
         return Vector2.Distance(trainingHero.transform.position, destination.transform.position) < 1f;
+    }
+    IEnumerator LoadSceneAfterDelay(string scene, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        GameManager.Instance.LoadScene(scene);
     }
 }
