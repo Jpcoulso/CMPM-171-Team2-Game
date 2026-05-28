@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 8235348978367156996}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.288, y: 0.636, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalPosition: {x: -0.146, y: 0.369, z: 0}
+  m_LocalScale: {x: 2.2480001, y: 2.2480001, z: 0.4496}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 711303423749477104}
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5003319396765349490, guid: 94c9e48da613b7b4a99564979f24a344, type: 3}
+  m_Sprite: {fileID: 5352286359449648278, guid: 635168556c5497d429da9cfa718aae4b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +103,7 @@ Animator:
   m_GameObject: {fileID: 8235348978367156996}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b16234fa24767784589357ce8d43e606, type: 2}
+  m_Controller: {fileID: 22100000, guid: ee6993b854f2de94aba87a5cfadf0077, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -177,7 +177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1982711166478256142, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_Name
-      value: Goblin
+      value: Bat
       objectReference: {fileID: 0}
     - target: {fileID: 3286195431679566111, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
