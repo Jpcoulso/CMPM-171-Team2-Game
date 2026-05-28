@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5352286359449648278, guid: 635168556c5497d429da9cfa718aae4b, type: 3}
+  m_Sprite: {fileID: 4723107735738678597, guid: 271d98055a957da4e9f9c890e28c012a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,7 +103,7 @@ Animator:
   m_GameObject: {fileID: 8235348978367156996}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: ee6993b854f2de94aba87a5cfadf0077, type: 2}
+  m_Controller: {fileID: 22100000, guid: b815b21af450c2342ad4f0336de1790e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 731450815971908004, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.009
+      value: -0.018
       objectReference: {fileID: 0}
     - target: {fileID: 731450815971908004, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_LocalPosition.z
@@ -177,7 +177,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1982711166478256142, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_Name
-      value: Bat
+      value: Skeleton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286195431679566111, guid: 50c755051804aab45a84025481d72570, type: 3}
+      propertyPath: m_Size.y
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 3286195431679566111, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
@@ -194,7 +198,7 @@ PrefabInstance:
     - target: {fileID: 5115135388619578378, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: enemyData
       value: 
-      objectReference: {fileID: 11400000, guid: 5186603852821394498f3808033bed4d, type: 2}
+      objectReference: {fileID: 11400000, guid: 08135ec242a630a4aac05475c88b8840, type: 2}
     - target: {fileID: 5115135388619578378, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: goldPrefab
       value: 
