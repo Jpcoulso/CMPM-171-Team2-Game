@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GuardianAngel
   m_EditorClassIdentifier: Assembly-CSharp::GuardianAngelAbilityData
   abilityName: Guardian Angel
-  icon: {fileID: 0}
+  icon: {fileID: -2901091756283665209, guid: 4889df580d6984e99b14bbd8d6f245ad, type: 3}
   isPassive: 0
   cooldownDuration: 10
   description: 

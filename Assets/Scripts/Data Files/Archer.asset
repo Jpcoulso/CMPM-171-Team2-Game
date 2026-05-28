@@ -22,7 +22,9 @@ MonoBehaviour:
   attackRate: 1
   moveSpeed: 3
   armor: 5
-  abilities: []
+  abilities:
+  - {fileID: 11400000, guid: d52943c6b3ccb47c58984e490a09cf53, type: 2}
+  - {fileID: 0}
   qName: Ability Q
   qCooldown: 3
   qIcon: {fileID: 0}

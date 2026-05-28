@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Healer
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Healer
-  portrait: {fileID: 6553531705054865064, guid: 5a1758ccaf7c647adbb97faf3c90fcd9, type: 3}
+  portrait: {fileID: -5905127273578946525, guid: 64ab908a5a4c54401b8cebdef3f31a98, type: 3}
   heroPrefab: {fileID: 615487247393335348, guid: 2697bccf7bae7f3428497033ab978cc8, type: 3}
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   maxHealth: 100

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShieldUp
   m_EditorClassIdentifier: Assembly-CSharp::ShieldAbilityData
   abilityName: Shield Up
-  icon: {fileID: 0}
+  icon: {fileID: 8944711535239673474, guid: 50692a77afdbe4f028bc7a77e9033b72, type: 3}
   isPassive: 0
   cooldownDuration: 3
   description: 

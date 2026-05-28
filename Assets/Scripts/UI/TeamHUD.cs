@@ -1,20 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
-// Displays 3 unit frames at the top-center of the screen.
+// Displays 4 unit frames at the top-center of the screen.
 // Each frame: icon (left) | name + 4 ability slots (right).
 // Uses Unity layout groups so everything spaces correctly.
 //
 // Drop on any GameObject. Builds its own Canvas at runtime.
 public class TeamHUD : MonoBehaviour
 {
-    private UnitFrameUI[] unitFrames = new UnitFrameUI[3];
-    private Character[] trackedUnits = new Character[3];
+    private UnitFrameUI[] unitFrames = new UnitFrameUI[4];
+    private Character[] trackedUnits = new Character[4];
 
-    // Sizing — scaled up ~1.5x from original
-    private const float FrameWidth = 510f;
-    private const float FrameHeight = 144f;
+    // Sizing — scaled to fit 4 frames across 1920px
+    private const float FrameWidth = 440f;
+    private const float FrameHeight = 134f;
     private const float Pad = 10f;
     private const float IconSize = 84f;
     private const float AbilitySize = 64f;
@@ -27,8 +28,8 @@ public class TeamHUD : MonoBehaviour
     private static readonly Color IconBG = new Color(0.16f, 0.16f, 0.2f, 1f);
     private static readonly Color IconSymCol = new Color(0.65f, 0.7f, 0.8f, 1f);
     private static readonly Color NameCol = new Color(0.92f, 0.92f, 0.92f, 1f);
-    private static readonly Color AbReadyBG = new Color(0.18f, 0.22f, 0.3f, 1f);
-    private static readonly Color AbCoolBG = new Color(0.06f, 0.06f, 0.06f, 0.92f);
+    private static readonly Color AbReadyBG = new Color(0.35f, 0.4f, 0.5f, 1f);
+    private static readonly Color AbCoolBG = new Color(0.12f, 0.12f, 0.14f, 0.92f);
     private static readonly Color AbBorderCol = new Color(0.3f, 0.3f, 0.35f, 0.5f);
     private static readonly Color KeyCol = new Color(0.92f, 0.85f, 0.35f, 1f);
     private static readonly Color CDTextCol = new Color(1f, 1f, 1f, 0.95f);
@@ -42,20 +43,32 @@ public class TeamHUD : MonoBehaviour
         { "⚔", "☠", "⚡", "⭐" },
         { "☄", "❄", "⚛", "☀" },
         { "➳", "◆", "⇨", "☂" },
+        { "✚", "♦", "⚘", "☽" },
     };
-    private static readonly string[] IconSymbols = { "♣", "♥", "♠" };
+    private static readonly string[] IconSymbols = { "♣", "♥", "♠", "♦" };
 
     void Awake() { BuildUI(); }
-    void Start() { RefreshUnitList(); }
+    void Start() { StartCoroutine(WaitForHeroes()); }
+
+    // Heroes spawn a frame or two after scene load — retry a few times then stop
+    private IEnumerator WaitForHeroes()
+    {
+        for (int attempt = 0; attempt < 10; attempt++)
+        {
+            RefreshUnitList();
+            if (trackedUnits[0] != null) yield break; // found at least one
+            yield return null; // wait one frame
+        }
+    }
 
     void Update()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (unitFrames[i] == null) continue;
 
             if (trackedUnits[i] == null)
-            { 
+            {
                 unitFrames[i].SetEmpty();
                 continue;
             }
@@ -79,7 +92,7 @@ public class TeamHUD : MonoBehaviour
     public void RefreshUnitList()
     {
         CharacterSelector[] all = FindObjectsByType<CharacterSelector>(FindObjectsSortMode.None);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (unitFrames[i] == null) continue;
 
@@ -136,7 +149,7 @@ public class TeamHUD : MonoBehaviour
         rowFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         rowFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
             unitFrames[i] = CreateUnitFrame(row.transform, i);
     }
 
@@ -194,9 +207,7 @@ public class TeamHUD : MonoBehaviour
         float abRowWidth = (abSlotFull * 4) + (4f * 3); // 4 slots + 3 gaps
         float abBottom = Pad;
 
-        // Modifier label width — shift ability row right on units 2 & 3
-        float modLabelWidth = (idx == 1 || idx == 2) ? 52f : 0f;
-        float abRowLeft = contentLeft + modLabelWidth;
+        float abRowLeft = contentLeft;
 
         // Use an HLG only for the ability row — it's simple enough
         var abRow = new GameObject("AbilityRow");
@@ -214,21 +225,6 @@ public class TeamHUD : MonoBehaviour
         abHLG.childControlHeight = false;
         abHLG.childForceExpandWidth = false;
         abHLG.childForceExpandHeight = false;
-
-        // Modifier label for unit 2 (SHIFT+) and unit 3 (CTRL+)
-        if (idx == 1 || idx == 2)
-        {
-            string modLabel = idx == 1 ? "SHIFT+" : "CTRL+";
-            var modGO = MakeText(frameGO.transform, "ModLabel", modLabel, 14, TextAnchor.MiddleCenter, KeyCol);
-            var modRT = modGO.GetComponent<RectTransform>();
-            modRT.anchorMin = new Vector2(0f, 0f);
-            modRT.anchorMax = new Vector2(0f, 0f);
-            modRT.pivot = new Vector2(0.5f, 0.5f);
-            // Centered in the gap between icon and ability row
-            modRT.anchoredPosition = new Vector2(contentLeft + modLabelWidth * 0.5f, abBottom + abSlotFull * 0.5f);
-            modRT.sizeDelta = new Vector2(modLabelWidth, 14f);
-            modGO.GetComponent<Text>().fontStyle = FontStyle.Bold;
-        }
 
         string[] keys = { "Q", "W", "E", "R" };
         for (int s = 0; s < 4; s++)
@@ -268,7 +264,7 @@ public class TeamHUD : MonoBehaviour
         slot.iconImage = iconImg;
 
         // Symbol
-        string sym = AbSymbols[unitIdx % 3, slotIdx];
+        string sym = AbSymbols[unitIdx % 4, slotIdx];
         var symGO = MakeText(bgGO.transform, "Sym", sym, 28, TextAnchor.MiddleCenter, SymReady);
         Stretch(symGO);
         symGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 2f);
@@ -391,6 +387,8 @@ public class TeamHUD : MonoBehaviour
                 cooldownOverlay.fillAmount = 0f;
                 cooldownText.text = "";
                 symbolText.color = SymReady;
+                if (iconImage != null && iconImage.enabled)
+                    iconImage.color = Color.white; // full brightness when ready
             }
             else
             {
@@ -400,6 +398,8 @@ public class TeamHUD : MonoBehaviour
                 float r = handler.CooldownTimer;
                 cooldownText.text = r >= 10f ? Mathf.CeilToInt(r).ToString() : r.ToString("F1");
                 symbolText.color = SymCool;
+                if (iconImage != null && iconImage.enabled)
+                    iconImage.color = new Color(0.4f, 0.4f, 0.4f, 1f); // dimmed on cooldown
             }
         }
     }

@@ -44,6 +44,7 @@ public abstract class Character : MonoBehaviour
     [HideInInspector] public bool isInvulnerable = false;
 
 
+
     // abstract properties, when a subclass inherits from this class they MUST fill these in
     public abstract float MaxHealth {get;}
     public abstract float AttackDamage {get;}
