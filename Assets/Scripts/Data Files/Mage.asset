@@ -18,7 +18,7 @@ MonoBehaviour:
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   maxHealth: 100
   attackDamage: 30
-  attackRange: 7
+  attackRange: 100
   attackRate: 2
   moveSpeed: 4
   armor: 7

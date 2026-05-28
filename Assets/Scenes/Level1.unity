@@ -1190,18 +1190,18 @@ MonoBehaviour:
   - {fileID: 421440121}
   waves:
   - enemies:
-    - {fileID: 1764757225262580570, guid: 8a21b7ccef478de47aeeb5f10eff30cb, type: 3}
-    - {fileID: 1764757225262580570, guid: 6f241feea47582a46a46d3d07bf680b1, type: 3}
+    - {fileID: 1764757225262580570, guid: 56a1ca7fd88cd8b4bb7f0b78b96bc646, type: 3}
+    - {fileID: 1764757225262580570, guid: 57b6b77488ffd16429f256dc858ded4b, type: 3}
   - enemies:
-    - {fileID: 1764757225262580570, guid: 6f241feea47582a46a46d3d07bf680b1, type: 3}
-    - {fileID: 1764757225262580570, guid: 8a21b7ccef478de47aeeb5f10eff30cb, type: 3}
+    - {fileID: 1764757225262580570, guid: 57b6b77488ffd16429f256dc858ded4b, type: 3}
+    - {fileID: 1764757225262580570, guid: 56a1ca7fd88cd8b4bb7f0b78b96bc646, type: 3}
   - enemies:
-    - {fileID: 1764757225262580570, guid: 6f241feea47582a46a46d3d07bf680b1, type: 3}
-    - {fileID: 1764757225262580570, guid: 8a21b7ccef478de47aeeb5f10eff30cb, type: 3}
+    - {fileID: 1764757225262580570, guid: 57b6b77488ffd16429f256dc858ded4b, type: 3}
+    - {fileID: 1764757225262580570, guid: 56a1ca7fd88cd8b4bb7f0b78b96bc646, type: 3}
   - enemies:
-    - {fileID: 1764757225262580570, guid: 6f241feea47582a46a46d3d07bf680b1, type: 3}
-    - {fileID: 1764757225262580570, guid: 8a21b7ccef478de47aeeb5f10eff30cb, type: 3}
---- !u!1 &1648194100
+    - {fileID: 1764757225262580570, guid: 57b6b77488ffd16429f256dc858ded4b, type: 3}
+    - {fileID: 1764757225262580570, guid: 56a1ca7fd88cd8b4bb7f0b78b96bc646, type: 3}
+--- !u!1 &1409745965
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1209,23 +1209,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1648194102}
-  - component: {fileID: 1648194101}
+  - component: {fileID: 1409745967}
+  - component: {fileID: 1409745966}
   m_Layer: 0
-  m_Name: ColosseumBG
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!212 &1648194101
+--- !u!212 &1409745966
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648194100}
+  m_GameObject: {fileID: 1409745965}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -1267,7 +1267,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 6664442352869593994, guid: 743ac1756307e7c4e916afc8cd521a42, type: 3}
+  m_Sprite: {fileID: 2102824077748145207, guid: 98da3bda7d7a5cf49a1268d649394442, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1277,17 +1277,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!4 &1648194102
+--- !u!4 &1409745967
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648194100}
+  m_GameObject: {fileID: 1409745965}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: -0.05, z: 0}
-  m_LocalScale: {x: 1.6221, y: 1.6221, z: 1.6221}
+  m_LocalPosition: {x: -0.01, y: -0.02, z: 0}
+  m_LocalScale: {x: 1.6204, y: 1.6204, z: 1.6204}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1472,4 +1472,4 @@ SceneRoots:
   - {fileID: 85728769}
   - {fileID: 2104311581}
   - {fileID: 122738909}
-  - {fileID: 1648194102}
+  - {fileID: 1409745967}
