@@ -279,7 +279,6 @@ public abstract class Character : MonoBehaviour
     
     protected virtual void OnDamageTaken(float amount)          { }
     protected virtual void OnDeath()                            { }
-    protected virtual void AggroEnemy(Character targetEnemy)    { }
 
     // Subclasses can override these to return
     // their own armor value or name
