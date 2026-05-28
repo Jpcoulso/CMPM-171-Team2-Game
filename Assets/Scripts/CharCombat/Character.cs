@@ -43,6 +43,9 @@ public abstract class Character : MonoBehaviour
     // Invulnerability — set by UnbreakableEffect, blocks ALL damage
     [HideInInspector] public bool isInvulnerable = false;
 
+    // Movement speed multiplier — 1.0 = normal, lower = slower (used by slow effects)
+    [HideInInspector] public float moveSpeedMultiplier = 1f;
+
 
 
     // abstract properties, when a subclass inherits from this class they MUST fill these in
@@ -148,7 +151,7 @@ public abstract class Character : MonoBehaviour
     {
         FaceTarget(position);
         Vector2 direction = ((Vector2)position - rb.position).normalized;
-        rb.MovePosition(rb.position + direction * MoveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + direction * MoveSpeed * moveSpeedMultiplier * Time.fixedDeltaTime);
     }
     protected virtual bool HasReachedDestination()
     {
