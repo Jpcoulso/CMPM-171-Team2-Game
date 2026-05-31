@@ -180,6 +180,10 @@ PrefabInstance:
       value: Skeleton
       objectReference: {fileID: 0}
     - target: {fileID: 3286195431679566111, guid: 50c755051804aab45a84025481d72570, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3286195431679566111, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: m_Size.y
       value: 1.4
       objectReference: {fileID: 0}

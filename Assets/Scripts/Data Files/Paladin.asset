@@ -16,6 +16,7 @@ MonoBehaviour:
   portrait: {fileID: 40565047143345933, guid: f552e5784b05e44ba86270f1e38dd139, type: 3}
   heroPrefab: {fileID: 7319790041399186543, guid: d5703229545bc0044a46b3b510ace51b, type: 3}
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
+  isRanged: 0
   maxHealth: 150
   attackDamage: 25
   attackRange: 2

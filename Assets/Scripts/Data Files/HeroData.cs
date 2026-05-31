@@ -13,6 +13,7 @@ public class HeroData : ScriptableObject
     public Sprite portrait;
     public GameObject heroPrefab; // drag the hero prefab here
     public Color spriteTint = Color.white; // tint the sprite to differentiate classes
+    public bool isRanged;
 
     [Header("Base Stats")]
     public float maxHealth;

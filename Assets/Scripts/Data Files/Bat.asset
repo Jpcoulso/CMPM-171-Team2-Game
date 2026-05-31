@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4ecae7f336d6c4ba9acb943f241566, type: 3}
   m_Name: Bat
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: 
+  enemyName: Bat
+  isRanged: 0
   maxHealth: 100
   attackDamage: 20
   attackRange: 2

@@ -14,6 +14,7 @@ public class Enemy : Character
     public override float MoveSpeed    => enemyData.moveSpeed;
     public override float AttackRange => enemyData.attackRange;
     public override float AttackRate => enemyData.attackRate;
+    public override bool IsRanged => enemyData.isRanged;
 
     public override string GetCharacterName() => enemyData.enemyName;
 

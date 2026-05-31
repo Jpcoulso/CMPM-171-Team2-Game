@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4ecae7f336d6c4ba9acb943f241566, type: 3}
   m_Name: Skeleton
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: 
+  enemyName: Skeleton
+  isRanged: 0
   maxHealth: 100
   attackDamage: 15
   attackRange: 2

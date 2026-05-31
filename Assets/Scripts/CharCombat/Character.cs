@@ -54,6 +54,7 @@ public abstract class Character : MonoBehaviour
     public abstract float MoveSpeed {get;}
     public abstract float AttackRange {get;}
     public abstract float AttackRate {get;}
+    public abstract bool IsRanged {get;}
     protected Vector3 moveDestination;
     protected bool hasDestination;
 
@@ -132,7 +133,8 @@ public abstract class Character : MonoBehaviour
                 break;
             case CharacterState.Chasing:
                 animator.SetBool("isWalking", true);
-                MoveTowards(currentTarget.transform.position);
+                Vector3 engagementPoint = CalcEngagementPoint(currentTarget.transform.position);
+                MoveTowards(engagementPoint);
                 break;
             case CharacterState.Attacking:
                 animator.SetBool("isWalking", false);
@@ -189,10 +191,16 @@ public abstract class Character : MonoBehaviour
     private bool IsWithinAttackRange()
     {
         if (currentTarget == null) return false;
-        float distance = Vector2.Distance(transform.position,
-                                          currentTarget.transform.position);
-        return distance <= AttackRange;
+        if (IsRanged)
+        {
+            float distance = Vector2.Distance(transform.position,
+                                              currentTarget.transform.position);
+            return distance <= AttackRange;
+        }
+        return Mathf.Abs(transform.position.y - currentTarget.transform.position.y) <= 0.2f && Mathf.Abs(transform.position.x - currentTarget.transform.position.x) <= AttackRange;
+        
     }
+
     public void TryAttack()
     {
         attackCooldown -= Time.deltaTime;
@@ -202,6 +210,7 @@ public abstract class Character : MonoBehaviour
             attackCooldown = AttackRate; // Reset cooldown
         }
     }
+
     public void FaceTarget(Vector3 position)
     {
         if (position.x < transform.position.x)
@@ -210,6 +219,7 @@ public abstract class Character : MonoBehaviour
         transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
 
     }
+    
     private void PerformAttack()
     {
         Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
@@ -280,6 +290,15 @@ public abstract class Character : MonoBehaviour
         OnDeath();
     }
 
+    protected Vector3 CalcEngagementPoint(Vector3 targetPosition)
+    {
+        float targetOffset = AttackRange * 0.5f;
+        if(transform.position.x < targetPosition.x)
+        {
+            return new Vector3(targetPosition.x - targetOffset, targetPosition.y, 0);
+        }
+        return new Vector3(targetPosition.x + targetOffset, targetPosition.y, 0);
+    }
     
     protected virtual void OnDamageTaken(float amount)          { }
     protected virtual void OnDeath()                            { }
