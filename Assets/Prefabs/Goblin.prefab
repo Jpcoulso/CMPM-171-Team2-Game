@@ -191,6 +191,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 0.69
       objectReference: {fileID: 0}
+    - target: {fileID: 3484700365451155297, guid: 50c755051804aab45a84025481d72570, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484700365451155297, guid: 50c755051804aab45a84025481d72570, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.642
+      objectReference: {fileID: 0}
     - target: {fileID: 5115135388619578378, guid: 50c755051804aab45a84025481d72570, type: 3}
       propertyPath: enemyData
       value: 
