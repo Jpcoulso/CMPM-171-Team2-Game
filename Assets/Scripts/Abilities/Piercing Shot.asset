@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19091c1cdb9584b1daacce04aa7a8078, type: 3}
+  m_Name: Piercing Shot
+  m_EditorClassIdentifier: Assembly-CSharp::PiercingShotAbilityData
+  abilityName: Piercing Shot
+  icon: {fileID: -1926650686124128054, guid: 51b58e3cf165a44b1ae367cc4982fc7a, type: 3}
+  isPassive: 0
+  cooldownDuration: 3
+  description: 
+  damage: 80
+  lineLength: 12
+  lineWidth: 0.15
+  visualDuration: 0.3

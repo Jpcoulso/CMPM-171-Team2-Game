@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Holy
   m_EditorClassIdentifier: Assembly-CSharp::HolyAbilityData
   abilityName: Holy
-  icon: {fileID: 0}
+  icon: {fileID: -8350297427189353773, guid: c77d3dbd4eba9454c85883a637006444, type: 3}
   isPassive: 0
   cooldownDuration: 5
   description: 

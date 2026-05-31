@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fireball
   m_EditorClassIdentifier: Assembly-CSharp::FireballAbilityData
   abilityName: Fireball
-  icon: {fileID: 0}
+  icon: {fileID: -5558382584523397505, guid: 791a57af1670e4377b9a9f7cd543f065, type: 3}
   isPassive: 0
   cooldownDuration: 7
   description: 'fireball

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mage
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Mage
-  portrait: {fileID: 6553531705054865064, guid: 5a1758ccaf7c647adbb97faf3c90fcd9, type: 3}
+  portrait: {fileID: -8649717288700544534, guid: 6f746f3ab80a04d44a3d4dafc9ef1d80, type: 3}
   heroPrefab: {fileID: 615487247393335348, guid: 271fb5dc58f6fe943bb91718923a5eac, type: 3}
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   maxHealth: 100

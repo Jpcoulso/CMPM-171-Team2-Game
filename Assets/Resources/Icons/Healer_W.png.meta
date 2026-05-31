@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bcd00411caec3429b957702719188800
+guid: 4889df580d6984e99b14bbd8d6f245ad
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4675174748040482328
-    second: Warrior_R_0
+      213: -2901091756283665209
+    second: Healer_W_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Warrior_R_0
+      name: Healer_W_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 81e44d7c9ae81e040800000000000000
-      internalID: 4675174748040482328
+      spriteID: 7c4e5e51b604db7d0800000000000000
+      internalID: -2901091756283665209
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Warrior_R_0: 4675174748040482328
+      Healer_W_0: -2901091756283665209
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

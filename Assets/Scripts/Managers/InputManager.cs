@@ -38,6 +38,12 @@ public class InputManager : MonoBehaviour
             OnRightClick();
         }
 
+        // Number keys 1-4 to select units
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) TrySelectUnitByIndex(0);
+        if (Keyboard.current.digit2Key.wasPressedThisFrame) TrySelectUnitByIndex(1);
+        if (Keyboard.current.digit3Key.wasPressedThisFrame) TrySelectUnitByIndex(2);
+        if (Keyboard.current.digit4Key.wasPressedThisFrame) TrySelectUnitByIndex(3);
+
         // Ability hotkeys — press to activate (or start charging)
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
@@ -59,6 +65,21 @@ public class InputManager : MonoBehaviour
         {
             TryReleaseAbility(1);
         }
+    }
+
+    // Cached selectable units for number-key selection (refreshed each scene)
+    private CharacterSelector[] selectableUnits;
+
+    void TrySelectUnitByIndex(int index)
+    {
+        // Lazy-init or refresh if stale
+        if (selectableUnits == null || selectableUnits.Length == 0)
+            selectableUnits = FindObjectsByType<CharacterSelector>(FindObjectsSortMode.None);
+
+        if (index < 0 || index >= selectableUnits.Length) return;
+        if (selectableUnits[index] == null) return;
+
+        SelectionManager.Instance.SelectCharacter(selectableUnits[index]);
     }
 
     void TryUseAbility(int slotIndex)

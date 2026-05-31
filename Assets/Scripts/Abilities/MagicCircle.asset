@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MagicCircle
   m_EditorClassIdentifier: Assembly-CSharp::MagicCircleAbilityData
   abilityName: Magic Circle
-  icon: {fileID: 0}
+  icon: {fileID: -4102030514833141552, guid: 26b2d3d8b98744bb7bb87d43e796a403, type: 3}
   isPassive: 0
   cooldownDuration: 20
   description: 

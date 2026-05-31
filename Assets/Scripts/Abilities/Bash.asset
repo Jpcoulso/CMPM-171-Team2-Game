@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bash
   m_EditorClassIdentifier: Assembly-CSharp::BashAbilityData
   abilityName: Bash
-  icon: {fileID: 0}
+  icon: {fileID: -4990163294148377129, guid: 0a6db76dcdedc4201ab955a06264eb7d, type: 3}
   isPassive: 0
   cooldownDuration: 5
   description: 
@@ -21,5 +21,6 @@ MonoBehaviour:
   rectWidth: 1.2
   rectLength: 2
   offsetDistance: 0.6
-  knockbackForce: 12
+  knockbackDistance: 3
+  knockbackDuration: 0.25
   visualDuration: 0.3

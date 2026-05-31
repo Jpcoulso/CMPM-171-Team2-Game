@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: Assembly-CSharp::HeroData
   heroName: Archer
-  portrait: {fileID: 6553531705054865064, guid: 5a1758ccaf7c647adbb97faf3c90fcd9, type: 3}
+  portrait: {fileID: 3200336923811465010, guid: a30ed463c540f4763bc4eb7e1aca1dc5, type: 3}
   heroPrefab: {fileID: 615487247393335348, guid: 28d4d302647639c41b7af2575b71631d, type: 3}
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   maxHealth: 80
@@ -22,7 +22,9 @@ MonoBehaviour:
   attackRate: 1
   moveSpeed: 3
   armor: 5
-  abilities: []
+  abilities:
+  - {fileID: 11400000, guid: 8197692af3bfc44f69a1d4ec95ed7cd4, type: 2}
+  - {fileID: 11400000, guid: 54f930c1dc1c548c1b196c43996f735a, type: 2}
   qName: Ability Q
   qCooldown: 3
   qIcon: {fileID: 0}
