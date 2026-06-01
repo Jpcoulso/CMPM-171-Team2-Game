@@ -61,6 +61,7 @@ public class WaveManager : MonoBehaviour
             return;
             
         }
+
         ScreenText.Instance.ShowCountdown($"Wave {currentWave + 1} in", 3, StartNextWave);
     }
     IEnumerator LoadArmoryAfterDelay()
