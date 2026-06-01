@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     [Header("Spawning")]
     private Transform[] heroSpawns;
 
+    [Header("Levels")]
+    public bool[] levelUnlocked;
+
     [Header("Dev Tools")]
     [SerializeField] public int currentGold = 0;
 
@@ -36,6 +39,9 @@ public class GameManager : MonoBehaviour
         {
             partyData[0] = startingHero;
         }
+        // Levels
+        levelUnlocked = new bool[5];
+        levelUnlocked[0] = true;
     }
     private void OnDestroy()
     {
@@ -155,6 +161,19 @@ public class GameManager : MonoBehaviour
             return true;
         }
         return false; // not enough gold
+    }
+    // Levels
+    public void UnlockLevel(int level)
+    {
+        if (level >= 0 && level < levelUnlocked.Length)
+            levelUnlocked[level] = true;
+    }
+    public bool IsLevelUnlocked(int level)
+    {
+        if (level >= 0 && level < levelUnlocked.Length)
+            return levelUnlocked[level];
+
+        return false;
     }
 }
 

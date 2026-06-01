@@ -494,6 +494,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 1
+  levelIndex: 5
 --- !u!114 &777263377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -513,7 +515,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.97805667, g: 1, b: 0.42830187, a: 1}
@@ -523,10 +525,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: cf391903c04f8e54eb9c1e066a467a3e, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: f74e5d5f8f83b2644994e6aef3be14d2, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -570,7 +572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2136382419734709961, guid: f74e5d5f8f83b2644994e6aef3be14d2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a82f47fd2aec74644934e3927e6b83f9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -640,6 +642,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 1
+  levelIndex: 2
 --- !u!114 &894234708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,7 +663,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.97805667, g: 1, b: 0.42830187, a: 1}
@@ -669,10 +673,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: fa5d7fd988ecc6042aec7e21b83eec7e, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -716,7 +720,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7350662172644404665, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 495c00952e09f5a4f934d94236af36cb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -786,6 +790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 1
+  levelIndex: 1
 --- !u!114 &976356330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -805,7 +811,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.97805667, g: 1, b: 0.42830187, a: 1}
@@ -815,10 +821,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: fa5d7fd988ecc6042aec7e21b83eec7e, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -862,7 +868,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7350662172644404665, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 495c00952e09f5a4f934d94236af36cb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1069,6 +1075,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 0
+  levelIndex: 0
 --- !u!114 &1066673633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1145,7 +1153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8563759440910305574, guid: f6dfd42499b5d6248bdc0d82abb7f99d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f6dfd42499b5d6248bdc0d82abb7f99d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1215,6 +1223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 1
+  levelIndex: 3
 --- !u!114 &1158817472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1234,7 +1244,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.97805667, g: 1, b: 0.42830187, a: 1}
@@ -1244,10 +1254,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: fa5d7fd988ecc6042aec7e21b83eec7e, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -1291,7 +1301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7350662172644404665, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 495c00952e09f5a4f934d94236af36cb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1361,6 +1371,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 1
+  levelIndex: 0
 --- !u!114 &1263619192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1380,7 +1392,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.97805667, g: 1, b: 0.42830187, a: 1}
@@ -1390,10 +1402,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: fa5d7fd988ecc6042aec7e21b83eec7e, type: 3}
     m_PressedSprite: {fileID: 0}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -1437,7 +1449,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7350662172644404665, guid: 7ffe291c657258847a46721e44a5d83d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 495c00952e09f5a4f934d94236af36cb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1592,6 +1604,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405025535}
   m_CullTransparentMesh: 1
+--- !u!1 &1411796562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1411796564}
+  - component: {fileID: 1411796563}
+  m_Layer: 0
+  m_Name: TEMPGM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1411796563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411796562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2d5f6340e86fc543b49ddd794384ecb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  partyData:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  startingHero: {fileID: 0}
+  levelUnlocked: 
+  currentGold: 0
+--- !u!4 &1411796564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411796562}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 388.5, y: 218.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1832735925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,3 +2211,4 @@ SceneRoots:
   - {fileID: 1854329127}
   - {fileID: 543392697}
   - {fileID: 550204994}
+  - {fileID: 1411796564}
