@@ -9,8 +9,8 @@ public class AudioManager : MonoBehaviour
     {
         CombatMusic,
         BossMusic,
-        ShopMusic,
-        MenuMusic,
+        ArmoryMusic,
+        DefaultMusic,
     }
     public enum SFXType
     {
@@ -51,7 +51,13 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         // Initialize sound dictionary
         foreach (MusicSound s in musicSounds) { musicSoundDict[s.type] = s; }
@@ -64,7 +70,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         // Play initial music if needed
-        PlayMusic(MusicType.MenuMusic);
+        PlayMusic(MusicType.DefaultMusic);
     }
 
     public void PlayMusic(MusicType type, float volumeOverride = -1f)
