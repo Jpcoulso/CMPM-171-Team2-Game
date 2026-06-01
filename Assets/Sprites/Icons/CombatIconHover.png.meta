@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3645fffe0a3146e4198a5c6221cdba1e
+guid: fa5d7fd988ecc6042aec7e21b83eec7e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4571524108022033180
-    second: swords-emblem_0
+      213: 2834092015466684251
+    second: crossed-swords 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: swords-emblem_0
+      name: crossed-swords 1_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 12
-        width: 506
-        height: 488
+        x: 8
+        y: 8
+        width: 496
+        height: 498
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c1ba9cc84f0517f30800000000000000
-      internalID: 4571524108022033180
+      spriteID: b5f99a22ca7b45720800000000000000
+      internalID: 2834092015466684251
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      swords-emblem_0: 4571524108022033180
+      crossed-swords 1_0: 2834092015466684251
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
