@@ -1,248 +1,243 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
-// Displays 4 unit frames at the top-center of the screen.
-// Each frame: icon (left) | name + 4 ability slots (right).
-// Uses Unity layout groups so everything spaces correctly.
+// TeamHUD
+// A single unit panel anchored to the bottom-center of the screen.
+// Shows ONLY the currently selected unit: its icon + one clickable
+// ability button per ability the unit has. Buttons display a radial
+// cooldown overlay + countdown text and activate the ability on click.
 //
-// Drop on any GameObject. Builds its own Canvas at runtime.
+// Drop this component on any GameObject in the combat scene. It builds
+// its own Canvas at runtime — no scene wiring required.
 public class TeamHUD : MonoBehaviour
 {
-    private UnitFrameUI[] unitFrames = new UnitFrameUI[4];
-    private Character[] trackedUnits = new Character[4];
+    // ── Layout ──
+    private const float PanelHeight   = 132f;
+    private const float Pad           = 12f;
+    private const float IconSize      = 96f;
+    private const float AbilitySize   = 72f;
+    private const float AbilityGap    = 8f;
+    private const float BottomMargin  = 16f;
 
-    // Sizing — scaled to fit 4 frames across 1920px
-    private const float FrameWidth = 440f;
-    private const float FrameHeight = 134f;
-    private const float Pad = 10f;
-    private const float IconSize = 84f;
-    private const float AbilitySize = 64f;
-    private const float NameHeight = 24f;
+    // ── Colors ──
+    private static readonly Color PanelBG     = new Color(0.06f, 0.06f, 0.08f, 0.92f);
+    private static readonly Color PanelBorder = new Color(0.95f, 0.82f, 0.25f, 1f);
+    private static readonly Color IconBG      = new Color(0.16f, 0.16f, 0.2f, 1f);
+    private static readonly Color NameCol     = new Color(0.95f, 0.95f, 0.95f, 1f);
+    private static readonly Color AbReadyBG   = new Color(0.20f, 0.26f, 0.36f, 1f);
+    private static readonly Color AbCoolBG    = new Color(0.07f, 0.07f, 0.08f, 1f);
+    private static readonly Color AbBorderCol = new Color(0.32f, 0.32f, 0.38f, 0.8f);
+    private static readonly Color OverlayCol  = new Color(0.04f, 0.04f, 0.05f, 0.78f);
+    private static readonly Color KeyCol      = new Color(0.95f, 0.85f, 0.35f, 1f);
+    private static readonly Color CDTextCol   = new Color(1f, 1f, 1f, 0.97f);
+    private static readonly Color SymReady    = new Color(0.88f, 0.9f, 0.96f, 0.9f);
+    private static readonly Color SymCool     = new Color(0.45f, 0.45f, 0.5f, 0.6f);
 
-    // Colors
-    private static readonly Color FrameBG = new Color(0.06f, 0.06f, 0.08f, 0.95f);
-    private static readonly Color SelectedBorder = new Color(0.95f, 0.82f, 0.25f, 1f);
-    private static readonly Color NormalBorder = new Color(0.22f, 0.22f, 0.28f, 0.8f);
-    private static readonly Color IconBG = new Color(0.16f, 0.16f, 0.2f, 1f);
-    private static readonly Color IconSymCol = new Color(0.65f, 0.7f, 0.8f, 1f);
-    private static readonly Color NameCol = new Color(0.92f, 0.92f, 0.92f, 1f);
-    private static readonly Color AbReadyBG = new Color(0.35f, 0.4f, 0.5f, 1f);
-    private static readonly Color AbCoolBG = new Color(0.12f, 0.12f, 0.14f, 0.92f);
-    private static readonly Color AbBorderCol = new Color(0.3f, 0.3f, 0.35f, 0.5f);
-    private static readonly Color KeyCol = new Color(0.92f, 0.85f, 0.35f, 1f);
-    private static readonly Color CDTextCol = new Color(1f, 1f, 1f, 0.95f);
-    private static readonly Color SymReady = new Color(0.82f, 0.82f, 0.88f, 0.85f);
-    private static readonly Color SymCool = new Color(0.35f, 0.35f, 0.35f, 0.45f);
-    private static readonly Color EmptySlot = new Color(0.1f, 0.1f, 0.1f, 0.5f);
+    private static readonly string[] Keys = { "Q", "W", "E", "R", "T", "Y" };
 
-    // Placeholder symbols
-    private static readonly string[,] AbSymbols =
+    // So other systems (InputManager) can ask "is the cursor over the HUD?"
+    public static TeamHUD Instance { get; private set; }
+
+    // ── Runtime refs ──
+    private Canvas canvas;
+    private RectTransform panel;          // the bottom-center panel
+    private Image panelImage;
+    private Image iconImage;
+    private Text iconFallback;            // shown if no portrait
+    private Transform abilityRow;         // holds the ability buttons
+    private readonly List<AbilitySlot> slots = new List<AbilitySlot>();
+
+    private Hero currentHero;             // the hero the panel is currently built for
+
+    void Awake()
     {
-        { "⚔", "☠", "⚡", "⭐" },
-        { "☄", "❄", "⚛", "☀" },
-        { "➳", "◆", "⇨", "☂" },
-        { "✚", "♦", "⚘", "☽" },
-    };
-    private static readonly string[] IconSymbols = { "♣", "♥", "♠", "♦" };
+        Instance = this;
+        BuildBaseUI();
+    }
 
-    void Awake() { BuildUI(); }
-    void Start() { StartCoroutine(WaitForHeroes()); }
-
-    // Heroes spawn a frame or two after scene load — retry a few times then stop
-    private IEnumerator WaitForHeroes()
+    void OnDestroy()
     {
-        for (int attempt = 0; attempt < 10; attempt++)
-        {
-            RefreshUnitList();
-            if (trackedUnits[0] != null) yield break; // found at least one
-            yield return null; // wait one frame
-        }
+        if (Instance == this) Instance = null;
+    }
+
+    void Start()
+    {
+        Debug.Log("[TeamHUD] Built. Waiting for a hero to be selected. " +
+                  (SelectionManager.Instance == null
+                      ? "WARNING: no SelectionManager in scene — selection will never reach the HUD."
+                      : "SelectionManager OK."));
     }
 
     void Update()
     {
-        for (int i = 0; i < 4; i++)
+        Hero selected = GetSelectedHero();
+
+        // Rebuild the panel only when the selected hero changes
+        if (selected != currentHero)
         {
-            if (unitFrames[i] == null) continue;
-
-            if (trackedUnits[i] == null)
-            {
-                unitFrames[i].SetEmpty();
-                continue;
-            }
-
-            Character unit = trackedUnits[i];
-            AbilityHandler[] handlers = unit.GetComponents<AbilityHandler>();
-
-            for (int s = 0; s < 4; s++)
-            {
-                AbilityHandler handler = (s < handlers.Length) ? handlers[s] : null;
-                unitFrames[i].UpdateAbilitySlot(s, handler);
-            }
-
-            bool sel = SelectionManager.Instance != null
-                && SelectionManager.Instance.currentlySelected != null
-                && SelectionManager.Instance.currentlySelected.gameObject == unit.gameObject;
-            unitFrames[i].SetSelected(sel);
+            currentHero = selected;
+            if (currentHero == null) ShowPanel(false);
+            else { BuildAbilityButtons(currentHero); ShowPanel(true); }
         }
+
+        if (currentHero == null) return;
+
+        // The hero could die while selected
+        if (currentHero.IsDead)
+        {
+            currentHero = null;
+            ShowPanel(false);
+            return;
+        }
+
+        RefreshCooldowns();
     }
 
-    public void RefreshUnitList()
+    private Hero GetSelectedHero()
     {
-        CharacterSelector[] all = FindObjectsByType<CharacterSelector>(FindObjectsSortMode.None);
-        for (int i = 0; i < 4; i++)
-        {
-            if (unitFrames[i] == null) continue;
+        if (SelectionManager.Instance == null) return null;
+        var sel = SelectionManager.Instance.currentlySelected;
+        if (sel == null) return null;
+        return sel.GetComponent<Hero>();
+    }
 
-            trackedUnits[i] = i < all.Length ? all[i].GetComponent<Character>() : null;
-            if (trackedUnits[i] != null)
-            {
-                unitFrames[i].SetUnitName(trackedUnits[i].GetCharacterName());
-                var hero = trackedUnits[i] as Hero;
-                if (hero != null) unitFrames[i].SetIcons(hero.HeroData);
-                unitFrames[i].Show(true);
-            }
-            else
-            {
-                unitFrames[i].SetEmpty();
-                unitFrames[i].Show(false); // hide frames with no unit
-            }
-        }
+    // True if the cursor is currently over the visible HUD panel.
+    // Used to stop HUD clicks from registering as world clicks (deselecting the hero).
+    public bool IsPointerOverPanel(Vector2 screenPos)
+    {
+        if (panel == null || !panel.gameObject.activeInHierarchy) return false;
+        // ScreenSpaceOverlay canvas → pass null camera.
+        return RectTransformUtility.RectangleContainsScreenPoint(panel, screenPos, null);
     }
 
     // ═══════════════════════════════════════════════════════════
-    //  BUILD
+    //  BUILD — base canvas + panel (created once)
     // ═══════════════════════════════════════════════════════════
 
-    private void BuildUI()
+    private void BuildBaseUI()
     {
-        // Canvas
         var canvasGO = new GameObject("TeamHUDCanvas");
         canvasGO.transform.SetParent(transform);
-        var canvas = canvasGO.AddComponent<Canvas>();
+        canvas = canvasGO.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 10;
+        canvas.sortingOrder = 100; // render above gameplay / map UI
         var scaler = canvasGO.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.matchWidthOrHeight = 0.5f;
         canvasGO.AddComponent<GraphicRaycaster>();
 
-        // Top-center row container
-        var row = new GameObject("FrameRow");
-        row.transform.SetParent(canvasGO.transform, false);
-        var rowRT = row.AddComponent<RectTransform>();
-        rowRT.anchorMin = new Vector2(0.5f, 1f);
-        rowRT.anchorMax = new Vector2(0.5f, 1f);
-        rowRT.pivot = new Vector2(0.5f, 1f);
-        rowRT.anchoredPosition = new Vector2(0f, -10f);
-        var hlg = row.AddComponent<HorizontalLayoutGroup>();
-        hlg.spacing = 14f;
-        hlg.childAlignment = TextAnchor.UpperCenter;
-        hlg.childControlWidth = false;
-        hlg.childControlHeight = false;
+        // ── Panel border (bottom-center). Auto-sizes to its content. ──
+        var borderGO = MakePanel(canvasGO.transform, "Panel", 0f, 0f, PanelBorder);
+        panel = borderGO.GetComponent<RectTransform>();
+        panel.anchorMin = new Vector2(0.5f, 0f);
+        panel.anchorMax = new Vector2(0.5f, 0f);
+        panel.pivot = new Vector2(0.5f, 0f);
+        panel.anchoredPosition = new Vector2(0f, BottomMargin);
+        var fitter = borderGO.AddComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        var hlg = borderGO.AddComponent<HorizontalLayoutGroup>();
+        hlg.padding = new RectOffset(3, 3, 3, 3); // border thickness
+        hlg.spacing = 0f;
+        hlg.childControlWidth = true;
+        hlg.childControlHeight = true;
         hlg.childForceExpandWidth = false;
         hlg.childForceExpandHeight = false;
-        var rowFitter = row.AddComponent<ContentSizeFitter>();
+
+        // ── Inner background row: [ icon ][ ability buttons ] ──
+        var innerGO = MakePanel(borderGO.transform, "Inner", 0f, PanelHeight, PanelBG);
+        var innerHLG = innerGO.AddComponent<HorizontalLayoutGroup>();
+        innerHLG.padding = new RectOffset((int)Pad, (int)Pad, (int)Pad, (int)Pad);
+        innerHLG.spacing = Pad;
+        innerHLG.childAlignment = TextAnchor.MiddleLeft;
+        innerHLG.childControlWidth = true;
+        innerHLG.childControlHeight = true;
+        innerHLG.childForceExpandWidth = false;
+        innerHLG.childForceExpandHeight = false;
+        var innerFitter = innerGO.AddComponent<ContentSizeFitter>();
+        innerFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        innerFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+        panelImage = innerGO.GetComponent<Image>();
+
+        // ── Unit icon ──
+        var iconGO = MakePanel(innerGO.transform, "Icon", IconSize, IconSize, IconBG);
+        var iconLE = iconGO.AddComponent<LayoutElement>();
+        iconLE.preferredWidth = IconSize;
+        iconLE.preferredHeight = IconSize;
+        iconImage = iconGO.GetComponent<Image>();
+        iconImage.preserveAspect = true;
+
+        var fb = MakeText(iconGO.transform, "Fallback", "", 44, TextAnchor.MiddleCenter, NameCol);
+        Stretch(fb);
+        fb.GetComponent<Text>().fontStyle = FontStyle.Bold;
+        iconFallback = fb.GetComponent<Text>();
+
+        // ── Ability row container ──
+        var rowGO = new GameObject("AbilityRow");
+        rowGO.transform.SetParent(innerGO.transform, false);
+        rowGO.AddComponent<RectTransform>();
+        var rowHLG = rowGO.AddComponent<HorizontalLayoutGroup>();
+        rowHLG.spacing = AbilityGap;
+        rowHLG.childAlignment = TextAnchor.MiddleLeft;
+        rowHLG.childControlWidth = false;
+        rowHLG.childControlHeight = false;
+        rowHLG.childForceExpandWidth = false;
+        rowHLG.childForceExpandHeight = false;
+        var rowFitter = rowGO.AddComponent<ContentSizeFitter>();
         rowFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         rowFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        abilityRow = rowGO.transform;
 
-        for (int i = 0; i < 4; i++)
-            unitFrames[i] = CreateUnitFrame(row.transform, i);
+        ShowPanel(false);
     }
 
-    private UnitFrameUI CreateUnitFrame(Transform parent, int idx)
+    // ═══════════════════════════════════════════════════════════
+    //  BUILD — ability buttons (rebuilt per selected hero)
+    // ═══════════════════════════════════════════════════════════
+
+    private void BuildAbilityButtons(Hero hero)
     {
-        var f = new UnitFrameUI();
+        // Clear old buttons
+        slots.Clear();
+        for (int i = abilityRow.childCount - 1; i >= 0; i--)
+            Destroy(abilityRow.GetChild(i).gameObject);
 
-        // ── Outer border (this is what the top-level HLG sizes) ──
-        var borderGO = MakePanel(parent, $"Border_{idx}", FrameWidth + 4f, FrameHeight + 4f, NormalBorder);
-        borderGO.AddComponent<LayoutElement>().preferredWidth = FrameWidth + 4f;
-        borderGO.GetComponent<LayoutElement>().preferredHeight = FrameHeight + 4f;
-        f.border = borderGO.GetComponent<Image>();
+        // Unit icon
+        Sprite portrait = hero.HeroData != null ? hero.HeroData.portrait : null;
+        if (portrait != null)
+        {
+            iconImage.sprite = portrait;
+            iconImage.color = Color.white;
+            iconFallback.text = "";
+        }
+        else
+        {
+            iconImage.color = IconBG;
+            iconFallback.text = ShortName(hero.GetCharacterName());
+        }
 
-        // ── Frame BG centered inside border ──
-        var frameGO = MakePanel(borderGO.transform, "Frame", 0f, 0f, FrameBG);
-        var frt = frameGO.GetComponent<RectTransform>();
-        frt.anchorMin = Vector2.zero;
-        frt.anchorMax = Vector2.one;
-        frt.offsetMin = new Vector2(2f, 2f);
-        frt.offsetMax = new Vector2(-2f, -2f);
-        f.root = frameGO;
-
-        // All children positioned with anchors — no layout groups inside the frame.
-
-        // ── Icon (left side, vertically centered) ──
-        var iconGO = MakePanel(frameGO.transform, "Icon", 0f, 0f, IconBG);
-        var irt = iconGO.GetComponent<RectTransform>();
-        irt.anchorMin = new Vector2(0f, 0.5f);
-        irt.anchorMax = new Vector2(0f, 0.5f);
-        irt.pivot = new Vector2(0f, 0.5f);
-        irt.anchoredPosition = new Vector2(Pad, 0f);
-        irt.sizeDelta = new Vector2(IconSize, IconSize);
-        f.iconImage = iconGO.GetComponent<Image>();
-
-        var iconTxt = MakeText(iconGO.transform, "Sym", IconSymbols[idx], 40, TextAnchor.MiddleCenter, IconSymCol);
-        Stretch(iconTxt);
-        f.iconSymbolText = iconTxt.GetComponent<Text>();
-
-        // ── Right-side content area (anchored from icon edge to right edge) ──
-        float contentLeft = Pad + IconSize + 8f; // left pad + icon + gap
-
-        // Name (top of content area)
-        var nameGO = MakeText(frameGO.transform, "Name", "—", 20, TextAnchor.MiddleLeft, NameCol);
-        var nrt = nameGO.GetComponent<RectTransform>();
-        nrt.anchorMin = new Vector2(0f, 1f);
-        nrt.anchorMax = new Vector2(1f, 1f);
-        nrt.pivot = new Vector2(0f, 1f);
-        nrt.offsetMin = new Vector2(contentLeft, -Pad - NameHeight);
-        nrt.offsetMax = new Vector2(-Pad, -Pad);
-        nameGO.GetComponent<Text>().fontStyle = FontStyle.Bold;
-        f.nameText = nameGO.GetComponent<Text>();
-
-        // Ability row (bottom of content area, anchored to bottom)
-        float abSlotFull = AbilitySize + 2f; // slot + border
-        float abRowWidth = (abSlotFull * 4) + (4f * 3); // 4 slots + 3 gaps
-        float abBottom = Pad;
-
-        float abRowLeft = contentLeft;
-
-        // Use an HLG only for the ability row — it's simple enough
-        var abRow = new GameObject("AbilityRow");
-        abRow.transform.SetParent(frameGO.transform, false);
-        var art = abRow.AddComponent<RectTransform>();
-        art.anchorMin = new Vector2(0f, 0f);
-        art.anchorMax = new Vector2(0f, 0f);
-        art.pivot = new Vector2(0f, 0f);
-        art.anchoredPosition = new Vector2(abRowLeft, abBottom);
-        art.sizeDelta = new Vector2(abRowWidth, abSlotFull);
-        var abHLG = abRow.AddComponent<HorizontalLayoutGroup>();
-        abHLG.spacing = 4f;
-        abHLG.childAlignment = TextAnchor.MiddleLeft;
-        abHLG.childControlWidth = false;
-        abHLG.childControlHeight = false;
-        abHLG.childForceExpandWidth = false;
-        abHLG.childForceExpandHeight = false;
-
-        string[] keys = { "Q", "W", "E", "R" };
-        for (int s = 0; s < 4; s++)
-            f.abilitySlots[s] = CreateAbilitySlot(abRow.transform, idx, s, keys[s]);
-
-        return f;
+        // One button per ability handler (order matches ability slot index)
+        AbilityHandler[] handlers = hero.GetComponents<AbilityHandler>();
+        for (int s = 0; s < handlers.Length; s++)
+        {
+            string key = s < Keys.Length ? Keys[s] : "";
+            slots.Add(CreateAbilityButton(hero, s, key, handlers[s]));
+        }
     }
 
-    private AbilitySlotData CreateAbilitySlot(Transform parent, int unitIdx, int slotIdx, string key)
+    private AbilitySlot CreateAbilityButton(Hero hero, int slotIndex, string key, AbilityHandler handler)
     {
-        var slot = new AbilitySlotData();
+        var slot = new AbilitySlot { handler = handler };
 
         // Border
-        var borderGO = MakePanel(parent, $"Ab_{key}", AbilitySize + 2f, AbilitySize + 2f, AbBorderCol);
-        borderGO.AddComponent<LayoutElement>().preferredWidth = AbilitySize + 2f;
-        borderGO.GetComponent<LayoutElement>().preferredHeight = AbilitySize + 2f;
+        var borderGO = MakePanel(abilityRow, $"Ability_{key}", AbilitySize + 4f, AbilitySize + 4f, AbBorderCol);
+        var le = borderGO.AddComponent<LayoutElement>();
+        le.preferredWidth = AbilitySize + 4f;
+        le.preferredHeight = AbilitySize + 4f;
 
-        // BG
+        // Button background (this is the clickable target)
         var bgGO = MakePanel(borderGO.transform, "BG", AbilitySize, AbilitySize, AbReadyBG);
         var bgRT = bgGO.GetComponent<RectTransform>();
         bgRT.anchorMin = new Vector2(0.5f, 0.5f);
@@ -250,54 +245,113 @@ public class TeamHUD : MonoBehaviour
         bgRT.anchoredPosition = Vector2.zero;
         slot.background = bgGO.GetComponent<Image>();
 
-        // Sprite icon (hidden by default, shown when SetIcon is called)
+        var btn = bgGO.AddComponent<Button>();
+        btn.transition = Selectable.Transition.ColorTint;
+        var cb = btn.colors;
+        cb.normalColor = Color.white;
+        cb.highlightedColor = new Color(1.12f, 1.12f, 1.12f, 1f);
+        cb.pressedColor = new Color(0.85f, 0.85f, 0.85f, 1f);
+        cb.fadeDuration = 0.06f;
+        btn.colors = cb;
+        int captured = slotIndex;
+        Hero capturedHero = hero;
+        btn.onClick.AddListener(() => OnAbilityClicked(capturedHero, captured));
+        slot.button = btn;
+
+        // Ability icon
         var iconGO = new GameObject("Icon");
         iconGO.transform.SetParent(bgGO.transform, false);
         var iconRT = iconGO.AddComponent<RectTransform>();
-        iconRT.anchorMin = new Vector2(0.1f, 0.1f);
-        iconRT.anchorMax = new Vector2(0.9f, 0.9f);
+        iconRT.anchorMin = new Vector2(0.12f, 0.12f);
+        iconRT.anchorMax = new Vector2(0.88f, 0.88f);
         iconRT.sizeDelta = Vector2.zero;
         iconRT.anchoredPosition = Vector2.zero;
         var iconImg = iconGO.AddComponent<Image>();
         iconImg.preserveAspect = true;
-        iconImg.enabled = false; // hidden until a sprite is assigned
+        iconImg.raycastTarget = false;
+        Sprite abIcon = handler != null && handler.Data != null ? handler.Data.icon : null;
+        if (abIcon != null) { iconImg.sprite = abIcon; iconImg.color = Color.white; }
+        else iconImg.enabled = false;
         slot.iconImage = iconImg;
 
-        // Symbol
-        string sym = AbSymbols[unitIdx % 4, slotIdx];
-        var symGO = MakeText(bgGO.transform, "Sym", sym, 28, TextAnchor.MiddleCenter, SymReady);
-        Stretch(symGO);
-        symGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 2f);
-        slot.symbolText = symGO.GetComponent<Text>();
+        // Ability-key fallback letter (shown only when no icon)
+        var sym = MakeText(bgGO.transform, "Sym", abIcon == null ? key : "", 26, TextAnchor.MiddleCenter, SymReady);
+        Stretch(sym);
+        sym.GetComponent<Text>().raycastTarget = false;
+        sym.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 2f);
+        slot.symbolText = sym.GetComponent<Text>();
 
-        // Cooldown overlay
-        var ovGO = MakePanel(bgGO.transform, "CDOverlay", 0f, 0f, AbCoolBG);
+        // Radial cooldown overlay
+        var ovGO = MakePanel(bgGO.transform, "CDOverlay", 0f, 0f, OverlayCol);
         Stretch(ovGO);
         var ovImg = ovGO.GetComponent<Image>();
         ovImg.type = Image.Type.Filled;
         ovImg.fillMethod = Image.FillMethod.Radial360;
-        ovImg.fillOrigin = 2;
+        ovImg.fillOrigin = 2; // top
         ovImg.fillClockwise = false;
         ovImg.fillAmount = 0f;
+        ovImg.raycastTarget = false;
         slot.cooldownOverlay = ovImg;
 
-        // CD text
-        var cdGO = MakeText(bgGO.transform, "CDText", "", 18, TextAnchor.MiddleCenter, CDTextCol);
-        Stretch(cdGO);
-        cdGO.GetComponent<Text>().fontStyle = FontStyle.Bold;
-        slot.cooldownText = cdGO.GetComponent<Text>();
+        // Cooldown countdown text
+        var cd = MakeText(bgGO.transform, "CDText", "", 22, TextAnchor.MiddleCenter, CDTextCol);
+        Stretch(cd);
+        cd.GetComponent<Text>().fontStyle = FontStyle.Bold;
+        cd.GetComponent<Text>().raycastTarget = false;
+        slot.cooldownText = cd.GetComponent<Text>();
 
-        // Key label (bottom-right)
-        var keyGO = MakeText(bgGO.transform, "Key", key, 14, TextAnchor.LowerRight, KeyCol);
+        // Key label (bottom-right corner)
+        var keyGO = MakeText(bgGO.transform, "Key", key, 16, TextAnchor.LowerRight, KeyCol);
         var keyRT = keyGO.GetComponent<RectTransform>();
         keyRT.anchorMin = Vector2.zero;
         keyRT.anchorMax = Vector2.one;
-        keyRT.offsetMin = new Vector2(0f, 2f);
-        keyRT.offsetMax = new Vector2(-3f, 0f);
+        keyRT.offsetMin = new Vector2(0f, 3f);
+        keyRT.offsetMax = new Vector2(-4f, 0f);
         keyGO.GetComponent<Text>().fontStyle = FontStyle.Bold;
-        slot.keyText = keyGO.GetComponent<Text>();
+        keyGO.GetComponent<Text>().raycastTarget = false;
 
         return slot;
+    }
+
+    private void OnAbilityClicked(Hero hero, int slotIndex)
+    {
+        if (hero == null || hero.IsDead) return;
+        hero.UseAbility(slotIndex);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  UPDATE — cooldown visuals
+    // ═══════════════════════════════════════════════════════════
+
+    private void RefreshCooldowns()
+    {
+        foreach (var slot in slots)
+        {
+            AbilityHandler h = slot.handler;
+            if (h == null) continue;
+
+            if (!h.IsOnCooldown)
+            {
+                slot.background.color = AbReadyBG;
+                slot.cooldownOverlay.fillAmount = 0f;
+                slot.cooldownText.text = "";
+                if (slot.symbolText != null) slot.symbolText.color = SymReady;
+            }
+            else
+            {
+                slot.background.color = AbCoolBG;
+                float dur = h.Data != null ? Mathf.Max(0.1f, h.Data.cooldownDuration) : 1f;
+                slot.cooldownOverlay.fillAmount = Mathf.Clamp01(h.CooldownTimer / dur);
+                float r = h.CooldownTimer;
+                slot.cooldownText.text = r >= 10f ? Mathf.CeilToInt(r).ToString() : r.ToString("F1");
+                if (slot.symbolText != null) slot.symbolText.color = SymCool;
+            }
+        }
+    }
+
+    private void ShowPanel(bool visible)
+    {
+        if (panel != null) panel.gameObject.SetActive(visible);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -339,124 +393,24 @@ public class TeamHUD : MonoBehaviour
         rt.anchoredPosition = Vector2.zero;
     }
 
-    // ═══════════════════════════════════════════════════════════
-    //  DATA CLASSES
-    // ═══════════════════════════════════════════════════════════
-
-    private class AbilitySlotData
+    private string ShortName(string n)
     {
-        public Image background;
-        public Image cooldownOverlay;
-        public Image iconImage;     // assigned sprite icon (if any)
-        public Text keyText;
-        public Text cooldownText;
-        public Text symbolText;
-
-        public void SetIcon(Sprite sprite)
-        {
-            if (iconImage != null && sprite != null)
-            {
-                iconImage.sprite = sprite;
-                iconImage.color = Color.white;
-                iconImage.enabled = true;
-                symbolText.text = ""; // hide placeholder symbol
-            }
-        }
-
-        public void UpdateState(AbilityHandler handler)
-        {
-            if (handler == null)
-            {
-                background.color = EmptySlot;
-                cooldownOverlay.fillAmount = 0f;
-                cooldownText.text = "";
-                symbolText.color = new Color(0.25f, 0.25f, 0.25f, 0.3f);
-                if (iconImage != null) iconImage.enabled = false;
-                return;
-            }
-
-            // Sync icon if available
-            if (handler.Data != null && handler.Data.icon != null)
-            {
-                SetIcon(handler.Data.icon);
-            }
-
-            if (!handler.IsOnCooldown)
-            {
-                background.color = AbReadyBG;
-                cooldownOverlay.fillAmount = 0f;
-                cooldownText.text = "";
-                symbolText.color = SymReady;
-                if (iconImage != null && iconImage.enabled)
-                    iconImage.color = Color.white; // full brightness when ready
-            }
-            else
-            {
-                background.color = AbCoolBG;
-                float duration = handler.Data != null ? handler.Data.cooldownDuration : 1f;
-                cooldownOverlay.fillAmount = handler.CooldownTimer / Mathf.Max(0.1f, duration);
-                float r = handler.CooldownTimer;
-                cooldownText.text = r >= 10f ? Mathf.CeilToInt(r).ToString() : r.ToString("F1");
-                symbolText.color = SymCool;
-                if (iconImage != null && iconImage.enabled)
-                    iconImage.color = new Color(0.4f, 0.4f, 0.4f, 1f); // dimmed on cooldown
-            }
-        }
+        if (string.IsNullOrEmpty(n)) return "?";
+        return n.Substring(0, 1).ToUpper();
     }
 
-    private class UnitFrameUI
+    // ═══════════════════════════════════════════════════════════
+    //  DATA
+    // ═══════════════════════════════════════════════════════════
+
+    private class AbilitySlot
     {
-        public GameObject root;
-        public Image border;
+        public AbilityHandler handler;
+        public Button button;
+        public Image background;
         public Image iconImage;
-        public Text iconSymbolText;
-        public Text nameText;
-        public AbilitySlotData[] abilitySlots = new AbilitySlotData[4];
-
-        public void SetUnitName(string n) { nameText.text = n; }
-
-        public void SetIcons(HeroData data)
-        {
-            if (data == null) return;
-
-            // Unit portrait
-            if (data.portrait != null)
-            {
-                iconImage.sprite = data.portrait;
-                iconImage.color = Color.white;
-                iconSymbolText.text = ""; // hide placeholder symbol
-            }
-
-            // Ability icons
-            if (data.abilities != null)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    if (i < data.abilities.Count && data.abilities[i] != null && data.abilities[i].icon != null)
-                    {
-                        abilitySlots[i].SetIcon(data.abilities[i].icon);
-                    }
-                }
-            }
-        }
-
-        // Show or hide the entire frame (border is the top-level GO)
-        public void Show(bool visible)
-        {
-            if (border != null) border.gameObject.SetActive(visible);
-        }
-
-        public void SetEmpty()
-        {
-            if (nameText != null) nameText.text = "—";
-            for (int i = 0; i < 4; i++) abilitySlots[i]?.UpdateState(null);
-        }
-
-        public void UpdateAbilitySlot(int i, AbilityHandler handler) { abilitySlots[i]?.UpdateState(handler); }
-
-        public void SetSelected(bool s)
-        {
-            if (border != null) border.color = s ? SelectedBorder : NormalBorder;
-        }
+        public Image cooldownOverlay;
+        public Text cooldownText;
+        public Text symbolText;
     }
 }

@@ -29,11 +29,18 @@ public class InputManager : MonoBehaviour
     }
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        // Only ignore world clicks that land on the HUD panel itself, so clicking
+        // an ability button doesn't also deselect the hero behind it. (We check the
+        // HUD rect specifically rather than all UI, so units stay clickable.)
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        bool pointerOverHud = TeamHUD.Instance != null
+            && TeamHUD.Instance.IsPointerOverPanel(mousePos);
+
+        if (!pointerOverHud && Mouse.current.leftButton.wasPressedThisFrame)
         {
             OnLeftClick();
         }
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (!pointerOverHud && Mouse.current.rightButton.wasPressedThisFrame)
         {
             OnRightClick();
         }

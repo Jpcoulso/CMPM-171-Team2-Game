@@ -11,7 +11,12 @@ public class UnbreakableAbilityData : AbilityData
 
     public override void Execute(Character owner)
     {
-        IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
+      
+        List<Hero> squad = new List<Hero>();
+        if (SquadManager.Instance != null)
+            squad.AddRange(SquadManager.Instance.GetSquad());
+        else
+            squad.AddRange(Object.FindObjectsByType<Hero>(FindObjectsSortMode.None));
 
         int count = 0;
         foreach (Hero hero in squad)
