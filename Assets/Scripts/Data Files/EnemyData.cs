@@ -6,6 +6,7 @@ public class EnemyData : ScriptableObject
     [Header("Identity")]
     public string enemyName;
     public bool isRanged;
+    public bool isHealer;
 
     [Header("Base Stats")]
     public float maxHealth;

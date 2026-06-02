@@ -121,9 +121,10 @@ public class InputManager : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         worldPosition.z = 0; // Set z to 0 for 2D
         RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero);
+        Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
 
         // Check if we right-clicked on an enemy
-        if (hit.collider != null && hit.collider.gameObject.GetComponent<Enemy>() != null)
+        if (selectedHero.IsHealer == false && hit.collider != null && hit.collider.gameObject.GetComponent<Enemy>() != null)
         {
             Debug.Log("Right-clicked on an enemy.");
             //float range = 2f; // TEMP attack range ****************************COMMENTED OUT TO TEST STATE TRANSITION FROM CHASING TO ATTACKING
@@ -131,7 +132,6 @@ public class InputManager : MonoBehaviour
             Vector3 unitPosition = SelectionManager.Instance.currentlySelected.transform.position;
             
             // Identify the currently selected Hero and the clicked enemy, set the enemy as the hero's target so that hero will aggro enemy
-            Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
             Enemy clickedEnemy = hit.collider.gameObject.GetComponent<Enemy>();
             selectedHero.SetTarget(clickedEnemy);
             // once we have a target for selected hero the state machine should take over and initiate movement and combat
@@ -160,10 +160,15 @@ public class InputManager : MonoBehaviour
             */
             //************************************************************************************************************************
         }
+        else if(selectedHero.IsHealer == true && hit.collider != null && hit.collider.gameObject.GetComponent<Hero>() != null)
+        {
+            Hero clickedAlly = hit.collider.gameObject.GetComponent<Hero>();
+            selectedHero.SetTarget(clickedAlly);
+            SpawnIndicator(worldPosition, true);
+        }
         // If not clicking on an enemy, move to the location as normal
         else
         {
-            Hero selectedHero = SelectionManager.Instance.currentlySelected.gameObject.GetComponent<Hero>();
             selectedHero.SetDestination(worldPosition);
             SpawnIndicator(worldPosition, false); // Spawn a green indicator for allies
             /*

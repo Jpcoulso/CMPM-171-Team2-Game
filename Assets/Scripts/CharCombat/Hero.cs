@@ -31,6 +31,7 @@ public class Hero : Character
     public override float AttackRange => heroData.attackRange;
     public override float AttackRate => heroData.attackRate;
     public override bool IsRanged => heroData.isRanged;
+    public override bool IsHealer => heroData.isHealer;
 
     public override string GetCharacterName() => heroData.heroName;
 

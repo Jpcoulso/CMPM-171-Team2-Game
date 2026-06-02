@@ -16,6 +16,11 @@ public class AnimationEventRelay : MonoBehaviour
         parent.Target.TakeDamage(parent.AttackDamage, parent);
     }
 
+    void OnHealLand()
+    {
+        parent.Target.Heal(parent.AttackDamage);
+    }
+
     void OnDeath()
     {
         //await Task.Delay(2000);

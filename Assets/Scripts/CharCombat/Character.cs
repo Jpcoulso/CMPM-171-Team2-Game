@@ -55,6 +55,7 @@ public abstract class Character : MonoBehaviour
     public abstract float AttackRange {get;}
     public abstract float AttackRate {get;}
     public abstract bool IsRanged {get;}
+    public abstract bool IsHealer {get;}
     protected Vector3 moveDestination;
     protected bool hasDestination;
 

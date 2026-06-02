@@ -15,6 +15,7 @@ public class Enemy : Character
     public override float AttackRange => enemyData.attackRange;
     public override float AttackRate => enemyData.attackRate;
     public override bool IsRanged => enemyData.isRanged;
+    public override bool IsHealer => enemyData.isHealer;
 
     public override string GetCharacterName() => enemyData.enemyName;
 

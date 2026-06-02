@@ -17,12 +17,13 @@ MonoBehaviour:
   heroPrefab: {fileID: 615487247393335348, guid: 271fb5dc58f6fe943bb91718923a5eac, type: 3}
   spriteTint: {r: 1, g: 1, b: 1, a: 1}
   isRanged: 1
+  isHealer: 0
   maxHealth: 100
   attackDamage: 30
   attackRange: 100
   attackRate: 2
   moveSpeed: 4
-  armor: 7
+  armor: 4
   abilities:
   - {fileID: 11400000, guid: cfda93a043a00441898d764e18ef95a9, type: 2}
   - {fileID: 11400000, guid: 4575ae3d3822d4e639de399b56a017f6, type: 2}
