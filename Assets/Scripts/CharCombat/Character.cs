@@ -233,14 +233,14 @@ public abstract class Character : MonoBehaviour
     }
 
     // Directional damage (melee attacks) — can be blocked by shield
-    public virtual void TakeDamage(float rawAmount, Vector3 sourcePosition)
+    public virtual void TakeDamage(float rawAmount, Character attacker)
     {
         if (isDead) return;
 
         // Check if shield blocks this attack based on direction
         if (shieldActive)
         {
-            Vector2 toSource = ((Vector2)(sourcePosition - transform.position)).normalized;
+            Vector2 toSource = ((Vector2)(attacker.transform.position - transform.position)).normalized;
             float angle = Vector2.Angle(shieldDirection, toSource);
             if (angle <= shieldHalfAngle)
             {
@@ -250,6 +250,12 @@ public abstract class Character : MonoBehaviour
         }
 
         ApplyDamage(rawAmount);
+
+        // change aggro to attacker if their armor class is higher than currentTarget
+        if (currentTarget == null || currentTarget.GetArmor() < attacker.GetArmor())
+        {
+            SetTarget(attacker);
+        }
     }
 
     private void ApplyDamage(float rawAmount)
