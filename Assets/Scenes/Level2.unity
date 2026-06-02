@@ -199,6 +199,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e3a2eca594e8c487d98c04d9dbaaa5c3, type: 2}
   - {fileID: 11400000, guid: 376c1f677d49846edadfb589e4719fc0, type: 2}
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
+  levelUnlocked: 
   currentGold: 0
 --- !u!4 &122738909
 Transform:
@@ -1338,6 +1339,50 @@ MonoBehaviour:
   - enemies:
     - {fileID: 1764757225262580570, guid: 6f241feea47582a46a46d3d07bf680b1, type: 3}
     - {fileID: 1764757225262580570, guid: 8a21b7ccef478de47aeeb5f10eff30cb, type: 3}
+--- !u!1 &1306742950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306742952}
+  - component: {fileID: 1306742951}
+  m_Layer: 0
+  m_Name: HUD
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1306742951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306742950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de523d3274e464fd4bcd9a205bee7711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeamHUD
+--- !u!4 &1306742952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306742950}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.71414, y: -1.1782, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1615042428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1760,3 +1805,4 @@ SceneRoots:
   - {fileID: 122738909}
   - {fileID: 1648194102}
   - {fileID: 1687667121}
+  - {fileID: 1306742952}

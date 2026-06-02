@@ -67,7 +67,7 @@ public class WaveManager : MonoBehaviour
     IEnumerator LoadArmoryAfterDelay()
     {
         yield return new WaitForSeconds(2f); // 2 seconds delay
-        GameManager.Instance.LoadScene("Armory2");
+        GameManager.Instance.LoadScene("Map");
     }
     IEnumerator LoadNextWaveAfterDelay()
     {
