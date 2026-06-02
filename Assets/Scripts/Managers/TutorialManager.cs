@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -10,18 +11,18 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] private GameObject destination;
     
-    private float inpTimer;
     private float inputDelay = 0.5f;
+    private bool canAdvance = true;
     
     private string[] tutorialSteps =
     {
-        "Welcome to BG4!\nPress [Space] to continue!", // 36
+        "Welcome to BG4!\nPress [Space] or [Click] to continue!", // 36
         // 0- input
         "Lets start with the basics.\n Select a character with [Left Click].", // 24
         // 1- Character Selected
         "Great! Now let's try moving around.", // 24
         // 2- input
-        "[Right click] to move your selected character.\n Try navigating to the highlighted area.", // 20
+        "Use [Right click] to move your selected character.\n Try navigating to the highlighted area.", // 20
         // 3- Reach trigger
         "Awesome! Now let's try attacking.", // 24
         // 4- input
@@ -31,8 +32,8 @@ public class TutorialManager : MonoBehaviour
         // 6- input
         "Each hero has unique abilities to help them out during combat.\n Use [Q] and [W] to activate your selected hero's abilities.", // 20
         // 7- ability check, maybe check for usage of each?
-        "ABILITY_STEP_PLACEHOLDER"
-        // 8- 
+        "That's all for the tutorial!\nDon't forget to check out the Armory!", // 24
+        // 8- input
     };
 
     private int currentStep = 0;
@@ -44,7 +45,6 @@ public class TutorialManager : MonoBehaviour
     }
     void Update()
     {
-        inpTimer += Time.deltaTime;
         CheckStepCondition();
     }
 
@@ -66,6 +66,7 @@ public class TutorialManager : MonoBehaviour
             case 6: setTutorialText(tutorialSteps[6], 24); break;
             case 7: setTutorialText(tutorialSteps[7], 24); break;
                 // Ability usage checkboxes?
+            case 8: setTutorialText(tutorialSteps[8], 24); break;
             default:
                 break;
         }
@@ -97,7 +98,14 @@ public class TutorialManager : MonoBehaviour
                 if (FetchInput()) { NextStep(); }
                 break;
             case 7:
-                // abiity checks
+                // Checks if hero is selected and ability button is clicked
+                // TODO better ability check when on screen HUD functional
+                if ((SelectionManager.Instance.currentlySelected) && 
+                (Keyboard.current.qKey.wasPressedThisFrame || Keyboard.current.wKey.wasPressedThisFrame))
+                { NextStep(); }
+                break;
+            case 8:
+            if (FetchInput()) { NextStep(); }
                 break;
             default:
                 break;
@@ -106,24 +114,31 @@ public class TutorialManager : MonoBehaviour
     
     private bool FetchInput()
     {
-        if ((Keyboard.current.spaceKey.isPressed || Mouse.current.rightButton.wasPressedThisFrame
-        || Mouse.current.leftButton.wasPressedThisFrame) && inpTimer >= inputDelay)
-        {
-            inpTimer = 0f;
-            return true;
-        } return false;
+        if (!canAdvance) { return false; }
+
+        return (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame
+        || Mouse.current.leftButton.wasPressedThisFrame);
     }
     private void NextStep()
     {
+        canAdvance = false;
         currentStep++;
         if (currentStep >= tutorialSteps.Length)
         {
             Debug.Log("Tutorial complete!");
-            SceneManager.LoadScene("Armory");
+            SceneManager.LoadScene("Map");
             return;
         }
         ProgressTutorial(currentStep);
+        StartCoroutine(EnableInputAfterDelay());
     }
+
+    IEnumerator EnableInputAfterDelay()
+    {
+        yield return new WaitForSeconds(inputDelay);
+        canAdvance = true;
+    }
+
     private void setTutorialText(string text, int fontSize)
     {
         tutorialText.text = text;
