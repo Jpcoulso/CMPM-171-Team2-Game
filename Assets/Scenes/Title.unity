@@ -149,10 +149,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   musicSounds:
-  - volume: 0.7
+  - volume: 0.5
     loop: 1
     type: 3
     clip: {fileID: 8300000, guid: f2681c8ce7de0a940a2832944effd1f8, type: 3}
+  - volume: 0.5
+    loop: 1
+    type: 2
+    clip: {fileID: 8300000, guid: 0b3ecb5fef4ec39408b1e87422be8732, type: 3}
+  - volume: 0.5
+    loop: 1
+    type: 0
+    clip: {fileID: 8300000, guid: 083166a1b56c1364187cfee46c043735, type: 3}
+  - volume: 0.5
+    loop: 1
+    type: 1
+    clip: {fileID: 8300000, guid: 41be7e6a265b9c247957c6632719ae69, type: 3}
   sfxSounds: []
   fadeDuration: 3
 --- !u!4 &745485730
@@ -309,6 +321,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
+  levelUnlocked: 
   currentGold: 0
 --- !u!4 &1254758658
 Transform:
@@ -337,6 +350,7 @@ GameObject:
   - component: {fileID: 1309362552}
   - component: {fileID: 1309362551}
   - component: {fileID: 1309362550}
+  - component: {fileID: 1309362553}
   m_Layer: 5
   m_Name: Start
   m_TagString: Untagged
@@ -408,9 +422,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1254758657}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: LoadScene
+      - m_Target: {fileID: 1309362553}
+        m_TargetAssemblyTypeName: SceneButton, Assembly-CSharp
+        m_MethodName: LoadSceneByName
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -458,6 +472,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309362548}
   m_CullTransparentMesh: 1
+--- !u!114 &1309362553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309362548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d058b8f222e23ba4e8fd696bbea32528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneButton
+  mapButton: 0
+  levelIndex: 0
+  musicType: 3
 --- !u!1 &1331789173
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,7 +916,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1800798293
 RectTransform:
   m_ObjectHideFlags: 0

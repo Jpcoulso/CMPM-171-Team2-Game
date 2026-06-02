@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
         BossMusic,
         ArmoryMusic,
         DefaultMusic,
+        None,
     }
     public enum SFXType
     {
@@ -48,6 +49,7 @@ public class AudioManager : MonoBehaviour
     private Dictionary<SFXType, SFXSound> sfxSoundDict = new();
     private AudioSource musicSource;
     private AudioSource sfxSource;
+    private MusicType currentMusic;
 
     void Awake()
     {
@@ -71,6 +73,7 @@ public class AudioManager : MonoBehaviour
     {
         // Play initial music if needed
         PlayMusic(MusicType.DefaultMusic);
+        currentMusic = MusicType.DefaultMusic;
     }
 
     public void PlayMusic(MusicType type, float volumeOverride = -1f)
@@ -94,6 +97,9 @@ public class AudioManager : MonoBehaviour
     }
     public void FadeToMusic(MusicType type)
     {
+        if (currentMusic == type) { return; }
+        currentMusic = type;
+
         if (!musicSoundDict.TryGetValue(type, out MusicSound s)) return;
         StartCoroutine(FadeTransition(musicSource, s.clip, s.volume, s.loop));
     }

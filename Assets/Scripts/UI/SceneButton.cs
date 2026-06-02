@@ -7,6 +7,7 @@ public class SceneButton : MonoBehaviour
     private Button button;
     [SerializeField] private bool mapButton = false;
     [SerializeField] private int levelIndex;
+    [SerializeField] private AudioManager.MusicType musicType;
 
     void Awake()
     {
@@ -20,6 +21,7 @@ public class SceneButton : MonoBehaviour
     {
         if (!mapButton || GameManager.Instance.IsLevelUnlocked(levelIndex))
         {
+            if (musicType != AudioManager.MusicType.None) { AudioManager.Instance.FadeToMusic(musicType); }
             GameManager.Instance.LoadScene(sceneName);
         }
     }
