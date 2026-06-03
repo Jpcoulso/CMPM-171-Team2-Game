@@ -28,7 +28,7 @@ public class Enemy : Character
     private float scanTimer;            // performance friendly
 
 
-    private void Start()
+    protected virtual void Start()
     {
         currentHealth = MaxHealth;
         scanTimer = scanInterval;
@@ -86,7 +86,7 @@ public class Enemy : Character
         pickup.goldAmount = enemyData.goldReward;
         Debug.Log($"{GetCharacterName()} defeated! " +
                   $"Rewarding {enemyData.experienceReward} XP.");
-        Destroy(gameObject); //called via animation event
+        //Destroy(gameObject); called via animation event
         WaveManager.Instance.OnEnemyDied(this);
         //gameObject.SetActive(false);
     }

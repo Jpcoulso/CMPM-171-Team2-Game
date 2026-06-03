@@ -21,9 +21,9 @@ public abstract class Character : MonoBehaviour
     protected bool isDead;
 
 
-    private float attackCooldown = 0;
+    protected float attackCooldown = 0;
     private Rigidbody2D rb;
-    private Animator animator;
+    protected Animator animator;
     
 
     public float CurrentHealth => currentHealth;
@@ -223,7 +223,7 @@ public abstract class Character : MonoBehaviour
 
     }
     
-    private void PerformAttack()
+    protected virtual void PerformAttack()
     {
         Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
         animator.SetTrigger("Attack"); // Target.TakeDamage(AttackDamage) gets called from Attack animation event
