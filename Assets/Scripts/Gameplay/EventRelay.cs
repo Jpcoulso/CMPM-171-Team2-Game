@@ -13,12 +13,7 @@ public class AnimationEventRelay : MonoBehaviour
     // Animation Event calls this — passes attacker position so shields can block directionally
     void OnAttackLand()
     {
-        parent.Target.TakeDamage(parent.AttackDamage, parent);
-    }
-
-    void OnHealLand()
-    {
-        parent.Target.Heal(parent.AttackDamage);
+        parent.OnAttackImpact();
     }
 
     void OnDeath()

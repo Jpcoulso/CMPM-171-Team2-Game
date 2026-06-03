@@ -19,6 +19,7 @@ public class UnbreakableEffect : MonoBehaviour
 
         // Make this character immune
         character.isInvulnerable = true;
+        character.Heal(character.MaxHealth / 4);
 
         // Create a ring visual around the character
         ringVisual = new GameObject("UnbreakableRing");

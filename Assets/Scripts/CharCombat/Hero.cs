@@ -32,6 +32,7 @@ public class Hero : Character
     public override float AttackRate => heroData.attackRate;
     public override bool IsRanged => heroData.isRanged;
     public override bool IsHealer => heroData.isHealer;
+    public override GameObject ProjectilePrefab => heroData.projectilePrefab;
 
     public override string GetCharacterName() => heroData.heroName;
 

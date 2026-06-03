@@ -17,5 +17,6 @@ public class EnemyData : ScriptableObject
     public float detectionRange;
     public int experienceReward;
     public int goldReward;
+    public GameObject projectilePrefab;
 
 }

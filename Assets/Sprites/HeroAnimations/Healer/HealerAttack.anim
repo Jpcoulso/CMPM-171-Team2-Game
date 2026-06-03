@@ -98,7 +98,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.41666666
-    functionName: OnHealLand
+    functionName: OnAttackLand
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

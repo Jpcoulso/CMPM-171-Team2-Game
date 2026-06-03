@@ -23,6 +23,7 @@ public class HeroData : ScriptableObject
     public float attackRate;
     public float moveSpeed;
     public float armor;
+    public GameObject projectilePrefab;
 
     [Header("Abilities")]
     public List<AbilityData> abilities;

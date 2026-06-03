@@ -24,6 +24,7 @@ MonoBehaviour:
   attackRate: 2
   moveSpeed: 4
   armor: 4
+  projectilePrefab: {fileID: 491603110557384597, guid: 20e948fa18e55c2419e87fd616b9589e, type: 3}
   abilities:
   - {fileID: 11400000, guid: cfda93a043a00441898d764e18ef95a9, type: 2}
   - {fileID: 11400000, guid: 4575ae3d3822d4e639de399b56a017f6, type: 2}

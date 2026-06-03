@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -56,6 +57,7 @@ public abstract class Character : MonoBehaviour
     public abstract float AttackRate {get;}
     public abstract bool IsRanged {get;}
     public abstract bool IsHealer {get;}
+    public abstract GameObject ProjectilePrefab {get;}
     protected Vector3 moveDestination;
     protected bool hasDestination;
 
@@ -225,6 +227,26 @@ public abstract class Character : MonoBehaviour
     {
         Debug.Log($"{GetCharacterName()} attacks {Target.GetCharacterName()} for {AttackDamage} damage!");
         animator.SetTrigger("Attack"); // Target.TakeDamage(AttackDamage) gets called from Attack animation event
+    }
+
+    // if character is a ranged class this spawns a projectile and then Projectile.cs handles aiming, firing, and damage
+    // else if character is a melee class OnAttackImpact() calls TakeDamage() like usual
+    public void OnAttackImpact()
+    {
+        if(IsRanged && ProjectilePrefab != null)
+        {
+            Vector3 spawnPoint = transform.position;
+            GameObject projectileObj = Instantiate(ProjectilePrefab, spawnPoint, quaternion.identity);
+            Projectile projectile = projectileObj.GetComponent<Projectile>();
+            if(projectile != null)
+            {
+                projectile.Initialize(currentTarget, AttackDamage, this);
+            }
+        }
+        else
+        {
+            currentTarget.TakeDamage(AttackDamage, this);
+        }
     }
 
     // Non-directional damage (abilities, AOE, etc.) — bypasses shield
