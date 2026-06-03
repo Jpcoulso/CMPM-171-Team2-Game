@@ -66,7 +66,7 @@ public class SelectionManager : MonoBehaviour
     {
         foreach (var c in selectedCharacters)
         {
-            c.Deselect();
+            if(c != null) c.Deselect();
         }
         selectedCharacters.Clear();
         selectedCharacters.Add(newSelection);
@@ -84,7 +84,7 @@ public class SelectionManager : MonoBehaviour
     {
         foreach (var c in selectedCharacters)
         {
-            c.Deselect();
+            if(c != null) c.Deselect();
         }
         selectedCharacters.Clear();
     }
