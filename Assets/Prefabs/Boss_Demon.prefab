@@ -210,30 +210,30 @@ MonoBehaviour:
   cleaveAttack:
     name: cleaveAttack
     animTrigger: cleave
-    damage: 25
+    damage: 35
     range: 3
-    cooldown: 5
+    cooldown: 3
     currentCooldown: 0
   fireballAttack:
     name: fireballAttack
     animTrigger: fireBall
-    damage: 15
-    range: 40
-    cooldown: 8
+    damage: 50
+    range: 5
+    cooldown: 2
     currentCooldown: 0
   jumpAttack:
     name: jumpAttack
     animTrigger: jump
     damage: 150
     range: 3
-    cooldown: 10
+    cooldown: 5
     currentCooldown: 0
   breathAttack:
     name: breathAttack
     animTrigger: fireBreath
-    damage: 25
+    damage: 50
     range: 4
-    cooldown: 7
+    cooldown: 4
     currentCooldown: 0
   jumpRadius: 3
   jumpVFXPrefab: {fileID: 0}

@@ -210,7 +210,7 @@ public abstract class Character : MonoBehaviour
         if (attackCooldown <= 0 && currentTarget != null && IsWithinAttackRange())
         {
             PerformAttack();
-            attackCooldown = AttackRate; // Reset cooldown
+            if(attackCooldown <= 0) attackCooldown = AttackRate; // Reset cooldown if it has not been reset by anything else already (inheritance subclasses have custom resets)
         }
     }
 
@@ -319,7 +319,7 @@ public abstract class Character : MonoBehaviour
         OnDeath();
     }
 
-    protected Vector3 CalcEngagementPoint(Vector3 targetPosition)
+    protected virtual Vector3 CalcEngagementPoint(Vector3 targetPosition)
     {
         float targetOffset = AttackRange * 0.5f;
         if(transform.position.x < targetPosition.x)

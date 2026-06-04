@@ -34,6 +34,8 @@ public class DemonBoss : Enemy
     // The attack currently being executed — AnimationEventRelay uses this
     private BossAttack activeAttack;
  
+    public override float AttackRange => GetDynamicRange();
+
     // -------------------------------------------------------------------------
     // Unity Lifecycle
     // -------------------------------------------------------------------------
@@ -90,28 +92,35 @@ public class DemonBoss : Enemy
         animator.SetTrigger(selectedAttack.animTrigger);
     }
  
-    // Priority order: Fireball (long range) → Breath or Jump (close range) → Cleave (default).
     private BossAttack SelectAttack(float distance)
     {
-        return fireballAttack;
-        /* --- DEBUGGING
-        // 1. Fireball — prefer at long range
-        if (distance > cleaveAttack.range && distance <= fireballAttack.range && IsReady(fireballAttack))
-            return fireballAttack;
+        // Filter for attacks that are off cooldown AND in range
+        List<BossAttack> validAttacks = new List<BossAttack>();
+        foreach (BossAttack attack in allAttacks)
+        {
+            if (IsReady(attack) && distance <= attack.range)
+            {
+                validAttacks.Add(attack);
+            }
+        }
+
+        // Pick one randomly from the valid options
+        if (validAttacks.Count > 0)
+        {
+            return validAttacks[Random.Range(0, validAttacks.Count)];
+        }
  
-        // 2. Close-range specials — pick whichever is off cooldown (breath wins the tie)
-        if (distance <= breathAttack.range && IsReady(breathAttack))
-            return breathAttack;
- 
-        if (distance <= jumpAttack.range && IsReady(jumpAttack))
-            return jumpAttack;
- 
-        // 3. Cleave — default melee fallback
-        if (distance <= cleaveAttack.range && IsReady(cleaveAttack))
-            return cleaveAttack;
- 
-        return null; // nothing is in range or off cooldown yet
-        */
+        return null;
+    }
+
+    private float GetDynamicRange()
+    {
+        float max = 0;
+        foreach (var a in allAttacks)
+        {
+            if (IsReady(a)) max = Mathf.Max(max, a.range);
+        }
+        return max > 0 ? max : (cleaveAttack != null ? cleaveAttack.range : 2f);
     }
  
     // -------------------------------------------------------------------------
@@ -126,20 +135,22 @@ public class DemonBoss : Enemy
         currentTarget.TakeDamage(cleaveAttack.damage, this);
     }
  
-    // Spawns a projectile that flies toward the current target
+    // Spawns a projectile that flies toward EVERY living hero
     public void OnFireballLaunch()
     {
-        if (currentTarget == null || ProjectilePrefab == null) return;
+        if (ProjectilePrefab == null) return;
  
-        Vector3 spawnPosition = transform.position; //firePoint != null ? firePoint.position : transform.position;
+        IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
+        foreach (Hero hero in squad)
+        {
+            if (hero == null || hero.IsDead) continue;
+
+            GameObject projectileObj = Instantiate(ProjectilePrefab, transform.position, Quaternion.identity);
+            Projectile projectile = projectileObj.GetComponent<Projectile>();
  
-        GameObject projectileObj = Instantiate(ProjectilePrefab, spawnPosition, Quaternion.identity);
-        Projectile projectile = projectileObj.GetComponent<Projectile>();
- 
-        if (projectile != null)
-            projectile.Initialize(currentTarget, (int)fireballAttack.damage, this);
-        else
-            Debug.LogWarning($"{name}: ProjectilePrefab is missing a Projectile component!");
+            if (projectile != null)
+                projectile.Initialize(hero, fireballAttack.damage, this);
+        }
     }
  
     // Circular AoE centred on the boss — hits all Heroes within jumpRadius
@@ -183,10 +194,20 @@ public class DemonBoss : Enemy
     public override void FaceTarget(Vector3 position)
     {
         if (position.x < transform.position.x)
-        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
-    else
-        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
+        else
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
+    }
 
+    protected override Vector3 CalcEngagementPoint(Vector3 targetPosition)
+    {
+        float range = (activeAttack != null) ? activeAttack.range : AttackRange;
+        float targetOffset = range * 0.5f;
+        if(transform.position.x < targetPosition.x)
+        {
+            return new Vector3(targetPosition.x - targetOffset, targetPosition.y, 0);
+        }
+        return new Vector3(targetPosition.x + targetOffset, targetPosition.y, 0);
     }
 
     // -------------------------------------------------------------------------
