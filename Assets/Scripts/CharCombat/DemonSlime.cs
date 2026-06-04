@@ -48,7 +48,7 @@ public class DemonSlime : Enemy
  
         // Flip sprite to face direction of travel
         if (direction.x != 0)
-            transform.localScale = new Vector3(direction.x > 0 ? 1f : -1f, 1f, 1f);
+            transform.localScale = new Vector3(direction.x > 0 ? -1f : 1f, 1f, 1f);
     }
  
     private void PickNewWaypoint()
@@ -78,6 +78,14 @@ public class DemonSlime : Enemy
         );
     }
 
+    private void StopMovement()
+    {
+        // Sets the waypoint to current position so MoveTowards has nowhere to go,
+        // and the isDead guard in Update stops further waypoint picking.
+        currentWaypoint = transform.position;
+        animator.SetBool("isWalking", false);
+    }
+
     // -------------------------------------------------------------------------
     // Death
     // -------------------------------------------------------------------------
@@ -85,6 +93,7 @@ public class DemonSlime : Enemy
     protected override void OnDeath()
     {
         base.OnDeath();
+        StopMovement();
         SpawnBoss();
         Destroy(gameObject);
     }

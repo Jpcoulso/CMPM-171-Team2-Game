@@ -17,7 +17,7 @@ MonoBehaviour:
   isHealer: 0
   maxHealth: 800
   attackDamage: 20
-  attackRange: 20
+  attackRange: 4
   attackRate: 8
   moveSpeed: 3
   detectionRange: 100

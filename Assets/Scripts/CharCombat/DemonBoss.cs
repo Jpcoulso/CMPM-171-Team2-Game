@@ -12,7 +12,7 @@ public class BossAttack
     [HideInInspector] public float currentCooldown;
 }
  
-public class BossEnemy : Enemy
+public class DemonBoss : Enemy
 {
     [Header("Boss Attacks")]
     [SerializeField] private BossAttack cleaveAttack;
@@ -37,12 +37,15 @@ public class BossEnemy : Enemy
     // -------------------------------------------------------------------------
     // Unity Lifecycle
     // -------------------------------------------------------------------------
- 
+    protected void Awake()
+    {
+        allAttacks = new List<BossAttack> { cleaveAttack, fireballAttack, jumpAttack, breathAttack };
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
+    }
     protected override void Start()
     {
         base.Start();
- 
-        allAttacks = new List<BossAttack> { cleaveAttack, fireballAttack, jumpAttack, breathAttack };
     }
  
     protected override void FixedUpdate()
@@ -90,6 +93,8 @@ public class BossEnemy : Enemy
     // Priority order: Fireball (long range) → Breath or Jump (close range) → Cleave (default).
     private BossAttack SelectAttack(float distance)
     {
+        return fireballAttack;
+        /* --- DEBUGGING
         // 1. Fireball — prefer at long range
         if (distance > cleaveAttack.range && distance <= fireballAttack.range && IsReady(fireballAttack))
             return fireballAttack;
@@ -106,6 +111,7 @@ public class BossEnemy : Enemy
             return cleaveAttack;
  
         return null; // nothing is in range or off cooldown yet
+        */
     }
  
     // -------------------------------------------------------------------------
@@ -117,7 +123,7 @@ public class BossEnemy : Enemy
     {
         if (currentTarget == null) return;
  
-        currentTarget.TakeDamage((int)cleaveAttack.damage, this);
+        currentTarget.TakeDamage(cleaveAttack.damage, this);
     }
  
     // Spawns a projectile that flies toward the current target
@@ -148,7 +154,7 @@ public class BossEnemy : Enemy
         {
             Hero hero = hit.GetComponent<Hero>();
             if (hero != null)
-                hero.TakeDamage((int)jumpAttack.damage, this);
+                hero.TakeDamage(jumpAttack.damage, this);
         }
     }
  
@@ -156,7 +162,7 @@ public class BossEnemy : Enemy
     public void OnBreathImpact()
     {
         // Flip the offset so breath comes from the front regardless of facing direction
-        float facingDirection = transform.localScale.x > 0 ? 1f : -1f;
+        float facingDirection = transform.localScale.x > 0 ? -1f : 1f;
         Vector3 offset = new Vector3((breathSize.x / 2f) * facingDirection, 0f, 0f);
         Vector2 boxCenter = transform.position + offset;
  
@@ -169,10 +175,20 @@ public class BossEnemy : Enemy
         {
             Hero hero = hit.GetComponent<Hero>();
             if (hero != null)
-                hero.TakeDamage((int)breathAttack.damage, this);
+                hero.TakeDamage(breathAttack.damage, this);
         }
     }
  
+    // overridden face target function to properly manage which way boss is facing (the sprite is default looking the opposite way as our enemy sprites)
+    public override void FaceTarget(Vector3 position)
+    {
+        if (position.x < transform.position.x)
+        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
+    else
+        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
+
+    }
+
     // -------------------------------------------------------------------------
     // Debug Visualization
     // -------------------------------------------------------------------------
@@ -185,7 +201,7 @@ public class BossEnemy : Enemy
         Gizmos.DrawSphere(transform.position, jumpRadius);
  
         // Firebreath box
-        float facing = transform.localScale.x > 0 ? 1f : -1f;
+        float facing = transform.localScale.x > 0 ? -1f : 1f;
         Vector3 breathOffset = new Vector3((breathSize.x / 2f) * facing, 0f, 0f);
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
         Gizmos.DrawCube(transform.position + breathOffset, breathSize);

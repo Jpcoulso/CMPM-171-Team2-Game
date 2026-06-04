@@ -22,7 +22,7 @@ public abstract class Character : MonoBehaviour
 
 
     protected float attackCooldown = 0;
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     protected Animator animator;
     
 
@@ -214,7 +214,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    public void FaceTarget(Vector3 position)
+    public virtual void FaceTarget(Vector3 position)
     {
         if (position.x < transform.position.x)
         transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)

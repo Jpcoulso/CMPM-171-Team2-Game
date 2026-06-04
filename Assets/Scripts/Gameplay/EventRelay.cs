@@ -21,4 +21,31 @@ public class AnimationEventRelay : MonoBehaviour
         //await Task.Delay(2000);
         Destroy(transform.parent.gameObject);
     }
+
+    // used to destroy fireball after it explodes
+    void DestroyMe()
+    {
+        Destroy(gameObject);
+    }
+
+     // --- Boss Attack Relays ---
+    void OnCleaveImpact()
+    {
+        if (parent is DemonBoss boss) boss.OnCleaveImpact();
+    }
+    
+    void OnFireballLaunch()
+    {
+        if (parent is DemonBoss boss) boss.OnFireballLaunch();
+    }
+   
+    void OnJumpImpact()
+    {
+        if (parent is DemonBoss boss) boss.OnJumpImpact();
+    }
+   
+    void OnBreathImpact()
+    {
+        if (parent is DemonBoss boss) boss.OnBreathImpact();
+    }
 }
