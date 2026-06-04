@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Bat
   isRanged: 0
+  isHealer: 0
   maxHealth: 100
   attackDamage: 20
   attackRange: 2
   attackRate: 1
-  moveSpeed: 3
+  moveSpeed: 2
   detectionRange: 100
   experienceReward: 10
   goldReward: 10
+  projectilePrefab: {fileID: 0}
