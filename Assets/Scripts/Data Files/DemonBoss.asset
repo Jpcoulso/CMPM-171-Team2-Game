@@ -23,4 +23,4 @@ MonoBehaviour:
   detectionRange: 100
   experienceReward: 100
   goldReward: 50
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 491603110557384597, guid: 0dc607d23e447fb4b858a2724069d1b2, type: 3}

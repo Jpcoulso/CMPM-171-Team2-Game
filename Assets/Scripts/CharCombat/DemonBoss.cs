@@ -35,7 +35,7 @@ public class DemonBoss : Enemy
     private BossAttack activeAttack;
  
     public override float AttackRange => GetDynamicRange();
-    private float introTimer = 2.0f;
+    private float introTimer = 3.0f;
 
     // -------------------------------------------------------------------------
     // Unity Lifecycle
