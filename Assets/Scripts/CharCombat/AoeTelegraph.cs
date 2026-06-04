@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Visuals are generated procedurally — no art assets required.
+//visuals generated with Claude
 public class AoeTelegraph : MonoBehaviour
 {
     private enum Shape { Circle, Rectangle, Cone }

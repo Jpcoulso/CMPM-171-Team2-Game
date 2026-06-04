@@ -229,13 +229,44 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 731450815971908004, guid: 50c755051804aab45a84025481d72570, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3861788811081163327}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1982711166478256142, guid: 50c755051804aab45a84025481d72570, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4530918256001683702}
   m_SourcePrefab: {fileID: 100100000, guid: 50c755051804aab45a84025481d72570, type: 3}
 --- !u!4 &711303423749477104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 731450815971908004, guid: 50c755051804aab45a84025481d72570, type: 3}
   m_PrefabInstance: {fileID: 286449260540955476}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1764757225262580570 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1982711166478256142, guid: 50c755051804aab45a84025481d72570, type: 3}
+  m_PrefabInstance: {fileID: 286449260540955476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4530918256001683702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764757225262580570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e77afc0c5524293bc3e479f8ffebc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TelegraphAbility
+  shape: 0
+  castCooldown: 6
+  castWindup: 1.75
+  abilityDamage: 25
+  freezeWhileCasting: 1
+  initialDelay: 2
+  circleRadius: 1.5
+  lineLength: 7
+  lineWidth: 2
+  coneRadius: 5
+  coneAngle: 75
 --- !u!1001 &7491826574074236450
 PrefabInstance:
   m_ObjectHideFlags: 0

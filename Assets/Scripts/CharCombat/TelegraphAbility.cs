@@ -11,8 +11,6 @@ public class TelegraphAbility : MonoBehaviour
     [SerializeField] private float castCooldown = 6f;
     [Tooltip("Charge-up time before the AOE resolves — the player's dodge window.")]
     [SerializeField] private float castWindup = 1.75f;
-    [Tooltip("A hero must be at least this close for a cast to start.")]
-    [SerializeField] private float castRange = 8f;
     [SerializeField] private float abilityDamage = 30f;
     [Tooltip("Freeze the enemy in place while charging the cast.")]
     [SerializeField] private bool freezeWhileCasting = true;
@@ -39,8 +37,7 @@ public class TelegraphAbility : MonoBehaviour
 
     private void Awake()
     {
-        // Find the enemy's Character no matter where this component is attached
-        // (same object, a parent, or a child) so it "just works" on any prefab.
+
         character = GetComponent<Character>();
         if (character == null) character = GetComponentInParent<Character>();
         if (character == null) character = GetComponentInChildren<Character>(true);
@@ -80,25 +77,23 @@ public class TelegraphAbility : MonoBehaviour
         targetPos = default;
 
         Character target = character.Target;
-        if (target != null && !target.IsDead)
+        if (target != null && !target.IsDead && InAttackRange(target.transform.position))
         {
-            float d = Vector2.Distance(transform.position, target.transform.position);
-            if (d <= castRange)
-            {
-                targetPos = target.transform.position;
-                return true;
-            }
+            targetPos = target.transform.position;
+            return true;
         }
 
         if (SquadManager.Instance == null) return false;
 
         IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
         Hero closest = null;
-        float closestDist = castRange;
+        float closestDist = float.MaxValue;
         foreach (Hero hero in squad)
         {
             if (hero == null || hero.IsDead) continue;
-            float d = Vector2.Distance(transform.position, hero.transform.position);
+            if (!InAttackRange(hero.transform.position)) continue;
+
+            float d = Vector2.Distance(character.transform.position, hero.transform.position);
             if (d < closestDist)
             {
                 closestDist = d;
@@ -109,6 +104,15 @@ public class TelegraphAbility : MonoBehaviour
         if (closest == null) return false;
         targetPos = closest.transform.position;
         return true;
+    }
+    private bool InAttackRange(Vector3 heroPos)
+    {
+        Vector3 pos = character.transform.position;
+        if (character.IsRanged)
+            return Vector2.Distance(pos, heroPos) <= character.AttackRange;
+
+        return Mathf.Abs(pos.y - heroPos.y) <= 0.2f
+            && Mathf.Abs(pos.x - heroPos.x) <= character.AttackRange;
     }
 
     private void BeginCast(Vector3 targetPosition)
