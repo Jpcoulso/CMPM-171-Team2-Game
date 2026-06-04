@@ -72,6 +72,12 @@ public class InputManager : MonoBehaviour
         {
             TryReleaseAbility(1);
         }
+
+        // Dev tools
+        if (Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            WaveManager.Instance.DebugWinLevel();
+        }
     }
 
     // Cached selectable units for number-key selection (refreshed each scene)
@@ -203,12 +209,14 @@ public class InputManager : MonoBehaviour
         CharacterSelector clickedCharacter = hit.collider.GetComponent<CharacterSelector>();
         if (clickedCharacter != null)
         {
+            /*
             if (Keyboard.current.leftShiftKey.isPressed || Keyboard.current.ctrlKey.isPressed)
             {
                 Debug.Log("Pressing shift or control while clicking, adding to selection.");
                 SelectionManager.Instance.AddToSelection(clickedCharacter);
             }
             else
+            */
             {
                 Debug.Log("Left-clicked on a character: " + clickedCharacter.gameObject.name);
                 SelectionManager.Instance.SelectCharacter(clickedCharacter);

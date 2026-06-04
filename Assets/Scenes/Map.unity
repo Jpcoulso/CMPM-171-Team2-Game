@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneButton
   mapButton: 1
-  levelIndex: 5
+  levelIndex: 4
   musicType: 1
 --- !u!114 &777263377
 MonoBehaviour:
@@ -740,6 +740,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894234705}
   m_CullTransparentMesh: 1
+--- !u!1 &944167748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 944167750}
+  - component: {fileID: 944167749}
+  m_Layer: 0
+  m_Name: TEMP AM
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &944167749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944167748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5665507f09a4d5041ad2eb7baed2549c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  musicSounds:
+  - volume: 0.5
+    loop: 1
+    type: 3
+    clip: {fileID: 8300000, guid: f2681c8ce7de0a940a2832944effd1f8, type: 3}
+  - volume: 0.5
+    loop: 1
+    type: 2
+    clip: {fileID: 8300000, guid: 0b3ecb5fef4ec39408b1e87422be8732, type: 3}
+  - volume: 0.5
+    loop: 1
+    type: 0
+    clip: {fileID: 8300000, guid: 083166a1b56c1364187cfee46c043735, type: 3}
+  - volume: 0.5
+    loop: 1
+    type: 1
+    clip: {fileID: 8300000, guid: 41be7e6a265b9c247957c6632719ae69, type: 3}
+  sfxSounds: []
+  fadeDuration: 3
+--- !u!4 &944167750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944167748}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &976356327
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,7 +1684,7 @@ GameObject:
   - component: {fileID: 1411796564}
   - component: {fileID: 1411796563}
   m_Layer: 0
-  m_Name: TEMPGM
+  m_Name: TEMP GM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1640,11 +1703,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   partyData:
+  - {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
+  - {fileID: 11400000, guid: 376c1f677d49846edadfb589e4719fc0, type: 2}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  startingHero: {fileID: 0}
+  startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   levelUnlocked: 
   currentGold: 0
 --- !u!4 &1411796564
@@ -2218,3 +2281,4 @@ SceneRoots:
   - {fileID: 543392697}
   - {fileID: 550204994}
   - {fileID: 1411796564}
+  - {fileID: 944167750}

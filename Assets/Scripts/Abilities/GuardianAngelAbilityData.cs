@@ -44,7 +44,7 @@ public class GuardianAngelAbilityData : AbilityData
 
         closest.Heal(healAmount);
         Debug.Log(owner.GetCharacterName() + " heals " + closest.GetCharacterName() + " for " + healAmount + " HP!");
-
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.Guardian_sfx);
         // Yellow flash on the healed ally
         SpawnHealVisual(closest.transform.position);
     }

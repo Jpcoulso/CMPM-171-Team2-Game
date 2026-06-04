@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance;
@@ -56,23 +57,26 @@ public class WaveManager : MonoBehaviour
         {
             Debug.Log("All waves completed!");
             // Later: trigger end-of-level rewards, transition to next scene, etc.
-            // Add time padding to allow players to collect resources
-            StartCoroutine(LoadArmoryAfterDelay());
-            return;
-            
-        }
+            // TODO: collect remaining resources -> popuptext? -> unlock scene
 
-        ScreenText.Instance.ShowCountdown($"Wave {currentWave + 1} in", 3, StartNextWave);
+            // Add time padding to allow players to collect resources
+            int levelToUnlock = int.Parse(SceneManager.GetActiveScene().name.Replace("Level", ""));
+            GameManager.Instance.UnlockLevel(levelToUnlock);
+            StartCoroutine(LoadSceneAfterDelay("Map"));
+            return;
+        }
+        ScreenText.Instance.ShowCountdown($"Wave {currentWave + 1}/{waves.Length} in", 3, StartNextWave);
     }
-    IEnumerator LoadArmoryAfterDelay()
+    IEnumerator LoadSceneAfterDelay(string sceneName)
     {
         yield return new WaitForSeconds(2f); // 2 seconds delay
-        GameManager.Instance.LoadScene("Map");
+        GameManager.Instance.LoadScene(sceneName);
     }
-    IEnumerator LoadNextWaveAfterDelay()
+
+    // DEV TOOLS
+    public void DebugWinLevel()
     {
-        // Could add some UI feedback here, e.g., "Next wave in 3...2...1..."
-        yield return new WaitForSeconds(2f); // 2 seconds delay
-        StartNextWave();
+        currentWave = waves.Length;
+        WaveCleared();
     }
 }

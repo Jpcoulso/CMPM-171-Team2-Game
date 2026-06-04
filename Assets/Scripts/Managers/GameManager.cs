@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         {
             partyData[0] = startingHero;
         }
-        // Levels
+        // Levels, GM initialized on game start thus tracks whole game (manual change needed to unlock levels for testing)
         levelUnlocked = new bool[5];
         levelUnlocked[0] = true;
     }
