@@ -51,7 +51,10 @@ TagManager:
   - name: Foliage
     uniqueID: 3798452203
     locked: 0
-  - name: Characters
+  - name: Enemies
+    uniqueID: 3823481255
+    locked: 0
+  - name: Heroes
     uniqueID: 2982109011
     locked: 0
   - name: Foreground

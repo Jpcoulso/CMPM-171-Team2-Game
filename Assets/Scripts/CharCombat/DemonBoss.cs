@@ -12,7 +12,7 @@ public class BossAttack
     [HideInInspector] public float currentCooldown;
 }
  
-public class BossEnemy : Enemy
+public class DemonBoss : Enemy
 {
     [Header("Boss Attacks")]
     [SerializeField] private BossAttack cleaveAttack;
@@ -25,7 +25,7 @@ public class BossEnemy : Enemy
     [SerializeField] private GameObject jumpVFXPrefab;
  
     [Header("Firebreath")]
-    [SerializeField] private Vector2 breathSize = new Vector2(4f, 2f);
+    [SerializeField] private Vector2 breathSize = new Vector2(3f, 1.5f);
     [SerializeField] private GameObject breathVFXPrefab;
  
     // Convenience list for cooldown ticking
@@ -34,21 +34,34 @@ public class BossEnemy : Enemy
     // The attack currently being executed — AnimationEventRelay uses this
     private BossAttack activeAttack;
  
+    public override float AttackRange => GetDynamicRange();
+    private float introTimer = 3.0f;
+
     // -------------------------------------------------------------------------
     // Unity Lifecycle
     // -------------------------------------------------------------------------
- 
+    protected void Awake()
+    {
+        allAttacks = new List<BossAttack> { cleaveAttack, fireballAttack, jumpAttack, breathAttack };
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
+    }
     protected override void Start()
     {
         base.Start();
- 
-        allAttacks = new List<BossAttack> { cleaveAttack, fireballAttack, jumpAttack, breathAttack };
     }
  
     protected override void FixedUpdate()
     {
+        // If the intro is still playing, count down and do nothing else
+        if (introTimer > 0)
+        {
+            introTimer -= Time.deltaTime;
+            return; // This blocks the AI and state machine from starting
+        }
+
+        //once timer reaches zero start normal boss behavior
         base.FixedUpdate();
- 
         TickAttackCooldowns();
     }
  
@@ -87,25 +100,35 @@ public class BossEnemy : Enemy
         animator.SetTrigger(selectedAttack.animTrigger);
     }
  
-    // Priority order: Fireball (long range) → Breath or Jump (close range) → Cleave (default).
     private BossAttack SelectAttack(float distance)
     {
-        // 1. Fireball — prefer at long range
-        if (distance > cleaveAttack.range && distance <= fireballAttack.range && IsReady(fireballAttack))
-            return fireballAttack;
+        // Filter for attacks that are off cooldown AND in range
+        List<BossAttack> validAttacks = new List<BossAttack>();
+        foreach (BossAttack attack in allAttacks)
+        {
+            if (IsReady(attack) && distance <= attack.range)
+            {
+                validAttacks.Add(attack);
+            }
+        }
+
+        // Pick one randomly from the valid options
+        if (validAttacks.Count > 0)
+        {
+            return validAttacks[Random.Range(0, validAttacks.Count)];
+        }
  
-        // 2. Close-range specials — pick whichever is off cooldown (breath wins the tie)
-        if (distance <= breathAttack.range && IsReady(breathAttack))
-            return breathAttack;
- 
-        if (distance <= jumpAttack.range && IsReady(jumpAttack))
-            return jumpAttack;
- 
-        // 3. Cleave — default melee fallback
-        if (distance <= cleaveAttack.range && IsReady(cleaveAttack))
-            return cleaveAttack;
- 
-        return null; // nothing is in range or off cooldown yet
+        return null;
+    }
+
+    private float GetDynamicRange()
+    {
+        float max = 0;
+        foreach (var a in allAttacks)
+        {
+            if (IsReady(a)) max = Mathf.Max(max, a.range);
+        }
+        return max > 0 ? max : (cleaveAttack != null ? cleaveAttack.range : 2f);
     }
  
     // -------------------------------------------------------------------------
@@ -117,23 +140,25 @@ public class BossEnemy : Enemy
     {
         if (currentTarget == null) return;
  
-        currentTarget.TakeDamage((int)cleaveAttack.damage, this);
+        currentTarget.TakeDamage(cleaveAttack.damage, this);
     }
  
-    // Spawns a projectile that flies toward the current target
+    // Spawns a projectile that flies toward EVERY living hero
     public void OnFireballLaunch()
     {
-        if (currentTarget == null || ProjectilePrefab == null) return;
+        if (ProjectilePrefab == null) return;
  
-        Vector3 spawnPosition = transform.position; //firePoint != null ? firePoint.position : transform.position;
+        IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
+        foreach (Hero hero in squad)
+        {
+            if (hero == null || hero.IsDead) continue;
+
+            GameObject projectileObj = Instantiate(ProjectilePrefab, transform.position, Quaternion.identity);
+            Projectile projectile = projectileObj.GetComponent<Projectile>();
  
-        GameObject projectileObj = Instantiate(ProjectilePrefab, spawnPosition, Quaternion.identity);
-        Projectile projectile = projectileObj.GetComponent<Projectile>();
- 
-        if (projectile != null)
-            projectile.Initialize(currentTarget, (int)fireballAttack.damage, this);
-        else
-            Debug.LogWarning($"{name}: ProjectilePrefab is missing a Projectile component!");
+            if (projectile != null)
+                projectile.Initialize(hero, fireballAttack.damage, this);
+        }
     }
  
     // Circular AoE centred on the boss — hits all Heroes within jumpRadius
@@ -148,7 +173,7 @@ public class BossEnemy : Enemy
         {
             Hero hero = hit.GetComponent<Hero>();
             if (hero != null)
-                hero.TakeDamage((int)jumpAttack.damage, this);
+                hero.TakeDamage(jumpAttack.damage, this);
         }
     }
  
@@ -156,7 +181,7 @@ public class BossEnemy : Enemy
     public void OnBreathImpact()
     {
         // Flip the offset so breath comes from the front regardless of facing direction
-        float facingDirection = transform.localScale.x > 0 ? 1f : -1f;
+        float facingDirection = transform.localScale.x > 0 ? -1f : 1f;
         Vector3 offset = new Vector3((breathSize.x / 2f) * facingDirection, 0f, 0f);
         Vector2 boxCenter = transform.position + offset;
  
@@ -169,10 +194,30 @@ public class BossEnemy : Enemy
         {
             Hero hero = hit.GetComponent<Hero>();
             if (hero != null)
-                hero.TakeDamage((int)breathAttack.damage, this);
+                hero.TakeDamage(breathAttack.damage, this);
         }
     }
  
+    // overridden face target function to properly manage which way boss is facing (the sprite is default looking the opposite way as our enemy sprites)
+    public override void FaceTarget(Vector3 position)
+    {
+        if (position.x < transform.position.x)
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
+        else
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face right (flipped)
+    }
+
+    protected override Vector3 CalcEngagementPoint(Vector3 targetPosition)
+    {
+        float range = (activeAttack != null) ? activeAttack.range : AttackRange;
+        float targetOffset = range * 0.5f;
+        if(transform.position.x < targetPosition.x)
+        {
+            return new Vector3(targetPosition.x - targetOffset, targetPosition.y, 0);
+        }
+        return new Vector3(targetPosition.x + targetOffset, targetPosition.y, 0);
+    }
+
     // -------------------------------------------------------------------------
     // Debug Visualization
     // -------------------------------------------------------------------------
@@ -185,7 +230,7 @@ public class BossEnemy : Enemy
         Gizmos.DrawSphere(transform.position, jumpRadius);
  
         // Firebreath box
-        float facing = transform.localScale.x > 0 ? 1f : -1f;
+        float facing = transform.localScale.x > 0 ? -1f : 1f;
         Vector3 breathOffset = new Vector3((breathSize.x / 2f) * facing, 0f, 0f);
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f);
         Gizmos.DrawCube(transform.position + breathOffset, breathSize);

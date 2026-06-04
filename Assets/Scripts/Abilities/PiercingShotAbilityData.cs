@@ -50,7 +50,7 @@ public class PiercingShotAbilityData : AbilityData
         lr.SetPosition(1, end);
         lr.startWidth = lineWidth;
         lr.endWidth = lineWidth;
-        lr.sortingLayerName = "Characters";
+        lr.sortingLayerName = "Heroes";
         lr.sortingOrder = 10;
 
         // Bright white material
