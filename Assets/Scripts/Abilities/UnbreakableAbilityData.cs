@@ -31,6 +31,7 @@ public class UnbreakableAbilityData : AbilityData
         }
 
         Debug.Log(owner.GetCharacterName() + " casts Unbreakable! " + count + " allies immune for " + immunityDuration + "s.");
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.Unbreakable_sfx);
     }
 
     public override void ApplyPassive(Character owner)

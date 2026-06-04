@@ -12,6 +12,9 @@ public class SceneButton : MonoBehaviour
     void Awake()
     {
         button = GetComponent<Button>();
+    }
+    void Start()
+    {
         if (mapButton)
         {
             button.interactable = GameManager.Instance.IsLevelUnlocked(levelIndex);

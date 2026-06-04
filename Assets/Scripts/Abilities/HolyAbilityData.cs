@@ -28,7 +28,7 @@ public class HolyAbilityData : AbilityData
         }
 
         Debug.Log(owner.GetCharacterName() + " casts Holy! Healed " + healed + " allies for " + healAmount + " HP.");
-
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.Holy_sfx);
         // Spawn yellow circle visual centered on caster
         SpawnHealVisual(heroPos);
     }

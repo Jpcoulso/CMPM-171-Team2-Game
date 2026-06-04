@@ -22,7 +22,7 @@ MonoBehaviour:
   attackDamage: 15
   attackRange: 5
   attackRate: 2
-  moveSpeed: 5
+  moveSpeed: 3
   armor: 4
   projectilePrefab: {fileID: 491603110557384597, guid: d471148658678b046a631bb1102fca3a, type: 3}
   abilities:

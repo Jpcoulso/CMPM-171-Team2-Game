@@ -25,6 +25,7 @@ public class ShieldAbilityData : AbilityData
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         Debug.Log(owner.GetCharacterName() + " raises Shield! Blocking for " + shieldDuration + "s.");
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.Shield_sfx);
 
         // Create the shield barrier visual
         GameObject shield = new GameObject("ShieldUp_Visual");

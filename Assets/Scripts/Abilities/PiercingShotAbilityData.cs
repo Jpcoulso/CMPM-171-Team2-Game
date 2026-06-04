@@ -32,6 +32,7 @@ public class PiercingShotAbilityData : AbilityData
                 enemy.TakeDamage(damage);
             }
         }
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.Piercing_sfx);
 
         // Visual: white line from origin along the direction
         Vector3 endPoint = origin + (Vector3)(direction * lineLength);

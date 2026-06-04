@@ -15,8 +15,22 @@ public class AudioManager : MonoBehaviour
     }
     public enum SFXType
     {
-        SFX1,
-        SFX2,
+        // Combat SFX(?)
+        EnemyDeath_sfx,
+        PlayerDeath_sfx,
+        LevelClear_sfx,
+        PurchaseUnit_sfx,
+        // Abiltiies
+        Bash_sfx,
+        Fireball_sfx,
+        Guardian_sfx,
+        Holy_sfx,
+        MagicCircle_sfx,
+        Piercing_sfx,
+        Shield_sfx,
+        Slash_sfx,
+        Unbreakable_sfx,
+        Volley_sfx,
     }
 
     [System.Serializable]

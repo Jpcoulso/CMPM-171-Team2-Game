@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: 
+  isRanged: 0
+  isHealer: 0
   maxHealth: 300
   attackDamage: 25
   attackRange: 2
   attackRate: 1.5
-  moveSpeed: 2
+  moveSpeed: 1
   detectionRange: 100
   experienceReward: 10
   goldReward: 10
+  projectilePrefab: {fileID: 0}
