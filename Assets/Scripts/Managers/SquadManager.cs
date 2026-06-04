@@ -7,6 +7,7 @@ public class SquadManager : MonoBehaviour
     public static SquadManager Instance { get; private set; }
     private List<Hero> currentSquad = new List<Hero>();
     private const int MAX_SQUAD_SIZE = 4;
+    public void ClearSquad() => currentSquad.Clear();
 
     private void Awake()
     {

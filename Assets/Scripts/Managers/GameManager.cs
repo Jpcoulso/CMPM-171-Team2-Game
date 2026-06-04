@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
     }
     private void SpawnHeroes()
     {
+        SquadManager.Instance.ClearSquad();
         if (heroSpawns == null || heroSpawns.Length == 0)
         {
             Debug.LogError("No hero spawn points found!");
@@ -119,6 +120,7 @@ public class GameManager : MonoBehaviour
             {
                 float savedHP = (savedHealth != null && i < savedHealth.Length) ? savedHealth[i] : partyData[i].maxHealth;
                 hero.Init(partyData[i], savedHP);
+                SquadManager.Instance.AddHero(hero);
             }else {
                 Debug.LogError($"Hero prefab for {partyData[i].heroName} does not have a Hero component!");
             }
