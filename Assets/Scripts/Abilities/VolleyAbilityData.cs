@@ -58,6 +58,7 @@ public class VolleyAbilityData : AbilityData
                     }
                 }
             }
+            AudioManager.Instance.PlaySFX(AudioManager.SFXType.Volley_sfx);
 
             // Arrow visual
             Vector3 endPoint = origin + (Vector3)(dir * arrowLength);

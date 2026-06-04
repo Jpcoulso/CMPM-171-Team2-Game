@@ -21,7 +21,7 @@ public class MagicCircleAbilityData : AbilityData
         worldPos.z = 0f;
 
         Debug.Log(owner.GetCharacterName() + " casts Magic Circle! " + damageMultiplier + "x damage for " + circleDuration + "s.");
-
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.MagicCircle_sfx);
         // Create the circle GameObject with visual and effect
         GameObject circle = new GameObject("MagicCircle");
         circle.transform.position = worldPos;

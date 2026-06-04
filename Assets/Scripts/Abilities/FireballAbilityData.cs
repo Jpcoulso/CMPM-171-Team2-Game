@@ -55,7 +55,7 @@ public class FireballAbilityData : AbilityData
         }
 
         Debug.Log("Fireball launched! Charge: " + clampedCharge.ToString("F1") + "s | Damage: " + damage.ToString("F0") + " | Radius: " + radius.ToString("F1"));
-
+        AudioManager.Instance.PlaySFX(AudioManager.SFXType.Fireball_sfx);
         // Spawn the fireball projectile from the hero
         SpawnFireball(owner.transform.position, targetPos, damage, radius, t);
     }
