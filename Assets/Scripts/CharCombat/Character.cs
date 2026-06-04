@@ -22,7 +22,7 @@ public abstract class Character : MonoBehaviour
 
 
     protected float attackCooldown = 0;
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     protected Animator animator;
     
 
@@ -210,11 +210,11 @@ public abstract class Character : MonoBehaviour
         if (attackCooldown <= 0 && currentTarget != null && IsWithinAttackRange())
         {
             PerformAttack();
-            attackCooldown = AttackRate; // Reset cooldown
+            if(attackCooldown <= 0) attackCooldown = AttackRate; // Reset cooldown if it has not been reset by anything else already (inheritance subclasses have custom resets)
         }
     }
 
-    public void FaceTarget(Vector3 position)
+    public virtual void FaceTarget(Vector3 position)
     {
         if (position.x < transform.position.x)
         transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z); // face left (default)
@@ -319,7 +319,7 @@ public abstract class Character : MonoBehaviour
         OnDeath();
     }
 
-    protected Vector3 CalcEngagementPoint(Vector3 targetPosition)
+    protected virtual Vector3 CalcEngagementPoint(Vector3 targetPosition)
     {
         float targetOffset = AttackRange * 0.5f;
         if(transform.position.x < targetPosition.x)

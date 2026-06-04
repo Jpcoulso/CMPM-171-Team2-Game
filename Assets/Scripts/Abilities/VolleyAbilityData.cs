@@ -78,7 +78,7 @@ public class VolleyAbilityData : AbilityData
         lr.SetPosition(1, end);
         lr.startWidth = 0.06f;
         lr.endWidth = 0.03f;
-        lr.sortingLayerName = "Characters";
+        lr.sortingLayerName = "Heroes";
         lr.sortingOrder = 10;
 
         lr.material = new Material(Shader.Find("Sprites/Default"));

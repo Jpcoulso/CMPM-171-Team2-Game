@@ -208,36 +208,36 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 2ed7f0b8f6d897e40bf65e8a00b5dd5d, type: 2}
   goldPrefab: {fileID: 7136927680635826898, guid: 0cc86bab66f36b344881e55855a2dcd7, type: 3}
   cleaveAttack:
-    name: 
-    animTrigger: 
-    damage: 0
-    range: 0
-    cooldown: 0
+    name: cleaveAttack
+    animTrigger: cleave
+    damage: 35
+    range: 3
+    cooldown: 3
     currentCooldown: 0
   fireballAttack:
-    name: 
-    animTrigger: 
-    damage: 0
-    range: 0
-    cooldown: 0
+    name: fireballAttack
+    animTrigger: fireBall
+    damage: 50
+    range: 5
+    cooldown: 2
     currentCooldown: 0
   jumpAttack:
-    name: 
-    animTrigger: 
-    damage: 0
-    range: 0
-    cooldown: 0
+    name: jumpAttack
+    animTrigger: jump
+    damage: 150
+    range: 3
+    cooldown: 5
     currentCooldown: 0
   breathAttack:
-    name: 
-    animTrigger: 
-    damage: 0
-    range: 0
-    cooldown: 0
+    name: breathAttack
+    animTrigger: fireBreath
+    damage: 50
+    range: 4
+    cooldown: 4
     currentCooldown: 0
-  jumpRadius: 3
+  jumpRadius: 2.5
   jumpVFXPrefab: {fileID: 0}
-  breathSize: {x: 4, y: 2}
+  breathSize: {x: 3, y: 1.5}
   breathVFXPrefab: {fileID: 0}
 --- !u!1 &5677051973445226192
 GameObject:
@@ -318,7 +318,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -1312858285
+  m_SortingLayerID: -471486041
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0

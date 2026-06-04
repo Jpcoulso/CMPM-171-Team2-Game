@@ -3,16 +3,16 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float speed = 10f;
+    [SerializeField] protected float speed = 10f;
  
     // --- Runtime State ---
-    private Character target;
-    private float damage;
-    private Character attacker;
-    private const float IMPACT_DISTANCE = 0.2f;
+    protected Character target;
+    protected float damage;
+    protected Character attacker;
+    protected const float IMPACT_DISTANCE = 0.2f;
  
     // Called immediately after Instantiate to give the projectile everything it needs.
-    public void Initialize(Character target, float damage, Character attacker)
+    public virtual void Initialize(Character target, float damage, Character attacker)
     {
         this.target   = target;
         this.damage   = damage;
@@ -22,7 +22,7 @@ public class Projectile : MonoBehaviour
         AimAtTarget();
     }
  
-    private void Update()
+    protected virtual void Update()
     {
         // --- Cleanup: target died or was destroyed before impact ---
         if (target == null || !target.gameObject.activeInHierarchy)
@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
     // Movement
     // -------------------------------------------------------------------------
  
-    private void MoveTowardsTarget()
+    protected void MoveTowardsTarget()
     {
         Vector3 direction = (target.transform.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour
         AimAtTarget();
     }
  
-    private void AimAtTarget()
+    protected void AimAtTarget()
     {
         if (target == null) return;
  
@@ -61,7 +61,7 @@ public class Projectile : MonoBehaviour
     // Impact
     // -------------------------------------------------------------------------
  
-    private void CheckImpact()
+    protected void CheckImpact()
     {
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
  
@@ -71,7 +71,7 @@ public class Projectile : MonoBehaviour
         }
     }
  
-    private void OnImpact()
+    protected virtual void OnImpact()
     {
         if (attacker.IsHealer)
         {
@@ -84,7 +84,7 @@ public class Projectile : MonoBehaviour
         
         // Optional: spawn a hit VFX here before destroying
         // Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
- 
+
         Destroy(gameObject);
     }
 }
