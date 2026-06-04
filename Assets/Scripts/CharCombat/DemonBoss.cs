@@ -25,7 +25,7 @@ public class DemonBoss : Enemy
     [SerializeField] private GameObject jumpVFXPrefab;
  
     [Header("Firebreath")]
-    [SerializeField] private Vector2 breathSize = new Vector2(4f, 2f);
+    [SerializeField] private Vector2 breathSize = new Vector2(3f, 1.5f);
     [SerializeField] private GameObject breathVFXPrefab;
  
     // Convenience list for cooldown ticking
@@ -35,6 +35,7 @@ public class DemonBoss : Enemy
     private BossAttack activeAttack;
  
     public override float AttackRange => GetDynamicRange();
+    private float introTimer = 2.0f;
 
     // -------------------------------------------------------------------------
     // Unity Lifecycle
@@ -52,8 +53,15 @@ public class DemonBoss : Enemy
  
     protected override void FixedUpdate()
     {
+        // If the intro is still playing, count down and do nothing else
+        if (introTimer > 0)
+        {
+            introTimer -= Time.deltaTime;
+            return; // This blocks the AI and state machine from starting
+        }
+
+        //once timer reaches zero start normal boss behavior
         base.FixedUpdate();
- 
         TickAttackCooldowns();
     }
  

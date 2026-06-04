@@ -235,9 +235,9 @@ MonoBehaviour:
     range: 4
     cooldown: 4
     currentCooldown: 0
-  jumpRadius: 3
+  jumpRadius: 2.5
   jumpVFXPrefab: {fileID: 0}
-  breathSize: {x: 4, y: 2}
+  breathSize: {x: 3, y: 1.5}
   breathVFXPrefab: {fileID: 0}
 --- !u!1 &5677051973445226192
 GameObject:
