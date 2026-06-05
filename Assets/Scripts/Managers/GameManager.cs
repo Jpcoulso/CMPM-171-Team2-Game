@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [Header("Pause & Settings")]
     public bool isPaused = false;
     public bool isGameOver = false;
+    public bool isVictory = false;
     public bool isColorblindMode = false;
 
     // Stores health of heroes
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && !isGameOver)
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && !isGameOver && !isVictory)
         {
             TogglePause();
         }
@@ -61,7 +62,7 @@ public class GameManager : MonoBehaviour
     public void TogglePause()
     {
         isPaused = !isPaused;
-        Time.timeScale = (isPaused || isGameOver) ? 0f : 1f;
+        Time.timeScale = (isPaused || isGameOver || isVictory) ? 0f : 1f;
     }
 
     public void GameOver()
@@ -70,11 +71,24 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void Victory()
+    {
+        StartCoroutine(DelayedVictory(5f));
+    }
+
+    private IEnumerator DelayedVictory(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isVictory = true;
+        Time.timeScale = 0f;
+    }
+
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         isPaused = false;
         isGameOver = false;
+        isVictory = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -83,6 +97,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         isGameOver = false;
+        isVictory = false;
         SceneManager.LoadScene("Title");
     }
 
@@ -137,6 +152,20 @@ public class GameManager : MonoBehaviour
                 QuitToTitle();
             }
         }
+        else if (isVictory)
+        {
+            float width = 300;
+            float height = 200;
+            float x = (Screen.width - width) / 2;
+            float y = (Screen.height - height) / 2;
+
+            GUI.Box(new Rect(x, y, width, height), "VICTORY!");
+
+            if (GUI.Button(new Rect(x + 75, y + 70, 150, 60), "Restart Game"))
+            {
+                QuitToTitle();
+            }
+        }
     }
 
     private void OnDestroy()
@@ -146,6 +175,7 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         isGameOver = false;
+        isVictory = false;
         isPaused = false;
         Time.timeScale = 1f;
 

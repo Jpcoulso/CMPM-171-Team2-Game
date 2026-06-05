@@ -201,6 +201,10 @@ MonoBehaviour:
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   levelUnlocked: 
   currentGold: 0
+  isPaused: 0
+  isGameOver: 0
+  isVictory: 0
+  isColorblindMode: 0
 --- !u!4 &122738909
 Transform:
   m_ObjectHideFlags: 0

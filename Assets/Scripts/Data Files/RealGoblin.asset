@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: RealGoblin
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Goblin
+  isRanged: 0
+  isHealer: 0
   maxHealth: 200
   attackDamage: 10
   attackRange: 1
@@ -20,4 +22,5 @@ MonoBehaviour:
   moveSpeed: 2
   detectionRange: 100
   experienceReward: 10
-  goldReward: 10
+  goldReward: 2
+  projectilePrefab: {fileID: 0}

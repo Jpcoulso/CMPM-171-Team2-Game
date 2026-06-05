@@ -22,5 +22,5 @@ MonoBehaviour:
   moveSpeed: 1
   detectionRange: 100
   experienceReward: 10
-  goldReward: 10
+  goldReward: 2
   projectilePrefab: {fileID: 0}

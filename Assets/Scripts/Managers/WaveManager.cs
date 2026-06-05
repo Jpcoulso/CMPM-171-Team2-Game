@@ -56,12 +56,25 @@ public class WaveManager : MonoBehaviour
         if (currentWave >= waves.Length)
         {
             Debug.Log("All waves completed!");
-            // Later: trigger end-of-level rewards, transition to next scene, etc.
-            // TODO: collect remaining resources -> popuptext? -> unlock scene
+            
+            string currentScene = SceneManager.GetActiveScene().name;
+            if (currentScene == "BossFight")
+            {
+                if (GameManager.Instance != null)
+                    GameManager.Instance.Victory();
+                return;
+            }
 
-            // Add time padding to allow players to collect resources
-            int levelToUnlock = int.Parse(SceneManager.GetActiveScene().name.Replace("Level", ""));
-            GameManager.Instance.UnlockLevel(levelToUnlock);
+            // Normal level progression
+            if (currentScene.StartsWith("Level"))
+            {
+                string levelNumStr = currentScene.Replace("Level", "");
+                if (int.TryParse(levelNumStr, out int levelToUnlock))
+                {
+                    GameManager.Instance.UnlockLevel(levelToUnlock);
+                }
+            }
+            
             StartCoroutine(LoadSceneAfterDelay("Map"));
             return;
         }
