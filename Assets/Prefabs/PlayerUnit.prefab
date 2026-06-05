@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94dd6dc7a01f93144b95176a6718da5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _selectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _selectedColor: {r: 0.015686274, g: 1, b: 0.0306928, a: 1}
 --- !u!95 &1729726460614219800
 Animator:
   serializedVersion: 7
@@ -196,6 +196,7 @@ MonoBehaviour:
   shieldDirection: {x: 0, y: 0}
   shieldHalfAngle: 0
   isInvulnerable: 0
+  moveSpeedMultiplier: 1
   heroData: {fileID: 0}
 --- !u!50 &5574667540051522970
 Rigidbody2D:

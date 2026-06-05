@@ -54,28 +54,32 @@ public class Enemy : Character
 
     private void ScanForHeroes()
     {
-        IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
-        Hero closest = null;
-        float closestDistance = enemyData.detectionRange;
-
-        foreach (Hero hero in squad)
+        if (SquadManager.Instance)
         {
-            if (hero == null || hero.IsDead) continue;
+            IReadOnlyList<Hero> squad = SquadManager.Instance.GetSquad();
+            Hero closest = null;
+            float closestDistance = enemyData.detectionRange;
 
-            float distance = Vector2.Distance(transform.position,
-                                              hero.transform.position);
-            if (distance < closestDistance)
+            foreach (Hero hero in squad)
             {
-                closestDistance = distance;
-                closest = hero;
+                if (hero == null || hero.IsDead) continue;
+
+                float distance = Vector2.Distance(transform.position,
+                                                hero.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closest = hero;
+                }
+            }
+
+            // Found a hero within detection range — begin chasing
+            if (closest != null)
+            {
+                SetTarget(closest);
             }
         }
-
-        // Found a hero within detection range — begin chasing
-        if (closest != null)
-        {
-            SetTarget(closest);
-        }
+        
             
     }
 

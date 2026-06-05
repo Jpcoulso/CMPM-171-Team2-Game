@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -19,6 +20,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Dev Tools")]
     [SerializeField] public int currentGold = 0;
+
+    [Header("Pause & Settings")]
+    public bool isPaused = false;
+    public bool isColorblindMode = false;
 
     // Stores health of heroes
     private float[] savedHealth;
@@ -43,6 +48,62 @@ public class GameManager : MonoBehaviour
         levelUnlocked = new bool[5];
         levelUnlocked[0] = true;
     }
+
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            TogglePause();
+        }
+    }
+
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0f : 1f;
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ToggleColorblindMode()
+    {
+        isColorblindMode = !isColorblindMode;
+    }
+
+    private void OnGUI()
+    {
+        if (isPaused)
+        {
+            float width = 250;
+            float height = 200;
+            float x = (Screen.width - width) / 2;
+            float y = (Screen.height - height) / 2;
+
+            GUI.Box(new Rect(x, y, width, height), "PAUSED");
+
+            if (GUI.Button(new Rect(x + 50, y + 40, 150, 40), "Restart Level"))
+            {
+                RestartLevel();
+            }
+
+            string cbText = isColorblindMode ? "Colorblind Mode: ON" : "Colorblind Mode: OFF";
+            if (GUI.Button(new Rect(x + 50, y + 90, 150, 40), cbText))
+            {
+                ToggleColorblindMode();
+            }
+
+            if (GUI.Button(new Rect(x + 50, y + 140, 150, 40), "Resume"))
+            {
+                TogglePause();
+            }
+        }
+    }
+
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -178,4 +239,3 @@ public class GameManager : MonoBehaviour
         return false;
     }
 }
-
