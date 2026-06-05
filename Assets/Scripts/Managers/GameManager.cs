@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Pause & Settings")]
     public bool isPaused = false;
+    public bool isGameOver = false;
     public bool isColorblindMode = false;
 
     // Stores health of heroes
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && !isGameOver)
         {
             TogglePause();
         }
@@ -60,14 +61,29 @@ public class GameManager : MonoBehaviour
     public void TogglePause()
     {
         isPaused = !isPaused;
-        Time.timeScale = isPaused ? 0f : 1f;
+        Time.timeScale = (isPaused || isGameOver) ? 0f : 1f;
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        Time.timeScale = 0f;
     }
 
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         isPaused = false;
+        isGameOver = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitToTitle()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+        isGameOver = false;
+        SceneManager.LoadScene("Title");
     }
 
     public void ToggleColorblindMode()
@@ -102,6 +118,25 @@ public class GameManager : MonoBehaviour
                 TogglePause();
             }
         }
+        else if (isGameOver)
+        {
+            float width = 300;
+            float height = 200;
+            float x = (Screen.width - width) / 2;
+            float y = (Screen.height - height) / 2;
+
+            GUI.Box(new Rect(x, y, width, height), "GAME OVER");
+
+            if (GUI.Button(new Rect(x + 75, y + 50, 150, 40), "Restart Level"))
+            {
+                RestartLevel();
+            }
+
+            if (GUI.Button(new Rect(x + 75, y + 110, 150, 40), "Quit to Title"))
+            {
+                QuitToTitle();
+            }
+        }
     }
 
     private void OnDestroy()
@@ -110,6 +145,10 @@ public class GameManager : MonoBehaviour
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        isGameOver = false;
+        isPaused = false;
+        Time.timeScale = 1f;
+
         HeroSpawnPoint[] spawns = FindObjectsByType<HeroSpawnPoint>(FindObjectsSortMode.None);
         if (spawns == null || spawns.Length == 0)
         {

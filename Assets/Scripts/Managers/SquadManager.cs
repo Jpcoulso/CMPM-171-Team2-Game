@@ -37,6 +37,10 @@ public class SquadManager : MonoBehaviour
     public void Removehero(Hero hero)
     {
         currentSquad.Remove(hero);
+        if (currentSquad.Count == 0 && GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver();
+        }
     }
 
     public IReadOnlyList<Hero> GetSquad()
