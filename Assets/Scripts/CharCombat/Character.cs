@@ -127,8 +127,6 @@ public abstract class Character : MonoBehaviour
         {
             case CharacterState.Idle:
                 animator.SetBool("isWalking", false);
-                //animator.SetBool("isAttacking", false);
-                // Do nothing for now
                 break;
             case CharacterState.Moving:
                 animator.SetBool("isWalking", true);
@@ -141,7 +139,6 @@ public abstract class Character : MonoBehaviour
                 break;
             case CharacterState.Attacking:
                 animator.SetBool("isWalking", false);
-                //animator.SetBool("isAttacking", true);
                 FaceTarget(currentTarget.transform.position);
                 TryAttack();
                 break;
@@ -275,7 +272,7 @@ public abstract class Character : MonoBehaviour
         ApplyDamage(rawAmount);
 
         // change aggro to attacker if their armor class is higher than currentTarget
-        if (currentTarget == null || currentTarget.GetArmor() < attacker.GetArmor())
+        if ((currentTarget == null || currentTarget.GetArmor() < attacker.GetArmor()) && !hasDestination)
         {
             SetTarget(attacker);
         }

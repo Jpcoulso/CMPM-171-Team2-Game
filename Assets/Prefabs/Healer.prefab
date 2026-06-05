@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94dd6dc7a01f93144b95176a6718da5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _selectedColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _selectedColor: {r: 0.015686275, g: 1, b: 0.03137255, a: 1}
 --- !u!114 &3550239854985519904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1312858285
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
@@ -424,7 +424,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1312858285
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1904563712, guid: 3cfdcf5ffecb95843ab9cfd22580cf34, type: 3}
@@ -741,7 +741,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1312858285
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}

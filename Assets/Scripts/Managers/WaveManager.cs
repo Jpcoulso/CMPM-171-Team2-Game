@@ -65,7 +65,8 @@ public class WaveManager : MonoBehaviour
             StartCoroutine(LoadSceneAfterDelay("Map"));
             return;
         }
-        ScreenText.Instance.ShowCountdown($"Wave {currentWave + 1}/{waves.Length} in", 3, StartNextWave);
+        StartNextWave();
+        //ScreenText.Instance.ShowCountdown($"Wave {currentWave + 1}/{waves.Length} in", 3, StartNextWave);
     }
     IEnumerator LoadSceneAfterDelay(string sceneName)
     {
