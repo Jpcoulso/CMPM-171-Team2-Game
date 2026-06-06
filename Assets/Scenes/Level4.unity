@@ -201,6 +201,10 @@ MonoBehaviour:
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   levelUnlocked: 
   currentGold: 0
+  isPaused: 0
+  isGameOver: 0
+  isVictory: 0
+  isColorblindMode: 0
 --- !u!4 &122738909
 Transform:
   m_ObjectHideFlags: 0
@@ -1566,7 +1570,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5917038627673171670, guid: e5e04019c047a0442af1bfbde4c87088, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 22d9e511ddd37e3468cdd272187de056, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
