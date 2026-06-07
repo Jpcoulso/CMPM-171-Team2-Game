@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4ecae7f336d6c4ba9acb943f241566, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyName: 
+  enemyName: Slime
   isRanged: 0
   isHealer: 0
   maxHealth: 300
