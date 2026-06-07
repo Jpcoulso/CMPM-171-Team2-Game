@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Volley
   icon: {fileID: 5328869792425664003, guid: d1f753c072dd44c9282e9c0fa37e5f1e, type: 3}
   isPassive: 0
-  cooldownDuration: 0
+  cooldownDuration: 10
   description: 
   arrowCount: 7
   coneAngle: 50

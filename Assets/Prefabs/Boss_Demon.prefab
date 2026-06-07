@@ -219,14 +219,14 @@ MonoBehaviour:
     animTrigger: fireBall
     damage: 50
     range: 5
-    cooldown: 2
+    cooldown: 5
     currentCooldown: 0
   jumpAttack:
     name: jumpAttack
     animTrigger: jump
     damage: 150
     range: 3
-    cooldown: 5
+    cooldown: 8
     currentCooldown: 0
   breathAttack:
     name: breathAttack

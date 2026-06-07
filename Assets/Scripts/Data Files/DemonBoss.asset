@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: DemonBoss
   isRanged: 0
   isHealer: 0
-  maxHealth: 800
+  maxHealth: 3000
   attackDamage: 20
   attackRange: 4
   attackRate: 8

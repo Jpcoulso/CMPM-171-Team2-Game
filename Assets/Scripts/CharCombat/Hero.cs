@@ -74,11 +74,12 @@ public class Hero : Character
         Debug.Log($"{GetCharacterName()} is ready! " +
                   $"HP: {currentHealth} | ATK: {AttackDamage} | Armor: {GetArmor()}");
         
-        // Hero registers itself with the SquadManager on scene load
+        /* Hero registers itself with the SquadManager on scene load -- commented out for debugging
         if(SquadManager.Instance != null)
         {
             SquadManager.Instance.AddHero(this);
         }
+        */
     }
 
     private void InitializeAbilities()

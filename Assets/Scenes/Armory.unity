@@ -357,8 +357,8 @@ Transform:
   m_GameObject: {fileID: 176304953}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -447.04462, y: -204.30183, z: 0}
-  m_LocalScale: {x: 1.6233, y: 1.6233, z: 1.6233}
+  m_LocalPosition: {x: -446.63, y: -205.39, z: 0}
+  m_LocalScale: {x: 2.386127, y: 2.386127, z: 2.386127}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2075087165}
@@ -1598,6 +1598,10 @@ MonoBehaviour:
   startingHero: {fileID: 11400000, guid: 3e868b687d41f544e9b69c08406952e2, type: 2}
   levelUnlocked: 
   currentGold: 0
+  isPaused: 0
+  isGameOver: 0
+  isVictory: 0
+  isColorblindMode: 0
 --- !u!4 &1384916502
 Transform:
   m_ObjectHideFlags: 0
