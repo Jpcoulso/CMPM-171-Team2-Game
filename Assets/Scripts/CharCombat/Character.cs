@@ -230,6 +230,8 @@ public abstract class Character : MonoBehaviour
     // else if character is a melee class OnAttackImpact() calls TakeDamage() like usual
     public void OnAttackImpact()
     {
+        if (currentTarget == null || currentTarget.isDead) return;
+        
         if(IsRanged && ProjectilePrefab != null)
         {
             Vector3 spawnPoint = transform.position;
